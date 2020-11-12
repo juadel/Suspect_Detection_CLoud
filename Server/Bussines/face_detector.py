@@ -92,8 +92,9 @@ class FaceDetectorProcess:
         process_this_frame = True
         log = {}
         # Face Detaction process, exits if self.stop_running is True
+        logging.warning("Streamming in Process")
         while not self.stop_running:
-            logging.warning("Streamming in Process")
+            
             # check if user has request to stop server, every "seconds" , 
             sched.add_interval_job(self.checkStatus, seconds = 300, misfire_grace_time= 30)
 

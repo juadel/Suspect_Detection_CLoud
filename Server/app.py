@@ -3,6 +3,7 @@ import logging
 from Bussines.face_detector import FaceDetectorProcess
 import os
 from os import path
+from threading import Thread
 
 
 app = Flask(__name__)
@@ -24,8 +25,11 @@ def start():
     # Start server mode
     userId = request.args.get('userId')
     cameraId = request.args.get('cameraId')
-    detectorServer(userId,cameraId)
-    return "Server stopped"
+    
+    thread = Thread(target=detectorServer, kwargs={'userId':userId,'cameraId':cameraId})
+    thread.start()
+    
+    return (f"Streaming for camera {cameraId} has started")
    
     
     

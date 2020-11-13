@@ -84,8 +84,7 @@ class suspectData():
             encodings_file=load(open(f"./tmp/{self.user}/encodings.dat","rb"))
             names = list(encodings_file.keys())
             encodings = list(encodings_file.values())
-            print(names)
-            print(encodings)
+           
         except FileNotFoundError:
             print("no face encoding found")
             return self.createEncodings()

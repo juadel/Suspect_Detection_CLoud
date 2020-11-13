@@ -19,8 +19,8 @@ class FaceDetectorProcess:
         self.stop_running = False
         self.suspectData =  suspectData(userId,cameraId)
         self.settings = self.suspectData.getSettings()
-        self.encodings =self.suspectData.createEncodings()[0]
-        self.names = self.suspectData.createEncodings()[1]
+        self.encodings, self.names =self.suspectData.readEncodings()
+        
     
     def start(self):
         self.process.start()
@@ -29,7 +29,6 @@ class FaceDetectorProcess:
     
     def stop(self):
         self.process.terminate()
-        #self.process = Process(target=self.run, args=())
         self.stop_running = True
         return
 
@@ -58,10 +57,13 @@ class FaceDetectorProcess:
             return False
         else: 
             return True 
+    
+    def createEncodings(self):
+        self.suspectData.createEncodings()
+        return
 
-
-
-       
+    
+   
     def run(self):
         logging.warning("Starting streamming")
         
@@ -103,7 +105,7 @@ class FaceDetectorProcess:
         while not self.stop_running:
             
             # check if user has request to stop server, every "seconds" , 
-            sched.add_interval_job(self.checkStatus, seconds = 300, misfire_grace_time= 30)
+            sched.add_interval_job(self.checkStatus, seconds = 120, misfire_grace_time= 30)
 
             # Grab a single frame of video
             ret, frame = video_capture.read()

@@ -17,11 +17,10 @@ class FaceDetectorProcess:
         self.showVideoVariable = False
         self.live = self.process.is_alive()
         self.stop_running = False
-        self.user = userId
-        self.camera = cameraId
-        self.settings =[]
-        self.encodings =[]
-        self.names = []
+        self.suspectData =  suspectData(userId,cameraId)
+        self.settings = self.suspectData.getSettings()
+        self.encodings =self.suspectData.createEncodings()[0]
+        self.names = self.suspectData.createEncodings()[1]
     
     def start(self):
         self.process.start()
@@ -34,56 +33,63 @@ class FaceDetectorProcess:
         self.stop_running = True
         return
 
-    def getData(self):
-        data = suspectData(self.user, self.camera)
-        self.encodings, self.names = data.createEncodings()
-        #print(face_names, face_encodings)
-        self.settings = data.getSettings()
-        #print(settings)
-
-        # Update Server Status on Settings Table as (1) "server running "
-        data.changeServerStatus(1)
-        return
-
+    
     def checkStatus(self):
         # reads from DynamoDB table attribute req_Status to check if user requested stoping the server
         
-        status = suspectData(self.user, self.camera)
-        check = status.getServiceStatus()
+        check = self.suspectData.getServiceStatus()
         
         if not check[0]['req_Status']:
-            logging.warning(f"User {self.user} requested {self.camera} streamming to terminate")
+            logging.warning("Streamming will be terminated")
             self.stop_running = True
             # Update Server Status on Settings Table as (0) "Server Stopped"
 
-            status.changeServerStatus(0)
+            self.suspectData.changeServerStatus(0, "Streaming will terminate")
         return
             
     def reportFinding(self, name, report):
-        reportFind = suspectData(self.user, self.camera, name, report)
-        reportFind.reportFinding()
+        # reportFind = suspectData(self.user, self.camera, name, report)
+        self.suspectData.reportFinding(name, report)
         return
+    
+    
+    def checkData(self):
+        if self.settings==[] or self.names==[] or self.encodings ==[]:
+            return False
+        else: 
+            return True 
+
+
 
        
     def run(self):
         logging.warning("Starting streamming")
+        
         # Initialize a timer
         sched = Scheduler()
         sched.start()
 
         # read Data for specific user and camera
-        self.getData()
-
-
-        username = self.settings[0]['username']
-        password = self.settings[0]['password']
+        if self.checkData():
+            username = self.settings[0]['username']
+            password = self.settings[0]['password']
+            ip = self.settings[0]["ip"]
+            port = self.settings[0]["port"]
+            URL = self.settings[0]["url_path"]
+            
+        else:
+            sched.shutdown()
+            logging.warning("User doesn't exists or Camera is not configured")
+            return "Server stopped"
         
-        ip = self.settings[0]["ip"]
-        port = self.settings[0]["port"]
-        
-        URL = self.settings[0]["url_path"]
-        #print(f'rtsp://{username}:{password}@{ip}:{port}/{URL}')
         video_capture = cv2.VideoCapture(f"rtsp://{username}:{password}@{ip}:{port}/{URL}")
+        if not video_capture.isOpened():
+            self.suspectData.changeServerStatus(0, "No Camera stream available, check RTSP settings ")
+            video_capture.release()
+            sched.shutdown()
+            return "Server stopped"
+        else:
+            self.suspectData.changeServerStatus(1, "Streaming")
 
         # Initialize detection variables
         face_locations = []
@@ -92,7 +98,8 @@ class FaceDetectorProcess:
         process_this_frame = True
         log = {}
         # Face Detaction process, exits if self.stop_running is True
-        logging.warning("Streamming in Process")
+        logging.warning("Streamming")
+
         while not self.stop_running:
             
             # check if user has request to stop server, every "seconds" , 
@@ -186,5 +193,6 @@ class FaceDetectorProcess:
         video_capture.release()
         cv2.destroyAllWindows()
         sched.shutdown()
-        logging.warning(f"Camera {self.camera} from user {self.user} streamming has been terminated")
+        logging.warning("Streamming has been terminated")
+        self.suspectData.changeServerStatus(0, "Camera streamming has been terminated")
         return "Server stopped"

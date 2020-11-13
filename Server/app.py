@@ -29,7 +29,7 @@ def start():
     thread = Thread(target=detectorServer, kwargs={'userId':userId,'cameraId':cameraId})
     thread.start()
     
-    return (f"Streaming for camera {cameraId} has started")
+    return (f"Streaming for camera {cameraId} has been requested")
    
     
     

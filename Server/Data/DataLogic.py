@@ -8,7 +8,7 @@ import logging
 
 class suspectData():
 
-    def __init__(self, userId, cameraId, name="none", reportDate="none"):
+    def __init__(self, userId, cameraId):
         self.dynamodb = boto3.resource('dynamodb', region_name ="ca-central-1" )
         self.suspectTable = "suspectTable"
         self.settingsTable = "settingsTable"
@@ -16,8 +16,8 @@ class suspectData():
         self.bucketName = "suspectbucket"
         self.user = userId
         self.cameraId = cameraId
-        self.name = name
-        self.reportDate = reportDate
+        # self.name = name
+        # self.reportDate = reportDate
     
 
 
@@ -58,9 +58,10 @@ class suspectData():
 
         table = self.dynamodb.Table(self.settingsTable)
         response = table.query(
-            ProjectionExpression="userId, cameraId, url_path, username, password, ip, port",
+            ProjectionExpression="url_path, username, password, ip, port",
             KeyConditionExpression=Key("userId").eq(self.user) & Key("cameraId").eq(self.cameraId)
         )
+        
         return response['Items']    
 
     def getServiceStatus(self):
@@ -71,16 +72,17 @@ class suspectData():
         )
         return response['Items']    
     
-    def changeServerStatus(self,newStatus):
+    def changeServerStatus(self,newStatus, message):
         table = self.dynamodb.Table(self.settingsTable)
         response = table.update_item(
             Key = {
                 "userId": self.user,
                 "cameraId": self.cameraId
                     },
-            UpdateExpression=" set server_Status=:s",
+            UpdateExpression=" set server_Status=:s, server_info=:info",
             ExpressionAttributeValues={
-                ":s": newStatus
+                ":s": newStatus,
+                ":info": message
             },
             ReturnValues = "UPDATED_NEW"
             
@@ -95,14 +97,14 @@ class suspectData():
         return response['Items'][0]["cam_Location"]    
 
 
-    def reportFinding(self):
+    def reportFinding(self, name, reportDate):
         location = self.getCameraLocation()
-        findings = {"date":self.reportDate, "location":location }
+        findings = {"date":reportDate, "location":location }
         table = self.dynamodb.Table(self.suspectTable)
         response = table.update_item(
             Key = {
                 "userId": self.user,
-                "name": self.name
+                "name": name
                     },
             UpdateExpression=" set findings= list_append(findings,:f)",
             ExpressionAttributeValues={

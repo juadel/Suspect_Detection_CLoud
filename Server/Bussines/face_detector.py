@@ -87,6 +87,7 @@ class FaceDetectorProcess:
         video_capture = cv2.VideoCapture(f"rtsp://{username}:{password}@{ip}:{port}/{URL}")
         if not video_capture.isOpened():
             self.suspectData.changeServerStatus(0, "No Camera stream available, check RTSP settings ")
+            logging.warning("No Camera stream available, check RTSP settings")
             video_capture.release()
             sched.shutdown()
             return "Server stopped"

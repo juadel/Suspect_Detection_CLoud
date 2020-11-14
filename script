@@ -1,0 +1,9 @@
+sudo sh -c "cat > /etc/profile.d/load_env.sh << 'EOF'
+echo "NEW Variables are set"
+echo export SUSPECT_TABLE=suspectTable >> ~/.profile
+echo export SETTINGS_TABLE=settingsTable >> ~/.profile
+echo export BUCKET_NAME=suspectbucket >> ~/.profile
+echo export REGION=ca-central-1 >> ~/.profile
+
+EOF"
+

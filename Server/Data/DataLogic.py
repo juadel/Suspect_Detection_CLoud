@@ -10,11 +10,11 @@ from pickle import dump, load
 class suspectData():
 
     def __init__(self, userId, cameraId):
-        self.dynamodb = boto3.resource('dynamodb', region_name=os.getenv["REGION"])
-        self.suspectTable = os.getenv["SUSPECT_TABLE"]
-        self.settingsTable = os.getenv["SETTINGS_TABLE"]
+        self.dynamodb = boto3.resource('dynamodb', region_name=os.getenv('REGION'))
+        self.suspectTable = os.getenv("SUSPECT_TABLE")
+        self.settingsTable = os.getenv("SETTINGS_TABLE")
         self.s3 = boto3.resource('s3')
-        self.bucketName = os.getenv["BUCKET_NAME"]
+        self.bucketName = os.getenv("BUCKET_NAME")
         self.user = userId
         self.cameraId = cameraId
             

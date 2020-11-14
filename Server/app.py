@@ -13,7 +13,7 @@ def detectorServer(userId, cameraId):
     # Initizializin for first time:
     
     if not path.exists('./tmp'):
-        os.mkdir(f"./tmp/")
+        os.mkdir(f"./tmp")
         logging.warning("Creating TMP folder")
     if not path.exists(f'./tmp/{userId}'):
         os.mkdir(f"./tmp/{userId}")

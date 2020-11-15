@@ -11,10 +11,10 @@ class suspectData():
 
     def __init__(self, userId, cameraId):
         self.dynamodb = boto3.resource('dynamodb', region_name=os.environ['REGION'])
-        self.suspectTable = os.environ("SUSPECT_TABLE")
-        self.settingsTable = os.environ("SETTINGS_TABLE")
+        self.suspectTable = os.environ["SUSPECT_TABLE"]
+        self.settingsTable = os.environ["SETTINGS_TABLE"]
         self.s3 = boto3.resource('s3')
-        self.bucketName = os.environ("BUCKET_NAME")
+        self.bucketName = os.environ["BUCKET_NAME"]
         self.user = userId
         self.cameraId = cameraId
             

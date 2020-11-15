@@ -106,7 +106,7 @@ class FaceDetectorProcess:
         while not self.stop_running:
             
             # check if user has request to stop server, every "seconds" , 
-            sched.add_interval_job(self.checkStatus, seconds = os.environ['TIME_TO_CHECK'], misfire_grace_time= 30)
+            sched.add_interval_job(self.checkStatus, seconds =int(os.environ['TIME_TO_CHECK']), misfire_grace_time= 30)
 
             # Grab a single frame of video
             ret, frame = video_capture.read()

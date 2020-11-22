@@ -53,7 +53,7 @@ customs:
     models:
       - name: createSuspectRequest
         contentType: application/json
-        schema: ${file(models/createSuspectRequest.json)}
+        schema: ${file(ValidationModels/createSuspectRequest.json)}
 
 functions:
   hello:

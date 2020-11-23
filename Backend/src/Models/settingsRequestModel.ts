@@ -1,4 +1,4 @@
-export interface SettingsRequestModel  {
+export interface SettingsRequestItem  {
     port: string
     password: string
     username: string

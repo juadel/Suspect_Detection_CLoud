@@ -1,18 +1,18 @@
 import * as uuid from "uuid";
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { getUserId } from "../lambda/utils";
+import { getUserId } from "../Lambda/utils";
 import { SettingItem } from "../Models/settingModel";
-import { Settings } from "../DataLogic/dataSettings";
-import { SettingsRequestModel } from "../Models/settingsRequestModel";
+import { Sets } from "../Data/dataSettings";
+import { SettingsRequestItem } from "../Models/settingsRequestModel";
 
 
-const setting= new Settings();
+const setting= new Sets();
 
-export async function createTodo( event: APIGatewayProxyEvent ): Promise<SettingItem> {
+export async function createCamSets( event: APIGatewayProxyEvent ): Promise<SettingItem> {
     const cameraId = uuid.v4();
     const userId = getUserId(event);
-    const newSet: SettingsRequestModel = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const createdCamera = await setting.createSets(
+    const newSet: SettingsRequestItem = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    const createdCamera = await setting.createCamSets(
       { 
         userId: userId,
         cameraId: cameraId,

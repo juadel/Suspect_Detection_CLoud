@@ -1,9 +1,9 @@
 import 'source-map-support/register';
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
-import {createSettings} from '../../Business/settingsItems';
+import {createCamSets} from '../../Business/settingsItems';
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   // TODO: Implement creating a new TODO item
-  const item = await createSettings(event)
+  const item = await createCamSets(event)
 
   return {
     statusCode: 200,

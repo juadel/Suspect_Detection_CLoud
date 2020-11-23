@@ -33,6 +33,7 @@ provider:
     SETTINGS_TABLE: SDC-Settings-table-${self:provider.stage}
     SDC_BUCKET: SDC-Settings-table-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
+    USER_POOL: SDC-Users-Pool-${self:provider.stage}
 
   
   iamRoleStatements:
@@ -57,11 +58,23 @@ customs:
 
 functions:
   hello:
-    handler: handler.hello
+    handler: src/Lambda/http/createSettings.handler
     events:
       - http:
-          method: get
-          path: hello
+          method: POST
+          path: camset
+          cors: true
+          authorizer:
+            Type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-CreateCamSettings-Role-${self:service.org}-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:PutItem
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SETTINGS_TABLE}
 
 resources:
   Resources:
@@ -84,7 +97,46 @@ resources:
           ResponseType: DEFAULT_4XX
           RestApiId:
             Ref: ApiGatewayRestApi
+
+    CognitoUserPoolClient:
+      Type: "AWS::Cognito::UserPoolClient"
+      Properties:
+        ClientName: ${self:provider.environment.USER_POOL}
+        GenerateSecret: False 
+        UserPoolId:
+          Ref: CognitoUserPool       
+
+    CognitoUserPool:
+      Type: "AWS::Cognito::UserPool"
+      Properties: 
+        MfaConfiguration: OFF
+        UserPoolName: ${self:provider.environment.USER_POOL}
+        AliasAttributes:
+          - preferred_username
+          - email
+        AutoVerifiedAttributes:
+          - email  
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireLowercase: False
+            RequireNumbers: True
+            RequireSymbols: False 
+            RequireUppercase: True 
     
+    ApiGatewayAuthorizer:
+      DependsOn:
+        - ApiGatewayRestApi
+      Type: AWS::ApiGateway::Authorizer
+      Properties:
+        Name: cognito-authorizer
+        IdentitySource: method.request.header.Authorization
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        Type: COGNITO_USER_POOLS
+        ProviderARNs:
+          - Fn::GetAtt: [CognitoUserPool, Arn]         
+
     SuspectsTable:
         Type: AWS::DynamoDB::Table
         Properties:

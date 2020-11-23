@@ -4,25 +4,27 @@ import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
 const XAWS = AWSXRay.captureAWS(AWS);
 
-import { settingsItem } from "../models/settingModel";
-// import { settingsRequestModel } from "../models/settingsRequestModel";
+import { suspectModel } from "../models/suspectModel";
+import { suspectRequestModel } from "../models/suspectRequestModel";
 
-export class Sets 
+export class Suspect 
 { constructor (
       private docClient: DocumentClient = createDynamoDBClient(),
-      private settingsTable = process.env.SETTINGS_TABLE,
-            
+      private S3 = createS3Bucket(),
+      private suspectTable = process.env.SUSPECT_TABLE,
+      private bucket = process.env.SDC_BUCKET,
+      private urlExp = process.env.SIGNED_EXPIRATION,
+      
   ) {}
   
 
-async createCamSets(camSet: settingsItem): Promise<settingsItem> {
+async createSets(todo: TodoItem): Promise<TodoItem> {
     await this.docClient.put({
-        TableName: this.settingsTable,
-        Item: camSet
+        TableName: this.todosTable,
+        Item: todo
     })
     .promise();
-  return camSet;
- }
+  return todo;
 }
 
 function createDynamoDBClient() {
@@ -34,6 +36,10 @@ function createDynamoDBClient() {
     });
   }
   return new XAWS.DynamoDB.DocumentClient();
- }
+}
 
-
+function createS3Bucket() {
+    return new XAWS.S3({
+      signatureVersion: "v4"
+  });
+}

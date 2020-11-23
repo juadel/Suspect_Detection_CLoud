@@ -7,7 +7,7 @@ service:
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
-    includeModules: true
+    includeModules: false
 
 # Add the serverless-webpack plugin
 plugins:
@@ -23,7 +23,11 @@ provider:
   runtime: nodejs12.x
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'ca-central-1'}
-
+  
+  tracing:
+      lambda: true
+      apiGateway: true 
+  
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   
@@ -57,7 +61,7 @@ customs:
         schema: ${file(ValidationModels/createSuspectRequest.json)}
 
 functions:
-  hello:
+  createCamSet:
     handler: src/Lambda/http/createSettings.handler
     events:
       - http:
@@ -65,9 +69,8 @@ functions:
           path: camset
           cors: true
           authorizer:
-            Type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ApiGatewayAuthorizer
+            type: COGNITO_USER_POOLS
+            authorizerId: { "Ref": "ApiGatewayAuthorizer"}
     iamRoleStatementsInherit: true
     iamRoleStatementsName: ${self:service.name}-CreateCamSettings-Role-${self:service.org}-${self:provider.stage}
     iamRoleStatements:
@@ -98,6 +101,20 @@ resources:
           RestApiId:
             Ref: ApiGatewayRestApi
 
+    ApiGatewayAuthorizer:
+      DependsOn:
+        - ApiGatewayRestApi
+      Type: AWS::ApiGateway::Authorizer
+      Properties:
+        AuthorizerResultTtlInSeconds: 300
+        Name: cognito-authorizer
+        IdentitySource: method.request.header.Authorization
+        RestApiId: 
+          Ref: ApiGatewayRestApi
+        Type: COGNITO_USER_POOLS
+        ProviderARNs:
+          - Fn::GetAtt: [CognitoUserPool, Arn]         
+
     CognitoUserPoolClient:
       Type: "AWS::Cognito::UserPoolClient"
       Properties:
@@ -124,19 +141,7 @@ resources:
             RequireSymbols: False 
             RequireUppercase: True 
     
-    ApiGatewayAuthorizer:
-      DependsOn:
-        - ApiGatewayRestApi
-      Type: AWS::ApiGateway::Authorizer
-      Properties:
-        Name: cognito-authorizer
-        IdentitySource: method.request.header.Authorization
-        RestApiId:
-          Ref: ApiGatewayRestApi
-        Type: COGNITO_USER_POOLS
-        ProviderARNs:
-          - Fn::GetAtt: [CognitoUserPool, Arn]         
-
+    
     SuspectsTable:
         Type: AWS::DynamoDB::Table
         Properties:
@@ -198,6 +203,6 @@ resources:
               Principal: "*"
               Action: "s3:GetObject"
               Resource: "arn:aws:s3:::${self:provider.environment.SDC_BUCKET}/*"
-        Bucket: !Ref AttachmentBucket
+        Bucket: !Ref SDCBucket
     
     

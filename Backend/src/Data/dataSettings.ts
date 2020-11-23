@@ -4,7 +4,7 @@ import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
 const XAWS = AWSXRay.captureAWS(AWS);
 
-import { settingsItem } from "../models/settingModel";
+import { SettingItem } from "../Models/settingModel";
 // import { settingsRequestModel } from "../models/settingsRequestModel";
 
 export class Sets 
@@ -15,7 +15,7 @@ export class Sets
   ) {}
   
 
-async createCamSets(camSet: settingsItem): Promise<settingsItem> {
+async createCamSets(camSet: SettingItem): Promise<SettingItem> {
     await this.docClient.put({
         TableName: this.settingsTable,
         Item: camSet

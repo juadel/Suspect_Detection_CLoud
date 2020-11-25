@@ -6,7 +6,7 @@ export interface SettingItem  {
     username: string
     cam_Location: string
     req_Status: boolean
-    server_Status: string
+    server_Status: number
     ip: string
     url_path: string
     server_info: string

@@ -7,7 +7,7 @@ service:
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
-    includeModules: false
+    includeModules: true
 
 # Add the serverless-webpack plugin
 plugins:
@@ -35,9 +35,9 @@ provider:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     SUSPECTS_TABLE: SDC-Suspects-table-${self:provider.stage}
     SETTINGS_TABLE: SDC-Settings-table-${self:provider.stage}
-    SDC_BUCKET: SDC-Settings-table-${self:provider.stage}
+    SDC_BUCKET: sdc-bucket-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
-    USER_POOL: SDC-Users-Pool-${self:provider.stage}
+    USER_POOL: arn:aws:cognito-idp:ca-central-1:140936048568:userpool/ca-central-1_XnEjC2aNQ
 
   
   iamRoleStatements:
@@ -113,33 +113,34 @@ resources:
           Ref: ApiGatewayRestApi
         Type: COGNITO_USER_POOLS
         ProviderARNs:
-          - Fn::GetAtt: [CognitoUserPool, Arn]         
+          - ${self:provider.environment.USER_POOL}
+                 
 
-    CognitoUserPoolClient:
-      Type: "AWS::Cognito::UserPoolClient"
-      Properties:
-        ClientName: ${self:provider.environment.USER_POOL}
-        GenerateSecret: False 
-        UserPoolId:
-          Ref: CognitoUserPool       
+    # CognitoUserPoolClient:
+    #   Type: "AWS::Cognito::UserPoolClient"
+    #   Properties:
+    #     ClientName: ${self:provider.environment.USER_POOL}
+    #     GenerateSecret: False 
+    #     UserPoolId:
+    #       Ref: CognitoUserPool       
 
-    CognitoUserPool:
-      Type: "AWS::Cognito::UserPool"
-      Properties: 
-        MfaConfiguration: OFF
-        UserPoolName: ${self:provider.environment.USER_POOL}
-        AliasAttributes:
-          - preferred_username
-          - email
-        AutoVerifiedAttributes:
-          - email  
-        Policies:
-          PasswordPolicy:
-            MinimumLength: 8
-            RequireLowercase: False
-            RequireNumbers: True
-            RequireSymbols: False 
-            RequireUppercase: True 
+    # CognitoUserPool:
+    #   Type: "AWS::Cognito::UserPool"
+    #   Properties: 
+    #     MfaConfiguration: OFF
+    #     UserPoolName: ${self:provider.environment.USER_POOL}
+    #     AliasAttributes:
+    #       - preferred_username
+    #       - email
+    #     AutoVerifiedAttributes:
+    #       - email  
+    #     Policies:
+    #       PasswordPolicy:
+    #         MinimumLength: 8
+    #         RequireLowercase: False
+    #         RequireNumbers: True
+    #         RequireSymbols: False 
+    #         RequireUppercase: True 
     
     
     SuspectsTable:

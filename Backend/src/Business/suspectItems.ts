@@ -4,6 +4,7 @@ import { getUserId } from "../Lambda/utils";
 import { Suspect } from "../Data/dataSuspects";
 import { SuspectItem } from "../Models/suspectModel";
 import { SuspectRequestItem} from "../Models/suspectRequestModel";
+import { urlRequest} from "../Models/urlRequest";
 
 const suspect= new Suspect ();
 
@@ -26,9 +27,13 @@ export async function createSuspect( event: APIGatewayProxyEvent ): Promise<Susp
 }
 
 export async function generateUploadUrl( event: APIGatewayProxyEvent ): Promise<string> {
-    const filename = event.pathParameters.filename;
-    const suspectName = event.pathParameters.suspectname;
+    //const filename = event.pathParameters.filename;
+    //const suspectName = event.pathParameters.suspectname;
+    const newRequestUrl: urlRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    //console.log(filename, suspectName)
     const userId = getUserId(event);
+    const filename = newRequestUrl.filename;
+    const suspectName = newRequestUrl.name;
     const generatedUrl = await suspect.generateUploadUrl(userId, suspectName, filename);
     return generatedUrl
 }

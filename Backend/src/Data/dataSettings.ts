@@ -23,6 +23,21 @@ async createCamSets(camSet: SettingItem): Promise<SettingItem> {
     .promise();
   return camSet;
  }
+
+ async stopStreaming(userId: string, cameraId: string) : Promise<number>{
+    await this.docClient.update({
+      TableName: this.settingsTable,
+      Key: { userId, cameraId },
+      UpdateExpression: "set req_Status=:req",
+      ExpressionAttributeValues: {
+        ":req": true
+    },
+    ReturnValues: "UPDATED_NEW"
+    }).promise()
+    return 1
+
+ }
+
 }
 
 function createDynamoDBClient() {

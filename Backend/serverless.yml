@@ -38,6 +38,7 @@ provider:
     SDC_BUCKET: sdc-bucket-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     USER_POOL: arn:aws:cognito-idp:ca-central-1:140936048568:userpool/ca-central-1_XnEjC2aNQ
+    SERVER_ENDPOINT: http://0.0.0.0:5000
 
   
   iamRoleStatements:
@@ -119,6 +120,18 @@ functions:
           - s3:PutObject
           - s3:GetObject
         Resource: arn:aws:s3:::${self:provider.environment.SDC_BUCKET}/*
+  
+  startStreaming:
+    handler: src/Lambda/http/startStreaming.handler
+    events:
+      - http:
+          method: POST
+          path: start/{cameraId}
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: { "Ref": "ApiGatewayAuthorizer"}
+    
 
 
 resources:

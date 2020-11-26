@@ -27,10 +27,7 @@ export async function createSuspect( event: APIGatewayProxyEvent ): Promise<Susp
 }
 
 export async function generateUploadUrl( event: APIGatewayProxyEvent ): Promise<string> {
-    //const filename = event.pathParameters.filename;
-    //const suspectName = event.pathParameters.suspectname;
     const newRequestUrl: urlRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    //console.log(filename, suspectName)
     const userId = getUserId(event);
     const filename = newRequestUrl.filename;
     const suspectName = newRequestUrl.name;

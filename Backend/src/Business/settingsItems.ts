@@ -4,6 +4,8 @@ import { getUserId, getReportTo } from "../Lambda/utils";
 import { SettingItem } from "../Models/settingModel";
 import { Sets } from "../Data/dataSettings";
 import { SettingsRequestItem } from "../Models/settingsRequestModel";
+import axios from 'axios';
+
 
 
 const setting= new Sets();
@@ -25,4 +27,20 @@ export async function createCamSets( event: APIGatewayProxyEvent ): Promise<Sett
       }
     );
   return createdCamera;
+}
+
+export async function startStreaming(event: APIGatewayProxyEvent ): Promise<string> {
+    const userId = getUserId(event);
+    const cameraId = event.pathParameters.cameraid;
+    const response :string = await axios.get(process.env.SERVER_ENDPOINT+'/start/?userId='+userId+'&cameraId='+cameraId)
+    return response
+
+}
+
+export async function stopStreaming(event: APIGatewayProxyEvent ): Promise<number> {
+  const userId = getUserId(event);
+  const cameraId = event.pathParameters.cameraid;
+  const response = await setting.stopStreaming(userId, cameraId);
+  return response
+
 }

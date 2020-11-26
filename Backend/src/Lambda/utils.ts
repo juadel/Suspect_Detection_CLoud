@@ -1,5 +1,6 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { decode } from 'jsonwebtoken'
+
 import { JwtPayload } from './JwtPayload'
 
 /**
@@ -12,8 +13,16 @@ export function getUserId(event: APIGatewayProxyEvent): string {
   const authorization = event.headers.Authorization
   const split = authorization.split(' ')
   const jwtToken = split[1]
-
+  
   return parseUserId(jwtToken)
+}
+
+export function getReportTo(event: APIGatewayProxyEvent): string {
+  const authorization = event.headers.Authorization
+  const split = authorization.split(' ')
+  const jwtToken = split[1]
+  
+  return parseUserPhone(jwtToken)
 }
 
 
@@ -24,5 +33,24 @@ export function getUserId(event: APIGatewayProxyEvent): string {
  */
 function parseUserId(jwtToken: string): string {
   const decodedJwt = decode(jwtToken) as JwtPayload
+  console.log(decodedJwt)
   return decodedJwt.sub
+}
+
+function parseUserPhone(jwtToken: string): string {
+  const decodedJwt = decode(jwtToken) as JwtPayload
+  console.log(decodedJwt)
+  return decodedJwt.phone_number
+}
+
+function parseUserEmail(jwtToken: string): string {
+  const decodedJwt = decode(jwtToken) as JwtPayload
+  console.log(decodedJwt)
+  return decodedJwt.email
+}
+
+function parseUserName(jwtToken: string): string {
+  const decodedJwt = decode(jwtToken) as JwtPayload
+  console.log(decodedJwt)
+  return decodedJwt.name
 }

@@ -6,5 +6,9 @@ export interface JwtPayload {
     sub: string
     iat: number
     exp: number
+    phone_number: string
+    email: string
+    name: string
+
   }
   

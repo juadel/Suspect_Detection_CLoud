@@ -2,7 +2,7 @@ import 'source-map-support/register';
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
 import {createSuspect} from '../../Business/suspectItems';
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  // TODO: Implement creating a new TODO item
+  // Implement creating a new Suspect Item
   const item = await createSuspect(event)
 
   return {

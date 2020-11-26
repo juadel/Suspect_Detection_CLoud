@@ -5,6 +5,7 @@ export interface SettingItem  {
     password: string
     username: string
     cam_Location: string
+    report_to: string
     req_Status: boolean
     server_Status: number
     ip: string

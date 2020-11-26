@@ -150,12 +150,14 @@ class suspectData():
             ProjectionExpression="userId, cameraId, cam_Location",
             KeyConditionExpression=Key("userId").eq(self.user) & Key("cameraId").eq(self.cameraId)
         )
-        return response['Items'][0]["cam_Location"]    
+        location = response['Items'][0]["cam_Location"]   
+        report_to = response['Items'][0]["report_to"] 
+        return  location, report_to
 
 
     def reportFinding(self, name, reportDate):
-        location = self.getCameraLocation()
-        findings = {"date":reportDate, "location":location }
+        location , report_to = self.getCameraLocation()
+        findings = {"date":reportDate, "location":location, "report_to": report_to }
         table = self.dynamodb.Table(self.suspectTable)
         response = table.update_item(
             Key = {

@@ -79,6 +79,48 @@ functions:
           - dynamodb:PutItem
         Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SETTINGS_TABLE}
 
+  createSuspect:
+    handler: src/Lambda/http/createSuspect.handler
+    events:
+      - http:
+          method: POST
+          path: suspect
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: { "Ref": "ApiGatewayAuthorizer"}
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-CreateSuspect-Role-${self:service.org}-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:PutItem
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SUSPECTS_TABLE}
+
+  generateUrl:
+    handler: src/Lambda/http/generateUploadUrl.handler
+    events:
+      - http:
+          method: POST
+          path: getuploadurl
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: { "Ref": "ApiGatewayAuthorizer"}
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-GetPresignedURL-SDC-Role-${self:service.org}-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SUSPECTS_TABLE}
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.SDC_BUCKET}/*
+
+
 resources:
   Resources:
 

@@ -33,6 +33,7 @@ export async function createCamSets( event: APIGatewayProxyEvent ): Promise<Sett
 export async function startStreaming(event: APIGatewayProxyEvent ): Promise<string> {
     const userId = getUserId(event);
     const cameraId = event.pathParameters.cameraid;
+    console.log(process.env.SERVER_ENDPOINT+'/start?userId='+userId+'&cameraId='+cameraId)
     const response :string = await axios.get(process.env.SERVER_ENDPOINT+'/start?userId='+userId+'&cameraId='+cameraId)
     return response
 

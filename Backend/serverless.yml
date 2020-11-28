@@ -131,7 +131,34 @@ functions:
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId: { "Ref": "ApiGatewayAuthorizer"}
-    
+  
+  stopStreaming:
+    handler: src/Lambda/http/stopStreaming.handler
+    events:
+      - http:
+          method: POST
+          path: stop/{cameraId}
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: { "Ref": "ApiGatewayAuthorizer"}
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-stopStreaming-SDC-Role-${self:service.org}-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SETTINGS_TABLE}
+  
+  sendNotification:
+    handler: src/Lambda/http/reportFinding.handler
+    events:
+      - http:
+          method: POST
+          path: txt
+          cors: true
+          
+  
 
 
 resources:

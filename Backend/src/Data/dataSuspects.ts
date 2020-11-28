@@ -5,6 +5,7 @@ import { DocumentClient } from "aws-sdk/clients/dynamodb";
 const XAWS = AWSXRay.captureAWS(AWS);
 
 import { SuspectItem } from "../Models/suspectModel";
+
 //import { suspectRequestModel } from "../models/suspectRequestModel";
 
 export class Suspect 
@@ -14,6 +15,7 @@ export class Suspect
       private suspectTable = process.env.SUSPECTS_TABLE,
       private bucket = process.env.SDC_BUCKET,
       private urlExp = process.env.SIGNED_EXPIRATION,
+      private SNS = createSNS()
       
   ) {}
   
@@ -47,8 +49,18 @@ async generateUploadUrl(userId: string, name: string, filename:string): Promise<
 
 return uploadUrl;
   }
-}
 
+async sendTxtNotification(message: string, phone: string) :Promise<AWS.SNS.PublishResponse>{
+  const params = {
+    Message: message,
+    PhoneNumber: phone
+  }
+  const txt = await this.SNS.publish(params).promise();
+  return txt
+
+  }
+
+}
 
 
 
@@ -67,4 +79,10 @@ function createS3Bucket() {
     return new XAWS.S3({
       signatureVersion: "v4"
   });
+}
+
+function createSNS() {
+  return new XAWS.SNS({
+    apiVersion: '2010-03-31'
+});
 }

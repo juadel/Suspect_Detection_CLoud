@@ -157,7 +157,7 @@ class suspectData():
 
     def reportFinding(self, name, reportDate):
         location , report_to = self.getCameraLocation()
-        findings = {"date":reportDate, "location":location, "report_to": report_to }
+        findings = {"date":reportDate, "location":location }
         table = self.dynamodb.Table(self.suspectTable)
         response = table.update_item(
             Key = {
@@ -169,8 +169,9 @@ class suspectData():
                 ":f": [findings]
             },
             ReturnValues = "UPDATED_NEW"
-            
-        )
+            )
+        
+        
 
 
     # def getDataFileFromS3(self):

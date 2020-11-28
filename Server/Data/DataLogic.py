@@ -5,6 +5,7 @@ import face_recognition
 import os
 import logging
 from pickle import dump, load
+import requests
 
 
 class suspectData():
@@ -17,6 +18,7 @@ class suspectData():
         self.bucketName = os.environ["BUCKET_NAME"]
         self.user = userId
         self.cameraId = cameraId
+        self.backend = os.environ["BACKEND"]
             
 
 
@@ -108,6 +110,7 @@ class suspectData():
             ReturnValues = "UPDATED_NEW"
             
         )
+        return response
 
 
 
@@ -143,6 +146,7 @@ class suspectData():
             ReturnValues = "UPDATED_NEW"
             
         )
+        return response
 
     def getCameraLocation(self):
         table = self.dynamodb.Table(self.settingsTable)
@@ -154,7 +158,7 @@ class suspectData():
         report_to = response['Items'][0]["report_to"] 
         return  location, report_to
 
-
+   
     def reportFinding(self, name, reportDate):
         location , report_to = self.getCameraLocation()
         findings = {"date":reportDate, "location":location }
@@ -170,8 +174,12 @@ class suspectData():
             },
             ReturnValues = "UPDATED_NEW"
             )
-        
-        
+        findings["name"]= name
+        findings["phone"]= report_to
+        txt = requests.post(self.backend+'/txt', data=findings )
+        return response, txt
+
+
 
 
     # def getDataFileFromS3(self):

@@ -6,6 +6,7 @@ import { SuspectItem } from "../Models/suspectModel";
 import { SuspectRequestItem} from "../Models/suspectRequestModel";
 import { urlRequest} from "../Models/urlRequest";
 import { ReportRequest } from "../Models/reportModel";
+import { findingModel } from "../Models/findingsModel";
 
 const suspect= new Suspect ();
 
@@ -46,4 +47,14 @@ export async function sendNotification(event:APIGatewayProxyEvent): Promise<AWS.
   return txt
 
 
+}
+
+export async function getFindings( event: APIGatewayProxyEvent ): Promise<findingModel[]> {
+
+  const userId = getUserId(event);
+  const name = event.pathParameters.name;
+
+  const findingsRepor : findingModel[] = await suspect.getFindings(userId, name )
+  return findingsRepor
+  
 }

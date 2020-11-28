@@ -157,9 +157,32 @@ functions:
           method: POST
           path: txt
           cors: true
-          
-  
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-txt-SDC-Role-${self:service.org}-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - sns:Publish
+        Resource: '*'
 
+  getFindings:
+    handler: src/Lambda/http/getFindings.handler
+    events:
+      - http:
+          method: GET
+          path: getfindigs/{name}
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: { "Ref": "ApiGatewayAuthorizer"}
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-getFindings-SDC-Role-${self:service.org}-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:Query
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SUSPECTS_TABLE}
+          
 
 resources:
   Resources:

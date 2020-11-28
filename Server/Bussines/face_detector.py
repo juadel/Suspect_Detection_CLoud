@@ -5,7 +5,7 @@ import os
 from pickle import load
 from Data.DataLogic import suspectData
 from multiprocessing import Process
-from apscheduler.scheduler import Scheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 import logging
 from datetime import datetime, timedelta
 
@@ -68,7 +68,9 @@ class FaceDetectorProcess:
         logging.warning("Starting streamming")
         
         # Initialize a timer
-        sched = Scheduler()
+        sched = BackgroundScheduler(daemon=True)
+        # check if user has request to stop server, every "seconds" , 
+        sched.add_job(self.checkStatus,'interval', seconds =int(os.environ['TIME_TO_CHECK']))
         sched.start()
 
         # read Data for specific user and camera
@@ -105,8 +107,7 @@ class FaceDetectorProcess:
 
         while not self.stop_running:
             
-            # check if user has request to stop server, every "seconds" , 
-            sched.add_interval_job(self.checkStatus, seconds =int(os.environ['TIME_TO_CHECK']), misfire_grace_time= 30)
+            
 
             # Grab a single frame of video
             ret, frame = video_capture.read()

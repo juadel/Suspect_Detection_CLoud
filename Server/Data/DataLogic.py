@@ -6,6 +6,7 @@ import os
 import logging
 from pickle import dump, load
 import requests
+import json
 
 
 class suspectData():
@@ -151,7 +152,7 @@ class suspectData():
     def getCameraLocation(self):
         table = self.dynamodb.Table(self.settingsTable)
         response = table.query(
-            ProjectionExpression="userId, cameraId, cam_Location",
+            ProjectionExpression="userId, cameraId, cam_Location, report_to",
             KeyConditionExpression=Key("userId").eq(self.user) & Key("cameraId").eq(self.cameraId)
         )
         location = response['Items'][0]["cam_Location"]   
@@ -174,10 +175,11 @@ class suspectData():
             },
             ReturnValues = "UPDATED_NEW"
             )
-        findings["name"]= name
-        findings["phone"]= report_to
-        txt = requests.post(self.backend+'/txt', data=findings )
-        return response, txt
+        txtFindings = { "name": name, "location":location, "date": reportDate, "phone":report_to }
+        
+        txt = requests.post(self.backend+'/txt', data=json.dumps(txtFindings) )
+        
+        return txt
 
 
 

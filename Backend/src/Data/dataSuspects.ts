@@ -5,6 +5,7 @@ import { DocumentClient } from "aws-sdk/clients/dynamodb";
 const XAWS = AWSXRay.captureAWS(AWS);
 
 import { SuspectItem } from "../Models/suspectModel";
+import { findingModel } from "../Models/findingsModel";
 
 //import { suspectRequestModel } from "../models/suspectRequestModel";
 
@@ -56,11 +57,30 @@ async sendTxtNotification(message: string, phone: string) :Promise<AWS.SNS.Publi
     PhoneNumber: phone
   }
   const txt = await this.SNS.publish(params).promise();
-  return txt
+  return txt 
 
   }
 
-}
+async getFindings(userId : string, name:string) :Promise<findingModel[]>{
+  console.log(`get all Findings of ${name}`);
+
+  const result = await this.docClient.query({
+        TableName: this.suspectTable,
+        KeyConditionExpression: "userId = :userId and name = :name ",
+        ExpressionAttributeValues: {
+          ":userId": userId,
+          ":name" : name
+        }
+    })
+    .promise();
+  const items = result.Items;
+  return items as findingModel[];
+ }
+
+} 
+
+
+
 
 
 

@@ -38,7 +38,7 @@ provider:
     SDC_BUCKET: sdc-bucket-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     USER_POOL: arn:aws:cognito-idp:ca-central-1:140936048568:userpool/ca-central-1_XnEjC2aNQ
-    SERVER_ENDPOINT: https://ec2-3-96-127-177.ca-central-1.compute.amazonaws.com:5000
+    SERVER_ENDPOINT: https://ec2-3-96-127-177.ca-central-1.compute.amazonaws.com:5000/dev
 
   
   iamRoleStatements:

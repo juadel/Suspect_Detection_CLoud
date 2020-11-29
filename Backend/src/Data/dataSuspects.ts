@@ -30,7 +30,7 @@ async createSuspect(suspect: SuspectItem): Promise<SuspectItem> {
   return suspect;
  }
 
-async generateUploadUrl(userId: string, name: string, filename:string): Promise<string> {
+async generateUploadUrl(userId: string, suspectName: string, filename:string): Promise<string> {
   const objectKey = userId+"/"+filename
   const uploadUrl = this.S3.getSignedUrl("putObject", {
     Bucket: this.bucket,
@@ -39,7 +39,7 @@ async generateUploadUrl(userId: string, name: string, filename:string): Promise<
   });
   await this.docClient.update({
       TableName: this.suspectTable,
-      Key: { userId, name },
+      Key: { userId, suspectName },
       UpdateExpression: "set objectKey=:URL",
       ExpressionAttributeValues: {
         ":URL": objectKey
@@ -63,17 +63,20 @@ async sendTxtNotification(message: string, phone: string) :Promise<AWS.SNS.Publi
 
 async getFindings(userId : string, name:string) :Promise<findingModel[]>{
   console.log(`get all Findings of ${name}`);
-
+  const name_with_space =decodeURI(name)
   const result = await this.docClient.query({
         TableName: this.suspectTable,
         KeyConditionExpression: "userId = :userId and suspectName = :name ",
+        ProjectionExpression: 'findings', 
         ExpressionAttributeValues: {
           ":userId": userId,
-          ":name" : name
+          ":name" : name_with_space
         }
     })
     .promise();
+   
   const items = result.Items;
+  console.log(result) 
   return items as findingModel[];
  }
 

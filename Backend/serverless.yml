@@ -33,8 +33,8 @@ provider:
   
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    SUSPECTS_TABLE: SDC-Suspects-table-${self:provider.stage}
-    SETTINGS_TABLE: SDC-Setting-table-${self:provider.stage}
+    SUSPECTS_TABLE: SDC-Suspect-table-${self:provider.stage}
+    SETTINGS_TABLE: SDC-Settings-table-${self:provider.stage}
     SDC_BUCKET: sdc-bucket-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     USER_POOL: arn:aws:cognito-idp:ca-central-1:140936048568:userpool/ca-central-1_XnEjC2aNQ

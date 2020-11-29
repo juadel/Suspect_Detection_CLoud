@@ -45,7 +45,7 @@ export async function startStreaming(event: APIGatewayProxyEvent ): Promise<stri
 
 }
 
-export async function stopStreaming(event: APIGatewayProxyEvent ): Promise<number> {
+export async function stopStreaming(event: APIGatewayProxyEvent ): Promise<boolean> {
   const userId = getUserId(event);
   const cameraId = event.pathParameters.cameraId;
   const response = await setting.stopStreaming(userId, cameraId);

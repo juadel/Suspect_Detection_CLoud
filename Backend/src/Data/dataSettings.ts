@@ -24,7 +24,7 @@ async createCamSets(camSet: SettingItem): Promise<SettingItem> {
   return camSet;
  }
 
- async stopStreaming(userId: string, cameraId: string) : Promise<number>{
+ async stopStreaming(userId: string, cameraId: string) : Promise<boolean>{
     await this.docClient.update({
       TableName: this.settingsTable,
       Key: { userId, cameraId },
@@ -34,7 +34,7 @@ async createCamSets(camSet: SettingItem): Promise<SettingItem> {
     },
     ReturnValues: "UPDATED_NEW"
     }).promise()
-    return 1
+    return false
 
  }
 

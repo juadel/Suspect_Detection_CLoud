@@ -139,10 +139,11 @@ class suspectData():
                 "userId": self.user,
                 "cameraId": self.cameraId
                     },
-            UpdateExpression=" set server_Status=:s, server_info=:info",
+            UpdateExpression=" set server_Status=:s, server_info=:info, req_Status=:st",
             ExpressionAttributeValues={
                 ":s": newStatus,
-                ":info": message
+                ":info": message,
+                ":st": True
             },
             ReturnValues = "UPDATED_NEW"
             

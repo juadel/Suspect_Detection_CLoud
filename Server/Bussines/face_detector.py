@@ -165,7 +165,7 @@ class FaceDetectorProcess:
                     
                     
                     
-            process_this_frame = not process_this_frame
+            #process_this_frame = not process_this_frame
 
             if (self.showVideoVariable):
                 # Display the results

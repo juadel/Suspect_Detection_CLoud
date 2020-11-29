@@ -58,3 +58,20 @@ export async function getFindings( event: APIGatewayProxyEvent ): Promise<findin
   return findingsRepor
   
 }
+
+export async function genEncodings( event: APIGatewayProxyEvent ): Promise<string> {
+
+  const userId = getUserId(event);
+  const endpoint = `http://${process.env.SERVER_ENDPOINT}/encodings?userId=${userId}`
+    
+    const axios = require('axios');
+    try{
+      const response = await axios.get(endpoint);
+      console.log("This is a response")
+      return JSON.stringify(response.data) }
+      catch (e) {
+        console.log("This is an error")
+        return JSON.stringify(e)
+      }
+      
+}

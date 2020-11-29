@@ -34,12 +34,14 @@ export async function startStreaming(event: APIGatewayProxyEvent ): Promise<stri
     const userId = getUserId(event);
     const cameraId = event.pathParameters.cameraId;
     const endpoint = `${process.env.SERVER_ENDPOINT}/start?userId=${userId}&cameraId=${cameraId}`
+    console.log(endpoint)
+    const axios = require('axios');
     try{
       const response = await axios.get(endpoint)
-      console.log(response)
+      console.log("This is a response")
       return JSON.stringify(response) }
       catch (e) {
-        console.log(e)
+        console.log("This is an error")
         return JSON.stringify(e)
       }
 

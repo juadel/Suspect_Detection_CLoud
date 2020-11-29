@@ -66,7 +66,7 @@ async getFindings(userId : string, name:string) :Promise<findingModel[]>{
 
   const result = await this.docClient.query({
         TableName: this.suspectTable,
-        KeyConditionExpression: "userId = :userId and name = :name ",
+        KeyConditionExpression: "userId = :userId and suspectName = :name ",
         ExpressionAttributeValues: {
           ":userId": userId,
           ":name" : name

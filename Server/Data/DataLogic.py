@@ -40,7 +40,7 @@ class suspectData():
         encodings_file={}
         for item in Items:
             filename = item['objectKey'].split("/")[1]
-            name = item['name']
+            name = item['suspectName']
             #print(filename, name)
             try:
                 self.s3.Bucket(self.bucketName).download_file(item['objectKey'], f'./tmp/{filename}')
@@ -101,7 +101,7 @@ class suspectData():
         response = table.update_item(
             Key = {
                 "userId": self.user,
-                "name": name
+                "suspectName": name
                     },
             UpdateExpression=" set encoding= :e, encoding_status= :s",
             ExpressionAttributeValues={
@@ -168,7 +168,7 @@ class suspectData():
         response = table.update_item(
             Key = {
                 "userId": self.user,
-                "name": name
+                "suspectName": name
                     },
             UpdateExpression=" set findings= list_append(findings,:f)",
             ExpressionAttributeValues={

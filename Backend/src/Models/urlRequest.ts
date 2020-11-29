@@ -1,4 +1,4 @@
 export interface urlRequest  {
-    name: string
+    suspectName: string
     filename: string
   }

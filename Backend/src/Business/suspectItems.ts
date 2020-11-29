@@ -32,7 +32,7 @@ export async function generateUploadUrl( event: APIGatewayProxyEvent ): Promise<
     const newRequestUrl: urlRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
     const userId = getUserId(event);
     const filename = newRequestUrl.filename;
-    const suspectName = newRequestUrl.name;
+    const suspectName = newRequestUrl.suspectName;
     const generatedUrl = await suspect.generateUploadUrl(userId, suspectName, filename);
     return generatedUrl
 }
@@ -41,7 +41,7 @@ export async function sendNotification(event:APIGatewayProxyEvent): Promise<AWS.
  
   const newRequest: ReportRequest = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
   
-  const message :string = `${newRequest.name} has been detected in ${newRequest.location} at ${newRequest.date} UTC time`
+  const message :string = `${newRequest.suspectName} has been detected in ${newRequest.location} at ${newRequest.date} UTC time`
   const txt = await suspect.sendTxtNotification(message, newRequest.phone)
 
   return txt

@@ -1,3 +1,3 @@
 export interface SuspectRequestItem  {
-    name: string
+    suspectName: string
   }

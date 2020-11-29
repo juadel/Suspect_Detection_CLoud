@@ -1,5 +1,5 @@
 export interface ReportRequest  {
-    name: string
+    suspectName: string
     location: string
     date: string
     phone : string

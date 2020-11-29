@@ -30,7 +30,7 @@ async createCamSets(camSet: SettingItem): Promise<SettingItem> {
       Key: { userId, cameraId },
       UpdateExpression: "set req_Status=:req",
       ExpressionAttributeValues: {
-        ":req": true
+        ":req": false
     },
     ReturnValues: "UPDATED_NEW"
     }).promise()

@@ -176,7 +176,7 @@ class suspectData():
             },
             ReturnValues = "UPDATED_NEW"
             )
-        txtFindings = { "name": name, "location":location, "date": reportDate, "phone":report_to }
+        txtFindings = { "suspectName": name, "location":location, "date": reportDate, "phone":report_to }
         
         txt = requests.post(self.backend+'/txt', data=json.dumps(txtFindings) )
         

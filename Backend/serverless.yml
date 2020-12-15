@@ -72,6 +72,9 @@ functions:
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId: { "Ref": "ApiGatewayAuthorizer"}
+          # request:
+          #   schema:
+          #     application/json: ${file(src/models/create-todo-model.json)}  
     iamRoleStatementsInherit: true
     iamRoleStatementsName: ${self:service.name}-CreateCamSettings-Role-${self:service.org}-${self:provider.stage}
     iamRoleStatements:
@@ -187,14 +190,14 @@ functions:
 resources:
   Resources:
 
-    MyRequestValidator:  
-          Type: "AWS::ApiGateway::RequestValidator"
-          Properties:
-            Name: 'SDC-req-validator'
-            RestApiId: 
-              Ref: ApiGatewayRestApi
-            ValidateRequestBody: true
-            ValidateRequestParameters: false  
+    # MyRequestValidator:  
+    #       Type: "AWS::ApiGateway::RequestValidator"
+    #       Properties:
+    #         Name: 'SDC-req-validator'
+    #         RestApiId: 
+    #           Ref: ApiGatewayRestApi
+    #         ValidateRequestBody: true
+    #         ValidateRequestParameters: false  
     GatewayResponseDefault4XX:
         Type: AWS::ApiGateway::GatewayResponse
         Properties:

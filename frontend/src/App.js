@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+
 import './App.css';
 import {BrowserRouter} from 'react-router-dom';
 import Sidebar from './Sidebar';
@@ -6,7 +6,15 @@ import Sidebar from './Sidebar';
 function App() {
   return (
     <BrowserRouter>
-      <Sidebar/>   
+    <div className="App">
+      <div class="container">
+        <Sidebar class="grid-sidebar"/>
+        <div class="header">
+          <p> Ops Suite</p> 
+        </div>
+        <div class="content"/>
+      </div>
+    </div>   
     </BrowserRouter>
   );
 }

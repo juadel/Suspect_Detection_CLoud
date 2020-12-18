@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import {Route, Switch, withRouter} from 'react-router-dom';
+
 
 const SidebarContainer = styled.div`
     display: flex;
     flex-direction: column;    
     height: 100vh;
+    
+    
+    
+    
     
     background-color: #00003b;
     color: #fff;
@@ -64,7 +70,7 @@ const MenuLogo = styled.div`
     font-weight: 600;
     height: 45px;
     color: #fff;
-    margin: 0px 30px 30px 30px;
+    margin: 00px 30px 30px 30px;
     padding-bottom: 20px;
     border-bottom: 1px solid #2e2e33;
     
@@ -83,6 +89,12 @@ const MenuSignOut = styled.div`
 
 
 class Sidebar extends Component {
+    
+    handleRoute = route =>() =>{
+        this.props.history.push({pathname: route})
+    };
+    
+    
     render() {
     return (
     <SidebarContainer>
@@ -93,7 +105,7 @@ class Sidebar extends Component {
             </Icon>
             S.D.C
             </MenuLogo>
-            <SidebarMenuItem>
+            <SidebarMenuItem onClick={this.handleRoute("/dash")}>
                 <Icon viewBox="0 0 48 48"> 
                 <path fill="white" d="M3.745,35.693L3.745,12.764C3.745,11.093 5.101,9.738 6.771,9.738L41.42,9.738C43.088,9.738 44.448,11.091 44.448,12.764L44.448,35.693C44.448,37.363 43.091,38.719 41.42,38.719L6.771,38.719C5.101,38.719 3.745,37.363 3.745,35.693ZM42.534,35.693L42.534,12.764C42.534,12.153 42.036,11.653 41.42,11.653L6.771,11.653C6.158,11.653 5.661,12.151 5.661,12.764L5.661,35.693C5.661,36.305 6.158,36.803 6.771,36.803L41.42,36.803C42.034,36.803 42.534,36.305 42.534,35.693Z"/>
                 <path fill="white" d="M7.107,13.576C7.107,13.07 7.52,12.657 8.026,12.657C8.533,12.657 8.944,13.07 8.944,13.576C8.944,14.081 8.533,14.493 8.026,14.493C7.52,14.493 7.107,14.081 7.107,13.576ZM9.707,13.576C9.707,13.07 10.119,12.657 10.625,12.657C11.131,12.657 11.544,13.07 11.544,13.576C11.544,14.081 11.131,14.493 10.625,14.493C10.119,14.493 9.707,14.081 9.707,13.576ZM12.306,13.576C12.306,13.07 12.718,12.657 13.223,12.657C13.729,12.657 14.142,13.07 14.142,13.576C14.142,14.081 13.729,14.493 13.223,14.493C12.718,14.493 12.306,14.081 12.306,13.576Z"/>
@@ -111,7 +123,7 @@ class Sidebar extends Component {
                     Dashboard
                 </SidebarMenuItemLabel>
             </SidebarMenuItem>
-            <SidebarMenuItem>
+            <SidebarMenuItem onClick={this.handleRoute("/cameras")}>
                 <Icon viewBox="0 0 42 42">
                 <path
                  width="20px"
@@ -122,7 +134,7 @@ class Sidebar extends Component {
                     Cameras
                 </SidebarMenuItemLabel>
             </SidebarMenuItem>
-            <SidebarMenuItem>
+            <SidebarMenuItem onClick={this.handleRoute("/suspects")}>
                 <Icon viewBox="0 0 20 20"><path
                 width="40px"
                 height="40px"
@@ -132,7 +144,7 @@ class Sidebar extends Component {
                     Suspects
                 </SidebarMenuItemLabel>
             </SidebarMenuItem>
-            <SidebarMenuItem>
+            <SidebarMenuItem onClick={this.handleRoute("/settings")}> 
                 <Icon viewBox="0 0 64 64">
                     <path 
                     fill="white"
@@ -147,8 +159,10 @@ class Sidebar extends Component {
             </SidebarMenuItem>
             <MenuSignOut>Sign out</MenuSignOut>
         </SidebarMenu>
+       
     </SidebarContainer>
+    
     )}
     }
 
-export default Sidebar;
+export default withRouter(Sidebar);

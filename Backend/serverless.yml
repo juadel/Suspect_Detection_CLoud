@@ -202,6 +202,24 @@ functions:
       - Effect: Allow
         Action: 
           - dynamodb:Query
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SETTINGS_TABLE}
+  
+  getSuspects:
+    handler: src/Lambda/http/getSuspects.handler
+    events:
+      - http:
+          method: GET
+          path: getsuspects
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: {"Ref": "ApiGatewayAuthorizer"}
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-getSuspects-SDC-Role-${self:service.org}-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:Query
         Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SUSPECTS_TABLE}
           
 

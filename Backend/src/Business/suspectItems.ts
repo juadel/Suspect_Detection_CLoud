@@ -75,3 +75,10 @@ export async function genEncodings( event: APIGatewayProxyEvent ): Promise<strin
       }
       
 }
+
+export async function getSuspects(event: APIGatewayProxyEvent) : Promise<SuspectItem[]> {
+  
+  const userId = getUserId(event);
+  const response = await suspect.getSuspects(userId)
+  return response
+}

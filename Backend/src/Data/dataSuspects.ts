@@ -80,6 +80,20 @@ async getFindings(userId : string, name:string) :Promise<findingModel[]>{
   return items as findingModel[];
  }
 
+ async getSuspects(userId: string) : Promise<SuspectItem[]> {
+    const result = await this.docClient.query({
+    TableName: this.suspectTable,
+    KeyConditionExpression: "userId = :userId",
+    ExpressionAttributeValues: {
+      ":userId": userId
+      }
+    })
+    .promise();
+    const items = result.Items;
+    return items as SuspectItem[];
+ }
+
+
 
 } 
 

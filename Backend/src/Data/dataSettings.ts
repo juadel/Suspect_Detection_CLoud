@@ -38,6 +38,19 @@ async createCamSets(camSet: SettingItem): Promise<SettingItem> {
 
  }
 
+ async getCameras(userId: string) : Promise<SettingItem[]>{
+  const result = await this.docClient.query({
+    TableName: this.settingsTable,
+    KeyConditionExpression: "userId = :userId",
+    ExpressionAttributeValues: {
+      ":userId": userId
+      }
+    })
+    .promise();
+    const items = result.Items;
+    return items as SettingItem[];
+ }
+
 }
 
 function createDynamoDBClient() {

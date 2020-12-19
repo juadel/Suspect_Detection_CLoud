@@ -185,6 +185,24 @@ functions:
         Action: 
           - dynamodb:Query
         Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SUSPECTS_TABLE}
+  
+  getCameras:
+    handler: src/Lambda/http/getCameras.handler
+    events:
+      - http:
+          method: GET
+          path: getcameras
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: {"Ref": "ApiGatewayAuthorizer"}
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-getCameras-SDC-Role-${self:service.org}-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:Query
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SUSPECTS_TABLE}
           
 
 resources:

@@ -55,3 +55,9 @@ export async function stopStreaming(event: APIGatewayProxyEvent ): Promise<boole
 
 }
 
+export async function getCameras (event: APIGatewayProxyEvent): Promise<SettingItem[]> {
+  const userId = getUserId(event);
+  const response = await setting.getCameras(userId);
+  return response
+
+}

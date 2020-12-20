@@ -9,7 +9,7 @@
   display: grid;
 
   grid-template-columns: 20% auto;
-  grid-template-rows: 40px 1fr;
+  grid-template-rows: 80px 1fr;
 
   grid-template-areas:
 

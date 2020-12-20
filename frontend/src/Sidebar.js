@@ -8,11 +8,10 @@ const SidebarContainer = styled.div`
     flex-direction: column;    
     height: 100vh;
     
+      
     
     
-    
-    
-    background-color: #00003b;
+    background-color: #19096B;
     color: #fff;
     font-family: 'Open Sans', sans-serif;
     @media (max-width: 375px) {

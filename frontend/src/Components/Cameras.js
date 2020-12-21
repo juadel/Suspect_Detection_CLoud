@@ -21,7 +21,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Modal from '@material-ui/core/Modal';
 
 const NewCamerasContainer = styled.div`
     display: flex;
@@ -36,7 +38,7 @@ class Cameras extends Component {
         this.state={
             cameraId: "", username:"", password:"", cam_Location:"", ip:"", server_Status:"", 
             url_path: "", server_info: "", port:"", req_Status:"", userId:"", report_to:"",
-            token: "", camerasList: null
+            token: "", camerasList: null, setOpen: false
         };
              
         
@@ -69,9 +71,30 @@ class Cameras extends Component {
         
     }
 
+    handleEdit(cameraId){
+        
+       console.log(cameraId)
+       this.setState({
+           setOpen: true
+       })
+    }
+    
+    handleClose = () => {
+        this.setState({
+            setOpen:false
+        })
+    }
+    
+    handleFormInput = event => {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        this.setState({[name] : value })
+    }
+
 
     render() {
-    console.log(this.state.camerasList);
+    console.log(this.state.cam_Location);
     let cameraLst = []
     if (this.state.camerasList)
         cameraLst= this.state.camerasList;
@@ -79,8 +102,6 @@ class Cameras extends Component {
         const lstOfCameras = cameraLst.map((item) =>
                     
                     <tr >    
-                    
-                        <td >{cameraLst.indexOf(item)+1}</td>
                         <td>{item.cam_Location}</td>
                         <td>{item.ip}</td>
                         <td>{item.port}</td>
@@ -88,6 +109,8 @@ class Cameras extends Component {
                         <td>{item.username}</td>
                         <td>{item.password}</td>
                         <td>{item.server_info}</td>
+                        <td> <Button onClick={() =>{this.handleEdit(item.cameraId)}}>Edit</Button></td>
+                        <td> <IconButton aria-label="delete"><DeleteIcon/></IconButton></td>
                         
                     
                     </tr>
@@ -95,20 +118,18 @@ class Cameras extends Component {
     
     return (
             
-           <Container maxWidth="md" >
+           <Container >
                <Typography gutterBottom variant="h5" component="h3">
                         Registered Cameras
                 </Typography>
                <TableContainer component={Card}>
-                   <Table  multiSelectable={true} onRowSelection={this.onRowSelection}>
-                        <TableHead>
+                   <Table selectable={false} >
+                        <TableHead >
                             <TableRow >
-                               
-                                <TableCell> Item </TableCell>
                                 <TableCell> Location</TableCell>
                                 <TableCell> Camera IP</TableCell>
                                 <TableCell> Port</TableCell>
-                                <TableCell> URL</TableCell>
+                                <TableCell> URL Path</TableCell>
                                 <TableCell> Username</TableCell>
                                 <TableCell> Password</TableCell>
                                 <TableCell> Status</TableCell>
@@ -119,48 +140,66 @@ class Cameras extends Component {
                         </TableBody>
                    </Table>
                </TableContainer>
-                
+
+               <Modal open={this.state.setOpen} onClose={this.handleClose} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                <Container maxWidth="xs" disableGutters="true">
+                  <Card>
+                  <CardContent>
+                        <Typography gutterBottom variant="h5" component="h2">
+                            Test for Edit Camera
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            <p>Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
+                            across all continents except Antarctica  
+                            </p>
+                        </Typography>
+                        <Button variant="contained" color="primary" >Submit</Button>
+                        <Button size="small" color="primary" onClick={this.handleClose}>Cancel</Button>
+                  </CardContent>
+                  </Card>
+                  
+                </Container>
+                </Modal>
+              
                 <form >
                 <NewCamerasContainer>
                 <Card>
                 <CardActionArea >
                 <CardContent>
                 <Typography gutterBottom variant="h5" component="h3">
-                        New camera settings
+                        New camera 
                 </Typography>
                 <Typography variant="body2" color="inherit" component="p" align="justify">
-                    Add a new camera using RTSP protocol; The camera must be connected to the internet.
-                    You would probably need to set up port forwarding on your Internet Router. Check the following <a href="https://www.purevpn.com/blog/how-to-forward-ports-on-your-router/">link</a> to learn how to do it.
+                    <ul> 
+                        <li>Add a new camera using RTSP protocol </li>
+                        <li>The camera must be connected to the internet.</li>
+                        <li>Port forwarding on your Internet Router. Check the following <a href="https://www.purevpn.com/blog/how-to-forward-ports-on-your-router/">link</a> to learn how to do it.</li>
+                        <li>Find here the <a href="https://www.getscw.com/decoding/rtsp#:~:text=1.210.-,You%20can%20also%20encode%20credentials%20into%20the%20URL%20by%20entering,and%2012345%20is%20the%20password.">RTSP stream URL/Path </a> for your camera brand. </li>
+                    </ul>
                     
                 </Typography>
              
                 </CardContent>
-                <TextField required id="standard-required" label="Required" defaultValue="Hello World" />
-                <TextField disabled id="standard-disabled" label="Disabled" defaultValue="Hello World" />
-                <TextField
+                <TextField required id="standard-required" label="Location" defaultValue="Front Door" onChange={this.handleFormInput} name="cam_Location"/>
+                <TextField required id="standard-disabled" label="IP" defaultValue="192.168.2.100" />
+                <TextField required id="standard-disabled" label="PORT" defaultValue="554" />
+                <TextField required id="standard-disabled" label="URL/Path" defaultValue="Streaming/Channels/101" />
+                <TextField required id="standard-disabled" label="username" defaultValue="admin" />
+                
+                
+                <TextField required
                 id="standard-password-input"
                 label="Password"
                 type="password"
+                defaultValue="12345"
                 autoComplete="current-password"
                 />
-                <TextField
-                id="standard-read-only-input"
-                label="Read Only"
-                defaultValue="Hello World"
-                InputProps={{
-                    readOnly: true,
-                }}
-                />
-                <TextField
-                id="standard-number"
-                label="Number"
-                type="number"
-                
-                />
+            
+              
                 
                 <CardActions>
                     <Button variant="contained" size="small" color="primary">
-                    Share
+                    add
                     </Button>
                     <Button size="small" color="primary">
                     Learn More

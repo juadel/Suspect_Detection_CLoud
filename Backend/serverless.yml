@@ -72,9 +72,9 @@ functions:
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId: { "Ref": "ApiGatewayAuthorizer"}
-          # request:
-          #   schema:
-          #     application/json: ${file(src/models/create-todo-model.json)}  
+          request:
+            schema:
+              application/json: ${file(src/Models/create-cam-model.json)}  
     iamRoleStatementsInherit: true
     iamRoleStatementsName: ${self:service.name}-CreateCamSettings-Role-${self:service.org}-${self:provider.stage}
     iamRoleStatements:

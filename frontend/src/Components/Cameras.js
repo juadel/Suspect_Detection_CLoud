@@ -36,9 +36,9 @@ class Cameras extends Component {
     constructor(){
         super();
         this.state={
-            cameraId: "", username:"", password:"", cam_Location:"", ip:"", server_Status:"", 
-            url_path: "", server_info: "", port:"", req_Status:"", userId:"", report_to:"",
-            token: "", camerasList: null, setOpen: false
+            cameraId: "", username:"admin", password:"12345", cam_Location:"", ip:"", server_Status:"", 
+            url_path: "Streaming/Channels/101", server_info: "", port:"554", req_Status:"", userId:"", report_to:"",
+            token: "", camerasList: null, setOpen: false, reload: null,
         };
              
         
@@ -92,9 +92,32 @@ class Cameras extends Component {
         this.setState({[name] : value })
     }
 
+    handleSubmit = () => {
+        const newCam ={
+            cam_Location: this.state.cam_Location,
+            ip: this.state.ip,
+            port: this.state.port,
+            url_path: this.state.url_path,
+            username: this.state.username,
+            password: this.state.password
+        }
+        this.createNewCam(newCam);
+
+    }
+
+    async createNewCam(newCam){
+        await axios.post(apiEndpoint+'/camset', newCam,
+        {
+            headers:
+            { 'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.state.token}`}
+        }).then(res =>{this.setState({reload: true})
+        }).catch(e => {alert("The request was not completed; Make sure to include all the required data", e); console.log(e)});
+        window.location.reload();
+    }
 
     render() {
-    console.log(this.state.cam_Location);
+    console.log(this.state.reload);
     let cameraLst = []
     if (this.state.camerasList)
         cameraLst= this.state.camerasList;
@@ -161,14 +184,15 @@ class Cameras extends Component {
                 </Container>
                 </Modal>
               
-                <form >
+               
                 <NewCamerasContainer>
                 <Card>
-                <CardActionArea >
-                <CardContent>
                 <Typography gutterBottom variant="h5" component="h3">
                         New camera 
                 </Typography>
+                
+                <CardContent>
+                
                 <Typography variant="body2" color="inherit" component="p" align="justify">
                     <ul> 
                         <li>Add a new camera using RTSP protocol </li>
@@ -180,11 +204,11 @@ class Cameras extends Component {
                 </Typography>
              
                 </CardContent>
-                <TextField required id="standard-required" label="Location" defaultValue="Front Door" onChange={this.handleFormInput} name="cam_Location"/>
-                <TextField required id="standard-disabled" label="IP" defaultValue="192.168.2.100" />
-                <TextField required id="standard-disabled" label="PORT" defaultValue="554" />
-                <TextField required id="standard-disabled" label="URL/Path" defaultValue="Streaming/Channels/101" />
-                <TextField required id="standard-disabled" label="username" defaultValue="admin" />
+                <TextField required id="standard-required" label="Location"  onChange={this.handleFormInput} name="cam_Location"/>
+                <TextField required id="standard-disabled" label="IP"  onChange={this.handleFormInput} name="ip"/>
+                <TextField required id="standard-disabled" label="PORT" defaultValue="554" onChange={this.handleFormInput} name="port"/>
+                <TextField required id="standard-disabled" label="URL/Path" defaultValue="Streaming/Channels/101" onChange={this.handleFormInput} name="url_path"/>
+                <TextField required id="standard-disabled" label="username" defaultValue="admin" onChange={this.handleFormInput} name="username"/>
                 
                 
                 <TextField required
@@ -193,22 +217,23 @@ class Cameras extends Component {
                 type="password"
                 defaultValue="12345"
                 autoComplete="current-password"
+                onChange={this.handleFormInput} name="password"
                 />
             
               
                 
                 <CardActions>
-                    <Button variant="contained" size="small" color="primary">
+                    <Button variant="contained" size="small" color="primary" onClick={this.handleSubmit}>
                     add
                     </Button>
                     <Button size="small" color="primary">
                     Learn More
                     </Button>
                 </CardActions>
-                </CardActionArea>
+                
                 </Card>
                 </NewCamerasContainer>
-            </form>
+            
             
             </Container>
             

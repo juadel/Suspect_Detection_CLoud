@@ -26,12 +26,19 @@ const ContainerSuspects = styled.div`
     
 `;
 
+const ContainerSummary = styled.div`
+    
+    padding-top: 30px;
+    padding-left: 20px;
+    
+`;
+
 class Dashboard extends Component {
     
     constructor(){
         super();
         this.state={
-           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selected: "", reqEnconding: "", noImage:""
+           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selected: "", reqEnconding: "50", noImage:"50"
 
           
           };
@@ -111,7 +118,8 @@ class Dashboard extends Component {
           
      
       return (
-       <div>
+        <div>
+       <ContainerSuspects>
         
         <Card>
         <DataTable highlightOnHover
@@ -126,15 +134,17 @@ class Dashboard extends Component {
           selectableRowsComponent={this.customCheckbox}
           />
         </Card>
+        
+        <ContainerSummary>
         <Card padding-top="30px" padding-left="20px">
           <CardContent>
             <Typography variant="h5" component="h2" color="textSecondary" gutterBottom>
               Sumary
             </Typography>
-            <Typography variant="body2" component="p">
+            <Typography variant="body2" component="p" align="justify">
               Suspects requiring encoding : {this.state.reqEnconding}
             </Typography>
-            <Typography variant="body2" component="p">
+            <Typography variant="body2" component="p" align="justify">
               Suspects with no Image: {this.state.noImage}
             </Typography>
           </CardContent>
@@ -145,6 +155,8 @@ class Dashboard extends Component {
           </CardActions>
           
         </Card> 
+        </ContainerSummary>
+        </ContainerSuspects>
         </div>
               
         

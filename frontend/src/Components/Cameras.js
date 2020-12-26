@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import 'fontsource-roboto';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
+
 import Card from '@material-ui/core/Card';
 import styled from "styled-components";
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -71,12 +71,21 @@ class Cameras extends Component {
         
     }
 
-    handleEdit(cameraId){
+    handleEdit(camItem){
         
-       console.log(cameraId)
+       
        this.setState({
-           setOpen: true
-       })
+           setOpen: true,
+           cameraId: camItem.cameraId,
+           cam_Location: camItem.cam_Location,
+           ip: camItem.ip,
+           port: camItem.port,
+           url_path: camItem.url_path,
+           username: camItem.username,
+           password: camItem.password,
+           report_to: camItem.report_to
+        })
+
     }
     
     handleClose = () => {
@@ -105,6 +114,32 @@ class Cameras extends Component {
 
     }
 
+    handleEditSubmit =() =>{
+        const editedCam ={
+            cam_Location: this.state.cam_Location,
+            ip: this.state.ip,
+            port: this.state.port,
+            url_path: this.state.url_path,
+            username: this.state.username,
+            password: this.state.password,
+            report_to: this.state.report_to
+        }
+        //console.log(editedCam)
+        this.updateCamera(this.state.cameraId, editedCam);
+    }
+
+    async handleDel(cameraId){
+        await axios.delete(apiEndpoint+'/delcamera/'+cameraId,
+        {
+            headers:
+            { 'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.state.token}`}
+        }).then(res =>{this.setState({reload: true})
+        }).catch(e => {alert("The Camera was not deleted", e); console.log(e)});
+        window.location.reload();
+     }
+
+        
     async createNewCam(newCam){
         await axios.post(apiEndpoint+'/camset', newCam,
         {
@@ -114,6 +149,19 @@ class Cameras extends Component {
         }).then(res =>{this.setState({reload: true})
         }).catch(e => {alert("The request was not completed; Make sure to include all the required data", e); console.log(e)});
         window.location.reload();
+    }
+
+    async updateCamera(cameraId, editedCam){
+        await axios.patch(apiEndpoint+'/camera/'+cameraId, editedCam,
+        {
+            headers:
+            { 'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.state.token}`}
+        }).then(res =>{this.setState({reload: true})
+        }).catch(e => {alert("The request was not completed; Make sure to include all the required data", e); console.log(e)});
+        window.location.reload();
+        
+        
     }
 
     render() {
@@ -132,8 +180,9 @@ class Cameras extends Component {
                         <td>{item.username}</td>
                         <td>{item.password}</td>
                         <td>{item.server_info}</td>
-                        <td> <Button onClick={() =>{this.handleEdit(item.cameraId)}}>Edit</Button></td>
-                        <td> <IconButton aria-label="delete"><DeleteIcon/></IconButton></td>
+                        <td>{item.report_to}</td>
+                        <td> <Button onClick={() =>{this.handleEdit(item)}}>Edit</Button></td>
+                        <td> <IconButton onClick={() =>{this.handleDel(item.cameraId)} } aria-label="delete"><DeleteIcon/></IconButton></td>
                         
                     
                     </tr>
@@ -149,13 +198,14 @@ class Cameras extends Component {
                    <Table selectable={false} >
                         <TableHead >
                             <TableRow >
-                                <TableCell> Location</TableCell>
-                                <TableCell> Camera IP</TableCell>
-                                <TableCell> Port</TableCell>
-                                <TableCell> URL Path</TableCell>
-                                <TableCell> Username</TableCell>
-                                <TableCell> Password</TableCell>
-                                <TableCell> Status</TableCell>
+                                <TableCell align="center"> Location</TableCell>
+                                <TableCell align="center"> Camera IP</TableCell>
+                                <TableCell align="center"> Port</TableCell>
+                                <TableCell align="center"> URL Path</TableCell>
+                                <TableCell align="center"> Username</TableCell>
+                                <TableCell align="center"> Password</TableCell>
+                                <TableCell align="center"> Status</TableCell>
+                                <TableCell align="center"> Report To</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody >
@@ -165,22 +215,38 @@ class Cameras extends Component {
                </TableContainer>
 
                <Modal open={this.state.setOpen} onClose={this.handleClose} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                <Container maxWidth="xs" disableGutters="true">
+                <Container maxWidth="md" disableGutters="true">
                   <Card>
                   <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                            Test for Edit Camera
+                            Edit Camera
                         </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            <p>Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                            across all continents except Antarctica  
-                            </p>
-                        </Typography>
-                        <Button variant="contained" color="primary" >Submit</Button>
-                        <Button size="small" color="primary" onClick={this.handleClose}>Cancel</Button>
+                       
+                        <TextField required id="standard-required-1" label="Location" defaultValue={this.state.cam_Location} onChange={this.handleFormInput} name="cam_Location"/>
+                        <TextField required id="standard-disabled-2" label="IP"  defaultValue={this.state.ip} onChange={this.handleFormInput} name="ip"/>
+                        <TextField required id="standard-disabled-3" label="PORT" defaultValue={this.state.port} onChange={this.handleFormInput} name="port"/>
+                        <TextField required id="standard-disabled-4" label="URL/Path" defaultValue={this.state.url_path} onChange={this.handleFormInput} name="url_path"/>
+                        <TextField required id="standard-disabled-5" label="username" defaultValue={this.state.username}  onChange={this.handleFormInput} name="username"/>
+                
+                
+                        <TextField required
+                        id="standard-password-input"
+                        label="Password"
+                        type="password"
+                        defaultValue={this.state.password} 
+                        autoComplete="current-password"
+                        onChange={this.handleFormInput} name="password"
+                        />
+                        <TextField required id="standard-disabled" label="Report to" defaultValue={this.state.report_to} onChange={this.handleFormInput} name="report_to"/>
+
                   </CardContent>
-                  </Card>
+                        
                   
+                  <CardActions>
+                  <Button variant="contained" color="primary" onClick={this.handleEditSubmit} >Submit</Button>
+                  <Button size="small" color="primary" onClick={this.handleClose}>Cancel</Button>  
+                  </CardActions>  
+                  </Card>            
                 </Container>
                 </Modal>
               
@@ -197,7 +263,7 @@ class Cameras extends Component {
                     <ul> 
                         <li>Add a new camera using RTSP protocol </li>
                         <li>The camera must be connected to the internet.</li>
-                        <li>Port forwarding on your Internet Router. Check the following <a href="https://www.purevpn.com/blog/how-to-forward-ports-on-your-router/">link</a> to learn how to do it.</li>
+                        <li>Set port forwarding on your Internet Router. Check the following <a href="https://www.purevpn.com/blog/how-to-forward-ports-on-your-router/">link</a> to learn how to do it.</li>
                         <li>Find here the <a href="https://www.getscw.com/decoding/rtsp#:~:text=1.210.-,You%20can%20also%20encode%20credentials%20into%20the%20URL%20by%20entering,and%2012345%20is%20the%20password.">RTSP stream URL/Path </a> for your camera brand. </li>
                     </ul>
                     

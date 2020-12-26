@@ -40,9 +40,11 @@ async generateUploadUrl(userId: string, suspectName: string, filename:string): P
   await this.docClient.update({
       TableName: this.suspectTable,
       Key: { userId, suspectName },
-      UpdateExpression: "set objectKey=:URL",
+      UpdateExpression: "set objectKey=:URL, encoding_status=:TXT",
       ExpressionAttributeValues: {
-        ":URL": objectKey
+        ":URL": objectKey,
+        ":TXT": "Image not Enconded"
+
     },
     ReturnValues: "UPDATED_NEW"
   })
@@ -93,7 +95,15 @@ async getFindings(userId : string, name:string) :Promise<findingModel[]>{
     return items as SuspectItem[];
  }
 
-
+ async delSuspect(userId: string, name: string){
+  const suspectName =decodeURI(name)
+  const deleteCamera = await this.docClient.delete({
+    TableName: this.suspectTable,
+    Key: {userId, suspectName}
+  })
+  .promise();
+  return {Deleted: deleteCamera}
+} 
 
 } 
 

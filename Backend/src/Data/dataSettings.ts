@@ -5,6 +5,7 @@ import { DocumentClient } from "aws-sdk/clients/dynamodb";
 const XAWS = AWSXRay.captureAWS(AWS);
 
 import { SettingItem } from "../Models/settingModel";
+import { SettingsUpdateItem } from "../Models/settingsUpdateModel";
 // import { settingsRequestModel } from "../models/settingsRequestModel";
 
 export class Sets 
@@ -50,6 +51,36 @@ async createCamSets(camSet: SettingItem): Promise<SettingItem> {
     const items = result.Items;
     return items as SettingItem[];
  }
+ 
+ async delCamera(userId: string, cameraId: string){
+   const deleteCamera = await this.docClient.delete({
+     TableName: this.settingsTable,
+     Key: {userId, cameraId}
+   })
+   .promise();
+   return {Deleted: deleteCamera}
+ } 
+
+ async updateCamera(userId: string, cameraId: string, updatedCamera: SettingsUpdateItem){
+    const updatedCam = await this.docClient.update({
+      TableName: this.settingsTable,
+      Key: { userId, cameraId },
+      UpdateExpression: "set cam_Location=:cam_Location, port=:port, password=:password, username=:username, report_to=:report_to, ip=:ip, url_path=:url_path",
+      ExpressionAttributeValues: {
+        ":cam_Location": updatedCamera.cam_Location,
+        ":port": updatedCamera.port,
+        ":password": updatedCamera.password,
+        ":username": updatedCamera.username,
+        ":report_to": updatedCamera.report_to,
+        ":ip": updatedCamera.ip,
+        ":url_path": updatedCamera.url_path
+    },
+    ReturnValues: "UPDATED_NEW"
+  })
+    .promise();
+    return { Updated: updatedCam };
+ }
+
 
 }
 

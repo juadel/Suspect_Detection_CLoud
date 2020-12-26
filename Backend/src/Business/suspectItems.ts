@@ -20,7 +20,7 @@ export async function createSuspect( event: APIGatewayProxyEvent ): Promise<Susp
         userId: userId,
         findings: [],
         encoding: "N/A",
-        encoding_status: "Pending to Encode",
+        encoding_status: "No Image",
         objectKey: userId+"/", 
         ...newSusp
       }
@@ -81,4 +81,11 @@ export async function getSuspects(event: APIGatewayProxyEvent) : Promise<Suspect
   const userId = getUserId(event);
   const response = await suspect.getSuspects(userId)
   return response
+}
+
+export async function delSuspect (event:APIGatewayProxyEvent) {
+  const userId = getUserId(event);
+  const name = event.pathParameters.name;
+  const deleteCamera = await suspect.delSuspect(userId, name)
+  return deleteCamera
 }

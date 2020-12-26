@@ -204,6 +204,42 @@ functions:
           - dynamodb:Query
         Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SETTINGS_TABLE}
   
+  delCamera:
+    handler: src/Lambda/http/deleteCamera.handler
+    events:
+      - http:
+          method: delete
+          path: delcamera/{cameraId}
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: {"Ref": "ApiGatewayAuthorizer"}
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-delCamera-SDC-Role-${self:service.org}-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:DeleteItem
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SETTINGS_TABLE}
+  
+  updateCamera:
+    handler: src/Lambda/http/updateCamera.handler
+    events:
+      - http:
+          method: patch
+          path: camera/{cameraId}
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: {"Ref": "ApiGatewayAuthorizer"}
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-UpdateCamera-SDC-Role-${self:service.org}-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:UpdateItem
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SETTINGS_TABLE}
+
   getSuspects:
     handler: src/Lambda/http/getSuspects.handler
     events:
@@ -221,7 +257,24 @@ functions:
         Action: 
           - dynamodb:Query
         Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SUSPECTS_TABLE}
-          
+  
+  delSuspect:
+    handler: src/Lambda/http/deleteSuspect.handler
+    events:
+      - http:
+          method: delete
+          path: delsuspect/{name}
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: {"Ref": "ApiGatewayAuthorizer"}
+    iamRoleStatementsInherit: true
+    iamRoleStatementsName: ${self:service.name}-delSuspect-SDC-Role-${self:service.org}-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action: 
+          - dynamodb:DeleteItem
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SUSPECTS_TABLE}        
 
 resources:
   Resources:

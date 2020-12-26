@@ -4,6 +4,7 @@ import { getUserId, getReportTo } from "../Lambda/utils";
 import { SettingItem } from "../Models/settingModel";
 import { Sets } from "../Data/dataSettings";
 import { SettingsRequestItem } from "../Models/settingsRequestModel";
+import { SettingsUpdateItem } from "../Models/settingsUpdateModel";
 
 // import axios from 'axios';
 
@@ -60,4 +61,19 @@ export async function getCameras (event: APIGatewayProxyEvent): Promise<SettingI
   const response = await setting.getCameras(userId);
   return response
 
+}
+
+export async function delCamera (event:APIGatewayProxyEvent) {
+  const userId = getUserId(event);
+  const cameraId = event.pathParameters.cameraId;
+  const deleteCamera = await setting.delCamera(userId, cameraId)
+  return deleteCamera
+}
+
+export async function updateCamera(event:APIGatewayProxyEvent) {
+  const userId = getUserId(event);
+  const cameraId = event.pathParameters.cameraId;
+  const updatedCamera : SettingsUpdateItem = JSON.parse(event.body);
+  const updateCamera = await setting.updateCamera(userId, cameraId, updatedCamera)
+  return updateCamera
 }

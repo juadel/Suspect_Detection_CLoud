@@ -13,16 +13,26 @@ import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import getToken from '../Config/getToken';
 import apiEndpoint from '../Config/Apibackend';
-import { Container } from "@material-ui/core";
+import { CardActionArea, CardContent, Container, Typography } from "@material-ui/core";
 import SortIcon from "@material-ui/icons/ArrowDownward";
 import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+
+
+const ContainerSuspects = styled.div`
+    display: flex;
+    padding-top: 30px;
+    padding-left: 10px;
+    
+`;
 
 class Dashboard extends Component {
     
     constructor(){
         super();
         this.state={
-           list_cameras: null, list_suspects: null, token:"" , checkbox: ""
+           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selected: "", reqEnconding: "", noImage:""
+
           
           };
     }
@@ -65,6 +75,17 @@ class Dashboard extends Component {
     
   }
 
+  handleRowSelect(row){
+    console.log(row)
+  }
+
+  customCheckbox = () =>{
+    return(
+         <Checkbox onClick={this.handleRowSelect} value="id"/>
+
+    )
+  }
+
  
 
     render() {
@@ -84,36 +105,48 @@ class Dashboard extends Component {
           selector: "encoding_status",
           sortable: true
           }]
-          const isIndeterminate = indeterminate => indeterminate;
+          
         
-          const [checkbox1, setCheckbox1] = this.useState('');
-          const showLogs2 = (e) => {
-            setCheckbox1(e);
-          };
+          
+          
      
       return (
+       <div>
+        
         <Card>
         <DataTable highlightOnHover
-          title="Suspects"
+          title="Suspects List"
           columns = {suspColumns}
           data = {suspectList}
           defaultSortField="name"
           sortIcon={<SortIcon />}
           pagination
-          checkbox
-          headCheckboxID='id4'
-          bodyCheckboxID='checkboxes4'
+          bodyCheckboxID='checkboxes1'
           selectableRows
-          selectableRowsComponent={Checkbox}
-          getValueCheckBox={(e) => {
-            this.showLogs2(e);
-          }}
-          
+          selectableRowsComponent={this.customCheckbox}
           />
-          
+        </Card>
+        <Card padding-top="30px" padding-left="20px">
+          <CardContent>
+            <Typography variant="h5" component="h2" color="textSecondary" gutterBottom>
+              Sumary
+            </Typography>
+            <Typography variant="body2" component="p">
+              Suspects requiring encoding : {this.state.reqEnconding}
+            </Typography>
+            <Typography variant="body2" component="p">
+              Suspects with no Image: {this.state.noImage}
+            </Typography>
+          </CardContent>
+          <CardActions>
+          <Button variant="contained" color="primary"  >Generate Encodings</Button>
 
-      </Card>
-    
+
+          </CardActions>
+          
+        </Card> 
+        </div>
+              
         
 
       )

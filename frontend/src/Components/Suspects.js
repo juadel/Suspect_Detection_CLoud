@@ -198,9 +198,9 @@ class Suspects extends Component {
     render() {
     
     let suspectLst = []
-    if (this.state.suspectsList)
+    if (this.state.suspectsList){
         suspectLst= this.state.suspectsList;
-        
+    }
         const lstOfSuspects= suspectLst.map((item) =>
                     
                     <tr >    
@@ -225,13 +225,14 @@ class Suspects extends Component {
                     
                     </tr>
                     )
+        
     
     return (
             
            <Container >
                {/*--------------------------------- SUSPECTS LIST ----------------------------------------*/} 
                <Typography gutterBottom variant="h5" component="h3">
-                        Registered Suspects
+                        Registered Profiles
                 </Typography>
                <TableContainer component={Paper}>
                    <Table aria-label="simple table" size="small" stickyHeader="true" >

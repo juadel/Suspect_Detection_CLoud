@@ -275,6 +275,19 @@ functions:
         Action: 
           - dynamodb:DeleteItem
         Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SUSPECTS_TABLE}        
+  
+  genEncodings:
+    handler: src/Lambda/http/generateEncodings.handler
+    events:
+      - http:
+          method: GET
+          path: encodings
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: {"Ref": "ApiGatewayAuthorizer"}
+         
+
 
 resources:
   Resources:

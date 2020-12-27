@@ -17,39 +17,37 @@ import { CardActionArea, CardContent, Container, Typography } from "@material-ui
 import SortIcon from "@material-ui/icons/ArrowDownward";
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
+import Avatar from "@material-ui/core/Avatar";
+import { DataGrid } from '@material-ui/data-grid';
 
 
 const ContainerSuspects = styled.div`
     display: flex;
-    padding-top: 30px;
+    padding-top: 10px;
     padding-left: 10px;
     
 `;
 
 const ContainerSummary = styled.div`
-    
-    padding-top: 30px;
     padding-left: 20px;
-    
 `;
+
+
+
 
 class Dashboard extends Component {
     
     constructor(){
         super();
         this.state={
-           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selected: "", reqEnconding: "50", noImage:"50"
-
-          
+           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selected: ""
           };
     }
   async componentDidMount(){
       await this.handleAuth();
       await this.getCameras();
       await this.getSuspects();
-      console.log(this.state.list_cameras)
-      console.log(this.state.list_suspects)
-      console.log(this.state.token)
+      
   }
   
   async handleAuth(){
@@ -62,6 +60,7 @@ class Dashboard extends Component {
 }
 
   async getCameras(){
+
     await axios.get(apiEndpoint+'/getcameras', 
         {headers: 
             { 'Content-Type': 'application/json',
@@ -82,6 +81,63 @@ class Dashboard extends Component {
     
   }
 
+  getLackofEncodings = () =>{
+    let count = 0
+    
+    if (this.state.list_suspects!=null){
+        
+        const arraySuspects = this.state.list_suspects
+        
+    
+        let no_encoded =  arraySuspects.filter(function(noEncoded){
+          return noEncoded.encoding_status == "Image not Enconded";
+        })
+        console.log(Object.keys(no_encoded).length)
+        count = Object.keys(no_encoded).length
+      }
+    return (
+      <Avatar> {count} </Avatar>
+    )
+   
+  }
+
+  getLackofImages =() =>{
+    let count = 0
+    
+    if (this.state.list_suspects!=null){
+        
+        const arraySuspects = this.state.list_suspects
+        
+    
+        let no_image =  arraySuspects.filter(function(noEncoded){
+          return noEncoded.encoding_status == "No Image";
+        })
+        console.log(Object.keys(no_image).length)
+        count = Object.keys(no_image).length
+      }
+    return (
+      <Avatar> {count} </Avatar>
+    )
+   
+  }
+
+  handleEncodings =() =>{
+      this.genEncodings();
+  }
+
+  async genEncodings(){
+    console.log(this.state.token)
+    await axios.get(apiEndpoint+'/encodings', 
+        {headers: 
+            { 'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.state.token}`}
+         }).then(res => {console.log(res.data); alert("Encodings process has started")})
+         .catch(e => {console.log(e); alert(e)})
+ 
+
+  }
+
+
   handleRowSelect(row){
     console.log(row)
   }
@@ -99,20 +155,42 @@ class Dashboard extends Component {
       let cameraList = [];
       let suspectList = [];
       
-      if (this.state.list_suspects)
+      if (this.state.list_suspects){
         suspectList = this.state.list_suspects;
-        let suspColumns =[
-          {
-          name: "Name",
-          selector: "suspectName",
-          sortable: true
-          },
-          {
-          name: "Encoding Status",
-          selector: "encoding_status",
-          sortable: true
-          }]
+      }
+      let no_encoded = this.getLackofEncodings();
+      let no_images = this.getLackofImages();
+        
+      let suspColumns =[
+            {
+            name: "Name",
+            selector: "suspectName",
+            sortable: true
+            },
+            {
+            name: "Encoding Status",
+            selector: "encoding_status",
+            sortable: true
+            }]
           
+      if (this.state.list_cameras){
+        let temp = this.state.list_cameras;
+          let id = 0;
+          temp.map((item) =>
+              {item.id = id; 
+              id = id+1})
+          console.log(temp)
+          cameraList = temp;
+          
+        }
+
+      
+      let camColumns = [
+        {field: "cam_Location", headerName : "Location" , width:120},
+        {field: "server_info", headerName : "Server Information" , width:200},
+        {field: "server_Status", headerName : "Status" , width:120}
+      ]
+      
         
           
           
@@ -123,43 +201,51 @@ class Dashboard extends Component {
         
         <Card>
         <DataTable highlightOnHover
-          title="Suspects List"
+          title="Profile List"
           columns = {suspColumns}
           data = {suspectList}
           defaultSortField="name"
           sortIcon={<SortIcon />}
           pagination
           bodyCheckboxID='checkboxes1'
-          selectableRows
-          selectableRowsComponent={this.customCheckbox}
+          
           />
         </Card>
         
         <ContainerSummary>
-        <Card padding-top="30px" padding-left="20px">
+        <Card >
           <CardContent>
             <Typography variant="h5" component="h2" color="textSecondary" gutterBottom>
               Sumary
             </Typography>
             <Typography variant="body2" component="p" align="justify">
-              Suspects requiring encoding : {this.state.reqEnconding}
+              Profiles requiring encoding :
             </Typography>
+            
+              {no_encoded} 
+            
             <Typography variant="body2" component="p" align="justify">
-              Suspects with no Image: {this.state.noImage}
+              Profiles with no Image: 
             </Typography>
+             {no_images}
           </CardContent>
           <CardActions>
-          <Button variant="contained" color="primary"  >Generate Encodings</Button>
-
+          
+          <Button variant="contained" color="primary" align="justify" onClick={this.handleEncodings} >Generate Encodings</Button>
+          
 
           </CardActions>
           
         </Card> 
         </ContainerSummary>
         </ContainerSuspects>
-        </div>
-              
         
+        
+        
+        
+        <DataGrid rows={cameraList} columns={camColumns} checkboxSelection/>
+              
+        </div>
 
       )
     }

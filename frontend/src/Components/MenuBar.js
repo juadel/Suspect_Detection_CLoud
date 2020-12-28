@@ -14,7 +14,8 @@ import styled from "styled-components";
 const User= styled.div`
     display: flex;
     position: absolute;
-    right: 20px;    
+    right: 20px;
+    
 `;
 const MenuName = styled.p`
     font-family: "Open Sans", sans-serif;
@@ -26,6 +27,7 @@ const MenuName = styled.p`
     color: #3D55B8;
     margin-left: 30px;
     position: absolute;
+    
     
 `;
 
@@ -65,7 +67,7 @@ class Menu extends Component {
                 </MenuName>
                 
             
-                <User><Button><Avatar/></Button></User>
+                <User><Button title="Accout Management"><Avatar/></Button></User>
                 
                 
             </Toolbar>

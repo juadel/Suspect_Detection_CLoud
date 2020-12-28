@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import {Route, Switch, withRouter} from 'react-router-dom';
+import { Auth } from 'aws-amplify';
+import { Button } from "@material-ui/core";
 
 
 const SidebarContainer = styled.div`
@@ -11,7 +13,7 @@ const SidebarContainer = styled.div`
       
     
     
-    background-color: #19096B;
+    background-color: #2E3FD0;
     color: #fff;
     font-family: 'Open Sans', sans-serif;
     @media (max-width: 375px) {
@@ -92,6 +94,20 @@ class Sidebar extends Component {
     handleRoute = route =>() =>{
         this.props.history.push({pathname: route})
     };
+
+    handleSignOut = () =>{
+       
+        this.signOut()
+    }
+
+    async signOut(){
+        try {
+            await Auth.signOut();
+        } catch (error) {
+            console.log('error signing out: ', error);
+        }
+
+    }
     
     
     render() {
@@ -143,7 +159,7 @@ class Sidebar extends Component {
                     Profiles
                 </SidebarMenuItemLabel>
             </SidebarMenuItem>
-            <SidebarMenuItem onClick={this.handleRoute("/settings")}> 
+            {/* <SidebarMenuItem onClick={this.handleRoute("/settings")}> 
                 <Icon viewBox="0 0 64 64">
                     <path 
                     fill="white"
@@ -155,8 +171,8 @@ class Sidebar extends Component {
                 <SidebarMenuItemLabel>
                     Settings
                 </SidebarMenuItemLabel>
-            </SidebarMenuItem>
-            <MenuSignOut>Sign out</MenuSignOut>
+            </SidebarMenuItem> */}
+            <MenuSignOut ><Button size="small" color="inherit" onClick={this.handleSignOut}>Sign out</Button></MenuSignOut>
         </SidebarMenu>
        
     </SidebarContainer>

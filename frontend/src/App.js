@@ -6,10 +6,17 @@ import Cameras from './Components/Cameras'
 import Suspects from './Components/Suspects'
 import Dashboard from './Components/Dashboard'
 import Settings from './Components/Settings'
+import Menu from './Components/MenuBar'
 import Amplify from 'aws-amplify';
 import Cognito from './Config/Cognito';
 import { withAuthenticator } from 'aws-amplify-react';
 import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
 
 
@@ -26,8 +33,9 @@ class App extends Component {
       <div class="container">
         <Sidebar class="grid-sidebar"/>
       
-        <div class="header">
-        <Typography gutterBottom variant="h5" component="h2">Control Panel</Typography>
+        <div class="header">  
+        <Menu/>
+        
         </div>
         <div class="content">
           <Switch>

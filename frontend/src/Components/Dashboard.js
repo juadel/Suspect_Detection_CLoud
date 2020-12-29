@@ -1,22 +1,12 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import DataTable from "react-data-table-component";
-import TableCell from '@material-ui/core/TableCell';
-import TableBody from '@material-ui/core/TableBody';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import getToken from '../Config/getToken';
 import apiEndpoint from '../Config/Apibackend';
-import { CardActionArea, CardContent, Container, Typography } from "@material-ui/core";
-import SortIcon from "@material-ui/icons/ArrowDownward";
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
+import { Typography } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import { DataGrid } from '@material-ui/data-grid';
 
@@ -60,7 +50,7 @@ class Dashboard extends Component {
     constructor(){
         super();
         this.state={
-           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selectedIds: [], reload :false
+           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selectedIds: [], reload :false, user:""
           };
     }
   async componentDidMount(){
@@ -74,7 +64,8 @@ class Dashboard extends Component {
     let token = new getToken();
     await token.token()
     this.setState({
-        token: token.state.jwtToken
+        token: token.state.jwtToken,
+        user: token.state.user
     })
 
 }
@@ -260,6 +251,8 @@ handleStopStreaming = () =>{
 
   handleReload =() => {
     window.location.reload();
+    //this.getCameras();
+    //this.getSuspects();
 
   }
  

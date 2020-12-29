@@ -1,19 +1,18 @@
 import './App.css';
 import React, { Component } from "react";
-import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
+import {BrowserRouter, Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Cameras from './Components/Cameras'
 import Suspects from './Components/Suspects'
 import Dashboard from './Components/Dashboard'
-import Settings from './Components/Settings'
-import Menu from './Components/MenuBar'
+import Account from './Components/Account'
+import Menubar from './Components/MenuBar'
 import Amplify from 'aws-amplify';
 import Cognito from './Config/Cognito';
 import { withAuthenticator } from 'aws-amplify-react';
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -27,27 +26,37 @@ class App extends Component {
   
   render(){
   return (
+    
     <BrowserRouter>
+    <Redirect path="/dashboard"/>
     
     <div className="App">
       <div class="container">
         <Sidebar class="grid-sidebar"/>
       
         <div class="header">  
-        <Menu/>
+        <Menubar/>
         
         </div>
         <div class="content">
-          <Switch>
+        <Switch>
             
-            <Route exact path="/cameras" component={Cameras}/>
+            
             <Route exact path="/suspects" component={Suspects}/>
             <Route exact path="/dashboard" component={Dashboard}/>
-            <Route exact path="/settings" component={Settings}/>
+            <Route exact path="/cameras" component={Cameras}/>
+            <Route exact path="/account" component={Account}/>
+            <Route exact path="/" component={Dashboard} />
+
+            
+            
+            
           </Switch>
+         
         </div>
       </div>
     </div>   
+   
     </BrowserRouter>
   );
  }
@@ -55,4 +64,4 @@ class App extends Component {
 
 
 
-export default withAuthenticator(App, false);
+export default withAuthenticator(App);

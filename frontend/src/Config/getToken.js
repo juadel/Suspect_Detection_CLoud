@@ -7,7 +7,8 @@ class getToken extends Component {
         super();
         this.state ={
             jwtToken :"",
-            user :""
+            user :"",
+            attributes: null
                     };
          this.token();
     }
@@ -17,7 +18,8 @@ class getToken extends Component {
                 .then(data => {this.state.jwtToken = data.idToken.jwtToken })
                 .catch(e => console.log(e))
         await Auth.currentAuthenticatedUser()
-                .then(user => {this.state.user = user.username})
+                .then(user => {this.state.user= user.username; this.state.attributes = user.attributes
+                                })
                 .catch(e => console.log(e))
                   //console.log(this.state.jwtToken)
         

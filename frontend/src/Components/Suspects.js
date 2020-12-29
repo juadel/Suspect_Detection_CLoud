@@ -68,7 +68,8 @@ class Suspects extends Component {
     handleClose = () => {
         this.setState({
             setOpen:false,
-            modal_File:false
+            modal_File:false,
+            setOpenAddModal :false
         })
     }
     

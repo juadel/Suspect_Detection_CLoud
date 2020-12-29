@@ -10,6 +10,7 @@ import Menubar from './Components/MenuBar'
 import Amplify from 'aws-amplify';
 import Cognito from './Config/Cognito';
 import { withAuthenticator } from 'aws-amplify-react';
+import '@aws-amplify/ui/dist/style.css';
 import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -64,4 +65,4 @@ class App extends Component {
 
 
 
-export default withAuthenticator(App);
+export default withAuthenticator(App, false);

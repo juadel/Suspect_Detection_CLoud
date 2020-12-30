@@ -88,8 +88,8 @@ class FaceDetectorProcess:
         
         video_capture = cv2.VideoCapture(f"rtsp://{username}:{password}@{ip}:{port}/{URL}")
         if not video_capture.isOpened():
-            self.suspectData.changeServerStatus(0, "No Camera stream available, check RTSP settings ")
-            logging.warning("No Camera stream available, check RTSP settings")
+            self.suspectData.changeServerStatus(0, "No stream available")
+            logging.warning("No stream available, check RTSP settings")
             video_capture.release()
             sched.shutdown()
             return "Server stopped"
@@ -199,6 +199,6 @@ class FaceDetectorProcess:
         video_capture.release()
         cv2.destroyAllWindows()
         sched.shutdown()
-        logging.warning("Streamming has been terminated")
-        self.suspectData.changeServerStatus(0, "Camera streamming has been terminated")
+        logging.warning("Streamming terminated")
+        self.suspectData.changeServerStatus(0, "streamming terminated")
         return "Server stopped"

@@ -284,7 +284,7 @@ handleStopStreaming = () =>{
             {
             headerName: "Name",
             field: "suspectName",
-            width: 200
+            width: 180
             },
             {
             headerName: "Encoding Status",
@@ -296,10 +296,26 @@ handleStopStreaming = () =>{
         let temp = this.state.list_cameras;
           let id = 0;
           temp.map((item) =>
-              {item.id = id; 
+              {item.id = id;
+                if(item.server_Status == 0){
+                  item.server = "Stopped"}
+                else{
+                  if(item.req_Status==true){
+                    item.server = "Running"
+                   
+                  }else {
+                    item.server ="Stopping" }
+                }
+                
+                
+                
+
               id = id+1})
           
-          cameraList = temp;
+          
+              
+              cameraList = temp;
+
           
         }
         let failedCameras = this.getCamerasError();
@@ -310,9 +326,9 @@ handleStopStreaming = () =>{
           
       
       let camColumns = [
-        {field: "cam_Location", headerName : "Location" , width:180},
-        {field: "server_info", headerName : "Server Information" , width:200},
-        {field: "server_Status", headerName : "Status" , width:120}
+        {field: "cam_Location", headerName : "Location" , width:100},
+        {field: "server_info", headerName : "Camera Status" , width:200},
+        {field: "server", headerName : "Server Status" , width:200}
       ]
       
         
@@ -320,7 +336,7 @@ handleStopStreaming = () =>{
           
      
       return (
-       <Grid container spacing={3}>
+       <Grid container spacing={4}>
          <Grid item xs={12}>
          <Paper >
                 <Typography variant="h5" component="h2"  color="textSecondary" gutterBottom>
@@ -364,14 +380,14 @@ handleStopStreaming = () =>{
                 </Grid>
               </Paper> 
          </Grid>
-         <Grid item xs={12} sm={6}>
+         <Grid item xs={12} sm={7}>
               <Paper>
                 <CamerasStyled>
                 <DataGrid rows={cameraList} columns={camColumns} checkboxSelection onSelectionChange={this.handleRowSelect}/>
                 </CamerasStyled>
               </Paper>
           </Grid> 
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={5}>
               <Paper>
                 <ContainerSuspects>
                 <DataGrid rows={suspectList} columns={suspColumns} />

@@ -195,37 +195,50 @@ class Suspects extends Component {
         window.location.reload();
     }
 
+    getfindingsDate(item){
+        console.log(Object.keys(item.findings).length);
+        if (Object.keys(item.findings).length!=0){
+            return (item.findings[Object.keys(item.findings).length-1].date)
+        }
+        else {
+            return "N/A"
+        }
+                                    
+    }
+    getfindingsLocation(item){
+        console.log(Object.keys(item.findings).length);
+        if (Object.keys(item.findings).length!=0){
+            return (item.findings[Object.keys(item.findings).length-1].location)
+        }
+        else {
+            return "N/A"
+        }
+                                    
+    }
+
+    
 
     render() {
     
     let suspectLst = []
     if (this.state.suspectsList){
         suspectLst= this.state.suspectsList;
+        
     }
-        const lstOfSuspects= suspectLst.map((item) =>
-                    
+        
+        const lstOfSuspects= suspectLst.map((item) => 
+                        
                     <tr >    
                         <td >{item.suspectName}</td>
                         <td>{item.encoding_status}</td>
-                        <td>{() =>{
-                                    if (item.findings)
-                                        return item.findings[item.findings.length - 1].date;
-                                    else return ("N/A")
-                                    }
-                            }</td>
-                        <td>{() =>{
-                                    if (item.findings)
-                                        return item.findings[item.findings.length - 1].location;
-                                    else return "N/A"
-                                    }
-                            }</td>
-                        
+                        <td>{this.getfindingsDate(item)}</td>
+                        <td>{this.getfindingsLocation(item)}</td>                        
                         <td> <IconButton onClick={() =>{this.handleModalFile(item)} } aria-label="Add a Photo" type="file" ><AddAPhotoIcon/></IconButton></td>
                         <td> <IconButton onClick={() =>{this.handleDel(item.suspectName)} } aria-label="delete"><DeleteIcon/></IconButton></td>
                         
                     
                     </tr>
-                    )
+                        )
         
     
     return (

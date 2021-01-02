@@ -286,7 +286,17 @@ functions:
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId: {"Ref": "ApiGatewayAuthorizer"}
-         
+  
+  genStatus:
+    handler: src/Lambda/http/getStatus.handler
+    events:
+      - http:
+          method: GET
+          path: check
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: {"Ref": "ApiGatewayAuthorizer"}
 
 
 resources:

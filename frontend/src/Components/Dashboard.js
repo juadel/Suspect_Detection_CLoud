@@ -8,6 +8,7 @@ import getToken from '../Config/getToken';
 import apiEndpoint from '../Config/Apibackend';
 import { Typography } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
+import Chip from "@material-ui/core/Chip";
 import { DataGrid } from '@material-ui/data-grid';
 
 
@@ -50,14 +51,27 @@ class Dashboard extends Component {
     constructor(){
         super();
         this.state={
-           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selectedIds: [], reload :false, user:""
+           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selectedIds: [], reload :false, user:"", serviceStatus :""
           };
     }
   async componentDidMount(){
       await this.handleAuth();
+      await this.getServiceStatus();
       await this.getCameras();
       await this.getSuspects();
       
+      
+      
+  }
+
+  async getServiceStatus(){
+    await axios.get(apiEndpoint+'/check',{
+      headers:
+      { 'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.state.token}`}
+    })
+    .then(res => {this.setState({serviceStatus : res.data.status})})
+    .catch(e => {this.setState({serviceStatus: "Offline"}); console.log(e)})
   }
   
   async handleAuth(){
@@ -92,6 +106,7 @@ class Dashboard extends Component {
     
   }
 
+
   getLackofEncodings = () =>{
     let count = 0
     
@@ -101,9 +116,9 @@ class Dashboard extends Component {
         
     
         let no_encoded =  arraySuspects.filter(function(noEncoded){
-          return noEncoded.encoding_status == "Image not Enconded";
+          return noEncoded.encoding_status === "Image not Enconded";
         })
-        console.log(Object.keys(no_encoded).length)
+        
         count = Object.keys(no_encoded).length
       }
     return (
@@ -121,9 +136,9 @@ class Dashboard extends Component {
         
     
         let no_image =  arraySuspects.filter(function(noEncoded){
-          return noEncoded.encoding_status == "No Image";
+          return noEncoded.encoding_status === "No Image";
         })
-        console.log(Object.keys(no_image).length)
+        
         count = Object.keys(no_image).length
       }
     return (
@@ -137,7 +152,7 @@ class Dashboard extends Component {
     if (this.state.list_cameras!=null){
       const arrayCams = this.state.list_cameras
       let onCameras = arrayCams.filter(function(camOn){
-        return camOn.server_Status == "1";
+        return camOn.server_Status === "1";
       })
       count = Object.keys(onCameras).length
       return(
@@ -153,7 +168,7 @@ class Dashboard extends Component {
     if (this.state.list_cameras!=null){
       const arrayCams = this.state.list_cameras
       let onCameras = arrayCams.filter(function(camOn){
-        return camOn.server_info == "No stream available";
+        return camOn.server_info === "No stream available";
       })
       count = Object.keys(onCameras).length
       return(
@@ -169,7 +184,7 @@ class Dashboard extends Component {
       {
         const arrayCams = this.state.list_cameras
         let onCameras = arrayCams.filter(function(camOn){
-          return camOn.server_Status == "1";
+          return camOn.server_Status === "1";
         })
         count = Object.keys(onCameras).length
       }
@@ -212,7 +227,7 @@ class Dashboard extends Component {
   }
 
   handleStartStreaming = () =>{
-    if (this.state.selectedIds.length == 0){
+    if (this.state.selectedIds.length === 0){
       alert("Please select a Camera")
     }
     else{
@@ -242,7 +257,7 @@ class Dashboard extends Component {
       
 }
 handleStopStreaming = () =>{
-  if (this.state.selectedIds.length == 0){
+  if (this.state.selectedIds.length === 0){
     alert("Please select a Camera")
   }
   else{
@@ -277,6 +292,18 @@ handleStopStreaming = () =>{
  
 
     render() {
+      
+      let serviceStatus = null
+      if (this.state.serviceStatus === "Online"){
+           
+           serviceStatus =<Chip size="small" label="Online" color="primary" />
+          }
+      else {
+            
+            serviceStatus =<Chip size="small" label="Offline" color="secondary" /> 
+            }
+          
+      
       let cameraList = [];
       let suspectList = [];
       
@@ -314,10 +341,10 @@ handleStopStreaming = () =>{
           let id = 0;
           temp.map((item) =>
               {item.id = id;
-                if(item.server_Status == 0){
+                if(item.server_Status === 0){
                   item.server = "Stopped"}
                 else{
-                  if(item.req_Status==true){
+                  if(item.req_Status===true){
                     item.server = "Running"
                    
                   }else {
@@ -354,6 +381,11 @@ handleStopStreaming = () =>{
      
       return (
        <Grid container spacing={4}>
+         <Typography variant="body2" component="h2"  color="textSecondary" gutterBottom>
+                  System Status:      {serviceStatus}
+          </Typography>
+        
+
          <Grid item xs={12}>
          <Paper >
                 <Typography variant="h5" component="h2"  color="textSecondary" gutterBottom>

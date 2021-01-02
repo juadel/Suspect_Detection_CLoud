@@ -30,7 +30,7 @@ def createEncodings(userId):
     if not path.exists(f'./tmp/{userId}'):
         os.mkdir(f"./tmp/{userId}")
         logging.warning("Creating User folder")
-        
+
     detection_process = FaceDetectorProcess(userId, cameraId="001")
     detection_process.createEncodings()
 
@@ -54,6 +54,10 @@ def encodings():
     thread.start()
     
     return (f"Encoding process initiated")
+
+@app.route('/check/', methods=['GET'])
+def check():
+    return("Online")
 
     
     

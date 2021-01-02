@@ -222,7 +222,7 @@ class Suspects extends Component {
 
     getfindingsDate(item){
         console.log(Object.keys(item.findings).length);
-        if (Object.keys(item.findings).length!=0){
+        if (Object.keys(item.findings).length!==0){
             return (item.findings[Object.keys(item.findings).length-1].date)
         }
         else {
@@ -232,7 +232,7 @@ class Suspects extends Component {
     }
     getfindingsLocation(item){
         console.log(Object.keys(item.findings).length);
-        if (Object.keys(item.findings).length!=0){
+        if (Object.keys(item.findings).length!==0){
             return (item.findings[Object.keys(item.findings).length-1].location)
         }
         else {

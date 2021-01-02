@@ -77,3 +77,17 @@ export async function updateCamera(event:APIGatewayProxyEvent) {
   const updateCamera = await setting.updateCamera(userId, cameraId, updatedCamera)
   return updateCamera
 }
+
+export async function getStatus(): Promise<string> {
+  
+  const endpoint = `http://${process.env.SERVER_ENDPOINT}/check`
+  const axios = require('axios');
+  try{
+    const response = await axios.get(endpoint);
+    console.log(response)
+    return (response.data) }
+    catch (e) {
+      console.log(e)
+      return ("Offline")
+    }
+}

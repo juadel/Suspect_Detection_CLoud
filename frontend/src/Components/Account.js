@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import Amplify from 'aws-amplify';
 import getToken from '../Config/getToken';
-import Container from '@material-ui/core/Container';
 import { Button, Typography } from "@material-ui/core";
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import { Auth } from 'aws-amplify';
 import Grid from '@material-ui/core/Grid';
-import {Route, Switch, withRouter} from 'react-router-dom';
+
 
 const ButtonLocation = styled.div`
     
@@ -50,8 +48,8 @@ class Account extends Component {
     }
     
     handleSubmitChangePass = () => {
-        if (this.state.oldPassword!=""){
-            if(this.state.newPassword==this.state.rePassword){
+        if (this.state.oldPassword!==""){
+            if(this.state.newPassword===this.state.rePassword){
                 this.changePassword() 
             }
             else{
@@ -65,8 +63,8 @@ class Account extends Component {
     }
 
     async changePassword(){
-        await Auth.currentAuthenticatedUser().
-        then(user =>{
+        await Auth.currentAuthenticatedUser()
+        .then(user =>{
             return Auth.changePassword(user, this.state.oldPassword, this.state.newPassword );
         })
         .then(data => alert(data))

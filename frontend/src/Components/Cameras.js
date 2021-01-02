@@ -161,11 +161,11 @@ class Cameras extends Component {
     }
 
     render() {
-    console.log(this.state.reload);
+    
     let cameraLst = []
     if (this.state.camerasList)
         cameraLst= this.state.camerasList;
-        console.log(cameraLst)
+        
         const lstOfCameras = cameraLst.map((item) =>
                     
                     <tr >    
@@ -233,7 +233,7 @@ class Cameras extends Component {
                         autoComplete="current-password"
                         onChange={this.handleFormInput} name="password"
                         />
-                        <TextField required id="standard-disabled" label="Report to" defaultValue={this.state.report_to} onChange={this.handleFormInput} name="report_to"/>
+                        <TextField required id="standard-disabled-6" label="Report to" defaultValue={this.state.report_to} onChange={this.handleFormInput} name="report_to"/>
 
                   </CardContent>
                         
@@ -259,18 +259,18 @@ class Cameras extends Component {
                     <ul> 
                         <li>Add a new camera using RTSP protocol </li>
                         <li>The camera must be connected to the internet.</li>
-                        <li>Set port forwarding on your Internet Router. Check the following <a href="https://www.purevpn.com/blog/how-to-forward-ports-on-your-router/" target="_blank">link</a> to learn how to do it.</li>
+                        <li>Set port forwarding on your Internet Router. Check the following <a href="https://www.purevpn.com/blog/how-to-forward-ports-on-your-router/" rel="noreferrer" target="_blank" >link</a> to learn how to do it.</li>
                         <li>Find here the <a href="https://www.getscw.com/decoding/rtsp#:~:text=1.210.-,You%20can%20also%20encode%20credentials%20into%20the%20URL%20by%20entering,and%2012345%20is%20the%20password." target="_blank">RTSP stream URL/Path </a> for your camera brand. </li>
                     </ul>
                     
                 </Typography>
              
                 </CardContent>
-                <TextField required id="standard-required" label="Location"  onChange={this.handleFormInput} name="cam_Location"/>
-                <TextField required id="standard-disabled" label="IP"  onChange={this.handleFormInput} name="ip"/>
-                <TextField required id="standard-disabled" label="PORT" defaultValue="554" onChange={this.handleFormInput} name="port"/>
-                <TextField required id="standard-disabled" label="URL/Path" defaultValue="Streaming/Channels/101" onChange={this.handleFormInput} name="url_path"/>
-                <TextField required id="standard-disabled" label="username" defaultValue="admin" onChange={this.handleFormInput} name="username"/>
+                <TextField required id="standard-required-1" label="Location"  onChange={this.handleFormInput} name="cam_Location"/>
+                <TextField required id="standard-disabled-7" label="IP"  onChange={this.handleFormInput} name="ip"/>
+                <TextField required id="standard-disabled-8" label="PORT" defaultValue="554" onChange={this.handleFormInput} name="port"/>
+                <TextField required id="standard-disabled-9" label="URL/Path" defaultValue="Streaming/Channels/101" onChange={this.handleFormInput} name="url_path"/>
+                <TextField required id="standard-disabled-10" label="username" defaultValue="admin" onChange={this.handleFormInput} name="username"/>
                 
                 
                 <TextField required

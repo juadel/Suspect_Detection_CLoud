@@ -1,19 +1,14 @@
 import React, { Component } from "react";
-import Amplify from 'aws-amplify';
-import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import getToken from '../Config/getToken';
-import { AmplifyGreetings, AmplifySignOut } from '@aws-amplify/ui-react';
 import Avatar from "@material-ui/core/Avatar";
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import styled from "styled-components";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Auth } from 'aws-amplify';
-import {Route, Switch, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 const User= styled.div`
     display: flex;

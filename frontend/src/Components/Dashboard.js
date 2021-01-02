@@ -250,7 +250,7 @@ class Dashboard extends Component {
           headers:
           { 'Content-Type': 'application/json',
           'Authorization': `Bearer ${this.state.token}`}
-      }).then(res =>{this.setState({reload: true});alert("Streaming has been initialized")})
+      }).then(res =>{this.setState({reload: true});alert("Streaming requested")})
       .catch(e => {alert(e); console.log(e)});
       
     window.location.reload();
@@ -277,7 +277,7 @@ handleStopStreaming = () =>{
           headers:
           { 'Content-Type': 'application/json',
           'Authorization': `Bearer ${this.state.token}`}
-      }).then(res =>{this.setState({reload: true});alert("Streaming has stopped")})
+      }).then(res =>{this.setState({reload: true});alert("Streaming stop requested")})
       .catch(e => {alert(e); console.log(e)});
     window.location.reload();
   }

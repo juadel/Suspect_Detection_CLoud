@@ -26,6 +26,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Modal from '@material-ui/core/Modal';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import { Avatar, CardHeader } from "@material-ui/core";
+import LinearProgress from '@material-ui/core/LinearProgress'
 
 const NewSuspectContainer = styled.div`
     display: flex;
@@ -52,7 +53,7 @@ class Suspects extends Component {
         this.state={
             suspectName:"", findings: null, encoding:"", encoding_status:"", objectKey:"", 
             token: "", suspectsList: null, setOpen: false, reload: null, file: "", filename:"", userId: "",
-            modal_File: false, presignedURL:"", setOpenAddModal: false
+            modal_File: false, presignedURL:"", setOpenAddModal: false, uploadProgress: null
         };
          
         
@@ -157,6 +158,16 @@ class Suspects extends Component {
         this.editFileSuspect(newSuspect);
     }
 
+    updateProgressBarValue(percentage){
+        
+        if (percentage !== 0){
+
+            return(<LinearProgress variant="determinate" value={percentage} />)
+        }
+            
+        
+    }
+
     async editFileSuspect(newSuspect){
         console.log(newSuspect)
         await axios.post(apiEndpoint+'/getuploadurl', newSuspect,
@@ -168,8 +179,17 @@ class Suspects extends Component {
             }).catch(e => {alert("Erro while procesing request", e); console.log(e)});
         console.log(this.state.presignedURL)
 
-        await axios.put(this.state.presignedURL, this.state.file)
-        .then(res => { 
+        await axios.put(this.state.presignedURL, this.state.file,{
+            onUploadProgress: (Progress) => {
+                if (Progress.lengthComputable) {
+                        console.log(Progress.loaded + ' ' + Progress.total);
+                        if (Progress.total!==null){
+                                 this.setState({uploadProgress: Math.round((Progress.loaded *100)/Progress.total)})
+                             }
+                    }
+              } 
+         
+        }).then(res => { 
             alert("File has been uploaded");
             window.location.reload();
         }).catch(e => alert(e));
@@ -224,7 +244,7 @@ class Suspects extends Component {
     
 
     render() {
-    
+    let progressBar = this.updateProgressBarValue(this.state.uploadProgress)       
     let suspectLst = []
     if (this.state.suspectsList){
         suspectLst= this.state.suspectsList;
@@ -321,9 +341,13 @@ class Suspects extends Component {
                   <CardActions>  
                   <Button variant="contained" color="primary" onClick={this.handleSubmitFile} >Submit</Button>
                   <Button size="small" color="primary" onClick={this.handleClose}>Cancel</Button>  
+                  
                   </CardActions>  
-                  </Card>            
+                  
+                  </Card>   
+                  <div>{progressBar}</div>         
                 </Container>
+                
                 </Modal>
               
                {/*--------------------------------- ADD NEW SUSPECT ----------------------------------------*/} 

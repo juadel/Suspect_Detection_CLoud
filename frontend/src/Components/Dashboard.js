@@ -404,8 +404,8 @@ handleStopStreaming = () =>{
                 <DataGrid rows={cameraList} columns={camColumns} checkboxSelection onSelectionChange={this.handleRowSelect}/>
                 </CamerasStyled>
               </Paper>
-              <Typography variant="h5" component="h2"  color="textSecondary" gutterBottom>
-                  Note: It can take up to 5 minutes to stop the server and the streaming
+              <Typography component="body2"  color="textSecondary" gutterBottom>
+                  Note: It can take up to 5 minutes to stop the server and the streaming, use the REFRESH button to reload the data.
               </Typography>
           </Grid> 
           <Grid item xs={12} sm={5}>

@@ -29,7 +29,7 @@ class App extends Component {
   return (
     
     <BrowserRouter>
-    <Redirect path="/dashboard"/>
+    {/* <Redirect path="/dashboard"/> */}
     
     <div className="App">
       <div class="container">

@@ -153,7 +153,7 @@ class Dashboard extends Component {
     if (this.state.list_cameras!=null){
       const arrayCams = this.state.list_cameras
       let onCameras = arrayCams.filter(function(camOn){
-        return camOn.server_info == "No Camera stream available, check RTSP settings ";
+        return camOn.server_info == "No stream available";
       })
       count = Object.keys(onCameras).length
       return(
@@ -373,7 +373,7 @@ handleStopStreaming = () =>{
                 <Grid item xs={12} sm={3}>
                   <Paper>
                   <SummaryPaper>
-                  <Typography variant="h8" component="h3"  gutterBottom>Failed streaming </Typography>
+                  <Typography variant="h8" component="h3"  gutterBottom>Failed or No streaming </Typography>
                   <ContainerSummary>{failedCameras} </ContainerSummary>
                   </SummaryPaper>
                   </Paper>

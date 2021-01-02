@@ -168,13 +168,14 @@ class Dashboard extends Component {
   }
 
   async genEncodings(){
-    console.log(this.state.token)
+    
     await axios.get(apiEndpoint+'/encodings', 
         {headers: 
             { 'Content-Type': 'application/json',
             'Authorization': `Bearer ${this.state.token}`}
          }).then(res => {console.log(res.data); alert("Encodings process has started")})
          .catch(e => {console.log(e); alert(e)})
+    window.location.reload();
   }
 
   
@@ -202,24 +203,27 @@ class Dashboard extends Component {
     else{
       console.log(this.state.selectedIds);
       let cams = this.state.selectedIds;
-      this.startStreaming(cams);
+      cams.map((id) =>{
+         this.startStreaming(id)
+      })
+      
+      
     }
    
 
   }
 
- async startStreaming(cams){
-   //console.log(this.state.token)
-     await cams.map(async (id) => {
-       axios.post(apiEndpoint+"/start/"+id,
+ async startStreaming(id){
+   
+     await axios.post(apiEndpoint+"/start/"+id,{},
       {
           headers:
           { 'Content-Type': 'application/json',
           'Authorization': `Bearer ${this.state.token}`}
       }).then(res =>{this.setState({reload: true});alert("Streaming has been initialized")})
       .catch(e => {alert(e); console.log(e)});
-      })
-    //window.location.reload();
+      
+    window.location.reload();
       
 }
 handleStopStreaming = () =>{
@@ -229,24 +233,23 @@ handleStopStreaming = () =>{
   else{
     console.log(this.state.selectedIds);
     let cams = this.state.selectedIds;
-    this.stopStreaming(cams);
+    cams.map((id) =>{
+      this.stopStreaming(id)
+   })
   }
  
 
 }
 
-  async stopStreaming(cams){
-    //console.log(this.state.token)
-     await cams.map(async (id) => {
-       axios.post(apiEndpoint+"/stop/"+id,
+  async stopStreaming(id){
+    await axios.post(apiEndpoint+"/stop/"+id,{},
       {
           headers:
           { 'Content-Type': 'application/json',
           'Authorization': `Bearer ${this.state.token}`}
       }).then(res =>{this.setState({reload: true});alert("Streaming has stopped")})
       .catch(e => {alert(e); console.log(e)});
-      })
-    //window.location.reload();
+    window.location.reload();
   }
 
   handleReload =() => {
@@ -262,8 +265,7 @@ handleStopStreaming = () =>{
       let cameraList = [];
       let suspectList = [];
       
-      let summaryColumns = [{headerName:"Cameras with active streaming", field: "active", width:150},{headerName:"Failed streaming cameras", field: "failed", width:150},
-                            {headerName:"Profiles with No Image", field: "no_image", width:150},{headerName:"Profiles with no encoded Image", field: "no_encoded", width:150}]
+      
               
 
       if (this.state.list_suspects){
@@ -326,8 +328,8 @@ handleStopStreaming = () =>{
           
       
       let camColumns = [
-        {field: "cam_Location", headerName : "Location" , width:100},
-        {field: "server_info", headerName : "Camera Status" , width:200},
+        {field: "cam_Location", headerName : "Location" , width:120},
+        {field: "server_info", headerName : "Camera Status" , width:400},
         {field: "server", headerName : "Server Status" , width:200}
       ]
       
@@ -347,8 +349,8 @@ handleStopStreaming = () =>{
                   
                   <Paper>
                   <SummaryPaper>
-                  <Typography variant="h8" component="h3"  gutterBottom>Cameras active streaming </Typography>
-                  <ContainerSummary ><StyledAvatar $withBorder> {onCameras}</StyledAvatar>  </ContainerSummary>
+                  <Typography variant="h8" component="h3"  gutterBottom>Active streaming </Typography>
+                  <ContainerSummary > {onCameras} </ContainerSummary>
                   </SummaryPaper>
                   </Paper>
                   
@@ -356,7 +358,7 @@ handleStopStreaming = () =>{
                 <Grid item xs={12} sm={3}>
                   <Paper>
                   <SummaryPaper>
-                  <Typography variant="h8" component="h3"  gutterBottom>Failed streaming cameras</Typography>
+                  <Typography variant="h8" component="h3"  gutterBottom>Failed streaming </Typography>
                   <ContainerSummary>{failedCameras} </ContainerSummary>
                   </SummaryPaper>
                   </Paper>
@@ -364,7 +366,7 @@ handleStopStreaming = () =>{
                 <Grid item xs={12} sm={3}>
                   <Paper>
                   <SummaryPaper>
-                  <Typography variant="h8" component="h3"  gutterBottom>Profiles with No Image</Typography>
+                  <Typography variant="h8" component="h3"  gutterBottom>No Image Profiles</Typography>
                   <ContainerSummary>{no_images} </ContainerSummary>
                   </SummaryPaper>
                   </Paper>
@@ -372,7 +374,7 @@ handleStopStreaming = () =>{
                 <Grid item xs={12} sm={3}>
                   <Paper>
                   <SummaryPaper>
-                  <Typography variant="h8" component="h3"  gutterBottom>Profiles no encoded Image</Typography>
+                  <Typography variant="h8" component="h3"  gutterBottom>No Encoded Images</Typography>
                   <ContainerSummary><StyledAvatar> {no_encoded}</StyledAvatar>  </ContainerSummary>
                   </SummaryPaper>
                   </Paper>
@@ -380,6 +382,9 @@ handleStopStreaming = () =>{
                 </Grid>
               </Paper> 
          </Grid>
+         <Typography variant="h5" component="h2"  color="textSecondary" gutterBottom>
+                  Note: It can take up to 5 minutes to stop the server and the streaming
+                </Typography>
          <Grid item xs={12} sm={7}>
               <Paper>
                 <CamerasStyled>
@@ -400,11 +405,11 @@ handleStopStreaming = () =>{
           <Grid item xs={12} sm={3}>
             <Button variant="contained" color="primary" align="justify" onClick={this.handleStopStreaming} >Stop Streaming</Button>
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={4}>
             <Button variant="contained" color="primary" align="justify" onClick={this.handleEncodings} >Generate Encodings</Button>
           </Grid>
-          <Grid item xs={12} sm={3}>
-            <Button variant="contained" color="primary" align="justify" onClick={this.handleReload} >Reload Data</Button>
+          <Grid item xs={12} sm={2}>
+            <Button variant="contained" color="primary" align="justify" onClick={this.handleReload} >Refresh</Button>
           </Grid>
           
         </Grid>

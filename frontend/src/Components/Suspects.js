@@ -269,6 +269,21 @@ class Suspects extends Component {
                <Button variant="contained" size="small" color="primary" onClick={this.handleNewSusp}> Add </Button>
                <Button size="small" color="primary"> Learn More</Button>
                </ButtonAdd>
+
+               <Paper>
+                   
+                <img src="/Images/picFrame.png"/>
+                <CardContent>
+                <Typography variant="body2" color="inherit" component="p" align="justify">
+                    <ul> 
+                        <li>For better detection and encoding results please use ID style images. </li>
+                        <li>To crop an Image, use <a href="https://photoshop.adobe.com/" >Adobe Photoshop online</a> App.</li>
+                        
+                    </ul>
+                    
+                </Typography>
+                </CardContent> 
+               </Paper>
                 {/*--------------------------------- MODAL FOR EDIT SUSPECT ----------------------------------------*/} 
                <Modal open={this.state.setOpen} onClose={this.handleClose} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
                 <Container maxWidth="xs" disableGutters="true">
@@ -293,8 +308,9 @@ class Suspects extends Component {
                   <Card>
                   <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                            Change Image
+                            Add/Change Image
                         </Typography>
+                        <image src ></image>
                         <TextField required id="standard-required" label="File"  onChange={this.handleFile} name="objectKey" type="file" />
 
                   </CardContent>
@@ -314,7 +330,7 @@ class Suspects extends Component {
                 <CardContent>
                 <Typography variant="body2" color="inherit" component="p" align="justify">
                     <ul> 
-                        <li>Please generate encodings after adding all new suspects</li>
+                        <li>Please generate encodings after adding a new suspects</li>
                     </ul>
                     <TextField required id="standard-required-1" label="Name"  onChange={this.handleFormInput} name="suspectName"/>
                 </Typography>

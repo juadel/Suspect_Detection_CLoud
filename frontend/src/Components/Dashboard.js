@@ -164,7 +164,22 @@ class Dashboard extends Component {
   }
 
   handleEncodings =() =>{
+    let count = 0
+    if (this.state.list_cameras!=null)
+      {
+        const arrayCams = this.state.list_cameras
+        let onCameras = arrayCams.filter(function(camOn){
+          return camOn.server_Status == "1";
+        })
+        count = Object.keys(onCameras).length
+      }
+    if (count > 0 ){
+      alert("Please Stop all streaming before generating new encodings")
+    }
+    else{
       this.genEncodings();
+    }
+      
   }
 
   async genEncodings(){
@@ -382,15 +397,16 @@ handleStopStreaming = () =>{
                 </Grid>
               </Paper> 
          </Grid>
-         <Typography variant="h5" component="h2"  color="textSecondary" gutterBottom>
-                  Note: It can take up to 5 minutes to stop the server and the streaming
-                </Typography>
+         
          <Grid item xs={12} sm={7}>
               <Paper>
                 <CamerasStyled>
                 <DataGrid rows={cameraList} columns={camColumns} checkboxSelection onSelectionChange={this.handleRowSelect}/>
                 </CamerasStyled>
               </Paper>
+              <Typography variant="h5" component="h2"  color="textSecondary" gutterBottom>
+                  Note: It can take up to 5 minutes to stop the server and the streaming
+              </Typography>
           </Grid> 
           <Grid item xs={12} sm={5}>
               <Paper>
@@ -399,6 +415,7 @@ handleStopStreaming = () =>{
                 </ContainerSuspects>
               </Paper>
           </Grid>
+          
           <Grid item xs={12} sm={3}>
             <Button variant="contained" color="primary" align="justify" onClick={this.handleStartStreaming} >Start Streaming</Button>
           </Grid>

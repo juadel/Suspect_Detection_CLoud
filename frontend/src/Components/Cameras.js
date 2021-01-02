@@ -259,8 +259,8 @@ class Cameras extends Component {
                     <ul> 
                         <li>Add a new camera using RTSP protocol </li>
                         <li>The camera must be connected to the internet.</li>
-                        <li>Set port forwarding on your Internet Router. Check the following <a href="https://www.purevpn.com/blog/how-to-forward-ports-on-your-router/">link</a> to learn how to do it.</li>
-                        <li>Find here the <a href="https://www.getscw.com/decoding/rtsp#:~:text=1.210.-,You%20can%20also%20encode%20credentials%20into%20the%20URL%20by%20entering,and%2012345%20is%20the%20password.">RTSP stream URL/Path </a> for your camera brand. </li>
+                        <li>Set port forwarding on your Internet Router. Check the following <a href="https://www.purevpn.com/blog/how-to-forward-ports-on-your-router/" target="_blank">link</a> to learn how to do it.</li>
+                        <li>Find here the <a href="https://www.getscw.com/decoding/rtsp#:~:text=1.210.-,You%20can%20also%20encode%20credentials%20into%20the%20URL%20by%20entering,and%2012345%20is%20the%20password." target="_blank">RTSP stream URL/Path </a> for your camera brand. </li>
                     </ul>
                     
                 </Typography>

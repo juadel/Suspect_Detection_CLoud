@@ -39,6 +39,11 @@ const ButtonAdd = styled.div`
     padding-left: 100px;
 
 `
+const ImagesSuggestion = styled.div`
+    display: center;
+    padding-left: 130px;
+  
+`;
     
 class Suspects extends Component {
     
@@ -270,21 +275,8 @@ class Suspects extends Component {
                <Button size="small" color="primary"> Learn More</Button>
                </ButtonAdd>
 
-               <Paper>
-                   
-                <img src="/Images/picFrame.png"/>
-                <CardContent>
-                <Typography variant="body2" color="inherit" component="p" align="justify">
-                    <ul> 
-                        <li>For better detection and encoding results please use ID style images. </li>
-                        <li>To crop an Image, use <a href="https://photoshop.adobe.com/" >Adobe Photoshop online</a> App.</li>
-                        
-                    </ul>
-                    
-                </Typography>
-                </CardContent> 
-               </Paper>
-                {/*--------------------------------- MODAL FOR EDIT SUSPECT ----------------------------------------*/} 
+              
+                {/*--------------------------------- MODAL FOR EDIT SUSPECT ---NOT IN USE-------------------------------------*/} 
                <Modal open={this.state.setOpen} onClose={this.handleClose} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
                 <Container maxWidth="xs" disableGutters="true">
                   <Card>
@@ -306,11 +298,23 @@ class Suspects extends Component {
                 <Modal open={this.state.modal_File} onClose={this.handleClose} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
                 <Container maxWidth="xs" disableGutters="true">
                   <Card>
+                  <ImagesSuggestion><img src="/Images/picFrame.jpg"/></ImagesSuggestion>
+                <CardContent>
+                
+                </CardContent> 
                   <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
                             Add/Change Image
                         </Typography>
-                        <image src ></image>
+                        <Typography variant="body2" color="inherit" component="p" align="justify">
+                            
+                                <li>For better detection and encoding results please use ID style images. </li>
+                                <li>To crop an Image, use <a href="https://photoshop.adobe.com/" target="_blank" >Adobe Photoshop online</a> App.</li>
+                                
+                            
+                            
+                        </Typography>
+                        
                         <TextField required id="standard-required" label="File"  onChange={this.handleFile} name="objectKey" type="file" />
 
                   </CardContent>

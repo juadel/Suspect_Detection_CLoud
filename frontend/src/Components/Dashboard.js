@@ -51,7 +51,7 @@ class Dashboard extends Component {
     constructor(){
         super();
         this.state={
-           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selectedIds: [], reload :false, user:"", serviceStatus :""
+           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selectedIds: [], reload :false, user:"", serviceStatus :"Online"
           };
     }
   async componentDidMount(){
@@ -152,9 +152,10 @@ class Dashboard extends Component {
     if (this.state.list_cameras!=null){
       const arrayCams = this.state.list_cameras
       let onCameras = arrayCams.filter(function(camOn){
-        return camOn.server_Status === "1";
+        return camOn.server_Status == "1";
       })
       count = Object.keys(onCameras).length
+      console.log(count)
       return(
         <Avatar> {count}</Avatar>
       )
@@ -171,6 +172,7 @@ class Dashboard extends Component {
         return camOn.server_info === "No stream available";
       })
       count = Object.keys(onCameras).length
+      //console.log(count)
       return(
         <Avatar> {count}</Avatar>
       )
@@ -366,7 +368,7 @@ handleStopStreaming = () =>{
         let onCameras = this.getCamerasOn();
         let no_encoded = this.getLackofEncodings();
         let no_images = this.getLackofImages();
-        let summary = [{"id":1, "active":onCameras, "failed":failedCameras, "no_images":no_images,"no_encoded":no_encoded}]
+        
           
       
       let camColumns = [

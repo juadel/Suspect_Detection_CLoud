@@ -33,7 +33,7 @@ const SidebarMenu = styled.ul`
 const SidebarMenuItem = styled.li`
     display: flex;
     height: 60px;
-    width: 100%;
+    width: 80%;
     align-items: center;
     padding-left: 30px;
     &:hover{

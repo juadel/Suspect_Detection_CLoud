@@ -290,9 +290,8 @@ handleStopStreaming = () =>{
     //this.getSuspects();
 
   }
- 
- 
 
+  
     render() {
       
       let serviceStatus = null
@@ -377,7 +376,7 @@ handleStopStreaming = () =>{
         {field: "server", headerName : "Server Status" , width:200}
       ]
       
-        
+      
           
           
      
@@ -464,6 +463,7 @@ handleStopStreaming = () =>{
           </Grid>
           
         </Grid>
+        
         
 
         

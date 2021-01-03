@@ -140,9 +140,9 @@ class FaceDetectorProcess:
                             now = datetime.now()
 
                             if log.get(name) != None :
-                                if abs(now - log[name])< timedelta(minutes=15):
+                                if abs(now - log[name])< timedelta(minutes=10):
                                     log[name] = now
-                                    logging.warning("Suspect seen no more than 15 min ago")
+                                    logging.warning("Suspect seen no more than 10 min ago")
                                 else:
                                     logging.warning("Suspect Return to site")
                                     log[name]=now

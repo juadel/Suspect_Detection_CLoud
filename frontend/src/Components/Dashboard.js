@@ -20,9 +20,9 @@ const ContainerSuspects = styled.table`
 `;
 
 const ContainerSummary = styled.div`
-    padding-left: 100px;
+    padding-left: 150px;
     padding-top: 20px;
-    text-align: center;
+    
     
 `;
 
@@ -42,6 +42,7 @@ const StyledAvatar = styled(Avatar)`
     backgroundColor: #5469d4;
     width: 120px;
     height: 120px;
+    
 
 
 `;
@@ -51,17 +52,29 @@ class Dashboard extends Component {
     constructor(){
         super();
         this.state={
-           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selectedIds: [], reload :false, user:"", serviceStatus :"Online"
+           list_cameras: null, list_suspects: null, token:"" , checkbox: "", selectedIds: [], reload :false, user:"", serviceStatus :"Online", 
+           activeCams : 0
           };
     }
+  intervalId = 0;
   async componentDidMount(){
       await this.handleAuth();
       await this.getServiceStatus();
       await this.getCameras();
       await this.getSuspects();
       
+      this.intervalId = setInterval(() => {this.reload()}, 60000);
+        
+  }
+
+  componentWillUnmount(){
+      clearInterval(this.intervalId)
+  }
+
+  async reload(){
       
-      
+      console.log("reloading")
+      await this.getCameras();
   }
 
   async getServiceStatus(){
@@ -122,7 +135,7 @@ class Dashboard extends Component {
         count = Object.keys(no_encoded).length
       }
     return (
-      <p>{count}</p>
+      <Avatar>{count}</Avatar>
     )
    
   }
@@ -154,12 +167,13 @@ class Dashboard extends Component {
       let onCameras = arrayCams.filter(function(camOn){
         return camOn.server_Status == "1";
       })
-      count = Object.keys(onCameras).length
-      console.log(count)
+      count = Object.keys(onCameras).length;
+            
       return(
         <Avatar> {count}</Avatar>
       )
     }
+    
 
 
   }
@@ -186,7 +200,7 @@ class Dashboard extends Component {
       {
         const arrayCams = this.state.list_cameras
         let onCameras = arrayCams.filter(function(camOn){
-          return camOn.server_Status === "1";
+          return camOn.server_Status == "1";
         })
         count = Object.keys(onCameras).length
       }
@@ -285,14 +299,16 @@ handleStopStreaming = () =>{
   }
 
   handleReload =() => {
-    window.location.reload();
-    //this.getCameras();
-    //this.getSuspects();
+    //window.location.reload();
+    this.getCameras();
+    this.getSuspects();
 
   }
 
   
     render() {
+
+    
       
       let serviceStatus = null
       if (this.state.serviceStatus === "Online"){
@@ -423,7 +439,7 @@ handleStopStreaming = () =>{
                   <Paper>
                   <SummaryPaper>
                   <Typography variant="h8" component="h3"  gutterBottom>No Encoded Images</Typography>
-                  <ContainerSummary><StyledAvatar> {no_encoded}</StyledAvatar>  </ContainerSummary>
+                  <ContainerSummary> {no_encoded}  </ContainerSummary>
                   </SummaryPaper>
                   </Paper>
                 </Grid>
@@ -438,7 +454,7 @@ handleStopStreaming = () =>{
                 </CamerasStyled>
               </Paper>
               <Typography component="body2"  color="textSecondary" gutterBottom>
-                  Note: It can take up to 5 minutes to stop the server and the streaming, use the REFRESH button to reload the data.
+                  Note: - It can take up to 3 minutes to stop the server and the streaming -  use the REFRESH button to reload the data.
               </Typography>
           </Grid> 
           <Grid item xs={12} sm={5}>

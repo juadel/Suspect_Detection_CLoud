@@ -36,7 +36,14 @@ const ButtonAdd = styled.div`
     padding-top: 20px;
     padding-left: 100px;
 
-`
+`;
+const ButtonRefresh = styled.div`
+    display : flex;
+    
+    padding-left: 20px;
+
+`;
+
 const ImagesSuggestion = styled.div`
     display: center;
     padding-left: 130px;
@@ -220,7 +227,11 @@ class Suspects extends Component {
     getfindingsDate(item){
        
         if (Object.keys(item.findings).length!==0){
-            return (item.findings[Object.keys(item.findings).length-1].date)
+            let UTC_time = item.findings[Object.keys(item.findings).length-1].date + " UTC"
+            
+            let localDate = new Date(UTC_time)
+            
+            return (localDate.toLocaleDateString() +" "+ localDate.toLocaleTimeString())
         }
         else {
             return "N/A"
@@ -237,7 +248,9 @@ class Suspects extends Component {
         }
                                     
     }
-
+    handleReload =() =>{
+        this.getSuspects();
+    }
     
 
     render() {
@@ -276,7 +289,7 @@ class Suspects extends Component {
                             <TableRow >
                                 <TableCell align="center"> Name </TableCell>
                                 <TableCell align="center"> Image Status</TableCell>
-                                <TableCell align="center"> Last Seen (UTC)</TableCell>
+                                <TableCell align="center"> Last Seen</TableCell>
                                 <TableCell align="center"> Seen At</TableCell>
                                 <TableCell align="center"> Add Image</TableCell>
                                 <TableCell align="center"> Delete</TableCell>
@@ -289,8 +302,11 @@ class Suspects extends Component {
                </TableContainer>
                <ButtonAdd>
                <Button variant="contained" size="small" color="primary" onClick={this.handleNewSusp}> Add </Button>
-               <Button size="small" color="primary"> Learn More</Button>
+               <ButtonRefresh>
+               <Button variant="contained" color="primary" align="justify" onClick={this.handleReload} >Refresh</Button>
+               </ButtonRefresh>
                </ButtonAdd>
+               
 
               
                 {/*--------------------------------- MODAL FOR EDIT SUSPECT ---NOT IN USE-------------------------------------*/} 

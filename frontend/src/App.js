@@ -18,6 +18,25 @@ import '@aws-amplify/ui/dist/style.css';
 
 Amplify.configure(Cognito);
 
+const signUpConfig =
+{header: 'Welcome to SDC',
+hideAllDefaults: false,
+defaultCountryCode: '1',
+signUpFields: [
+  {
+    label: 'Name',
+    key: 'name',
+    required: true,
+    displayOrder: 1,
+    type: 'string'
+  },
+  
+  
+
+  // and other custom attributes
+]
+};
+
 class App extends Component {
   
   render(){
@@ -60,4 +79,4 @@ class App extends Component {
 
 
 
-export default withAuthenticator(App, false);
+export default withAuthenticator(App, {signUpConfig, includeGreetings: false});

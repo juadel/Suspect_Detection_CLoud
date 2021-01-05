@@ -3,6 +3,9 @@ import './App.css';
 import Typography from "@material-ui/core/Typography";
 import ControlledAccordions from "./components/acordion";
 import Card from "@material-ui/core/Card"
+import MuiAlert from "@material-ui/lab/Alert"
+import VideocamIcon from '@material-ui/icons/Videocam';
+import Chip from '@material-ui/core/Chip';
 import Paper from "@material-ui/core/Paper"
 
 function App() {
@@ -12,17 +15,51 @@ function App() {
     
       
         <div className="side">
-        <Typography  variant="h4" component="h2"   gutterBottom>
-          Suspect Detector App 
-        </Typography>
+        <div className="chips">
+          <Chip icon={<VideocamIcon/>}
+              label="Any IP camera with RTSP"
+              
+              />
+            <Chip icon={<VideocamIcon/>}
+              label="Real Time Notifications"
+              
+              />
+          </div> 
         </div>
         <div className="main">
-          <Paper>
-            <ControlledAccordions/>
-          </Paper>
-          
+          <div className="title">
+            
+            <Typography  variant="body" component="h2"   gutterBottom>
+             Use any IP camera for face recognition
+        </Typography>
+            
+          {/* <Chip icon={<VideocamIcon/>}
+            label="Use any IP camera for face recognition"
+            
+            color="secondary" />  
+            */}
         
-        <Typography variant="h5" component="h2"> Use Cases: </Typography>
+          </div>
+            <div className="acordion">
+              <Card >
+                <ControlledAccordions/>
+              </Card>
+            </div>
+            <div className="warning">
+              <MuiAlert elevation={6} variant="filled" severity="warning">Get real time notifications when someone is detected by a Camera!</MuiAlert>
+            </div>
+            {/* <div className="info">
+              <MuiAlert elevation={6} variant="filled" severity="info"> Start/ Stop the camera streaming anytime</MuiAlert>
+            </div>
+            <div className="success">
+            <Chip icon={<VideocamIcon/>}
+            label="Use any IP camera for face recognition"
+            
+            />
+              <MuiAlert elevation={6} variant="filled" severity="success"> Stay informed the last time a person was seen</MuiAlert>
+            </div> */}
+        
+        {/* <Typography variant="h5" component="h2"> Use Cases: </Typography>
         <Typography variant="body"  component="p" align="justify">
                             
                             <li>For better detection and encoding results please use ID style images. </li>
@@ -46,7 +83,7 @@ function App() {
                             <li> You can Stop/Start the streaming whenever it needs </li>
                             <li> Add multiple Suspects profiles and multiple Cameras </li>
                             </ol>             
-         </Typography>
+         </Typography> */}
         
          </div>
          <div>

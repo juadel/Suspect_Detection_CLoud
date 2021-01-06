@@ -36,6 +36,14 @@
 .main {
   grid-area: main;
   background-color : rgb(255, 255, 255);
+  background-image: url(./human-computer-3d.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  background-position: center;
+  
+  
+  
 
   
   
@@ -82,15 +90,15 @@
   background-color : rgb(247, 239, 239);
   color: rgb(255, 255, 255);
   font-weight: bold;
-  border: 10px solid rgb(255, 102, 0);
+  border: 10px solid rgb(0, 0, 0);
   border-radius: 25px;
   position: absolute;
   top: 30%;
-  left: 20%;
+  left: 55%;
   
-  z-index: 2;
-  width: 50%;
-  padding: 20px;
+  /* z-index: 2; */
+  width: 30%;
+  padding: 15px;
   text-align: center;
 }
 
@@ -98,10 +106,10 @@
   font-weight: bold;
   
   position: absolute;
-  top: 65%;
-  left: 10%;
+  top: 85%;
+  left: 30%;
   
-  width: 20%;
+  width: 15%;
   padding: 20px;
   text-align: center;
 }

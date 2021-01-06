@@ -21,7 +21,7 @@ function App() {
               
               />
             <Chip icon={<VideocamIcon/>}
-              label="Real Time Notifications"
+              label="Real Time"
               
               />
           </div> 
@@ -46,7 +46,7 @@ function App() {
               </Card>
             </div>
             <div className="warning">
-              <MuiAlert elevation={6} variant="filled" severity="warning">Get real time notifications when someone is detected by a Camera!</MuiAlert>
+              <MuiAlert elevation={6} variant="filled" severity="warning">Get real time notifications when someone is detected</MuiAlert>
             </div>
             {/* <div className="info">
               <MuiAlert elevation={6} variant="filled" severity="info"> Start/ Stop the camera streaming anytime</MuiAlert>
@@ -87,8 +87,8 @@ function App() {
         
          </div>
          <div>
-        <Typography  variant="h4" component="h2"   gutterBottom>
-            Suspect Detector App 
+        <Typography  variant="body2" component="h2"   gutterBottom>
+            juadel.com - 2021 
           </Typography>
         </div>
         

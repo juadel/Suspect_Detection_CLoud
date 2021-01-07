@@ -9,7 +9,7 @@
 .container {
   display: grid;
 
-  grid-template-columns: 20% auto;
+  grid-template-columns: 20% 0.5fr;
   grid-template-rows: 80px 1fr;
 
   grid-template-areas:
@@ -36,8 +36,9 @@
 .main {
   grid-area: main;
   background-color : rgb(255, 255, 255);
-  background-image: url(./human-computer-3d.png);
+  background-image: url(./human-computer-3d-opaque.png);
   background-repeat: no-repeat;
+  /* opacity: 0.8; */
   background-size: cover;
   min-height: 100vh;
   background-position: center;
@@ -90,7 +91,7 @@
   background-color : rgb(247, 239, 239);
   color: rgb(255, 255, 255);
   font-weight: bold;
-  border: 10px solid rgb(0, 0, 0);
+  border: 10px solid rgb(151, 148, 148);
   border-radius: 25px;
   position: absolute;
   top: 30%;
@@ -153,16 +154,37 @@
 
 }
 
-.chips{
-  font-weight: bold;
-  position: absolute;
-  
-  top: 3%;
-  left: 45%;
-  
-  width: 20%;
-  padding: 20px;
-  text-align: center;
+.chips-list-item{
+  margin: 0px 7px 0px 0px ;
+	padding: 0px 0px 0px 0px ;
 
 }
+.chips-list-item:last-child {
+  margin-right: 0px ;
+}
 
+.chips{
+  
+  
+  align-items: center ;
+	/* background-color: #596376 ; */
+	/* border-radius: 45px ; */
+	color: #ffffff ;
+	
+	justify-content: center ;
+	font-family: monospace, sans-serif ;
+	font-size: 13px ;
+	/* height: 45px ; */
+	letter-spacing: 2px ;
+	/* line-height: 13px ; */
+	width: 30x ;
+}
+
+.chips-list{
+  display: flex ;
+	/* list-style-type: none ; */
+	margin: 0px 0px 0px 100px ;
+  padding: 20px 10px;
+  width: 40px;
+  
+}

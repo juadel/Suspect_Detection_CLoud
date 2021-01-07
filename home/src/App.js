@@ -5,8 +5,12 @@ import ControlledAccordions from "./components/acordion";
 import Card from "@material-ui/core/Card"
 import MuiAlert from "@material-ui/lab/Alert"
 import VideocamIcon from '@material-ui/icons/Videocam';
+import AccessAlarmsIcon from '@material-ui/icons/AccessAlarms';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import FilterDramaIcon from '@material-ui/icons/FilterDrama';
 import Chip from '@material-ui/core/Chip';
-import Paper from "@material-ui/core/Paper"
+import Paper from "@material-ui/core/Paper";
+import Alert from '@material-ui/lab/Alert';
 
 function App() {
   return (
@@ -15,17 +19,40 @@ function App() {
     
       
         <div className="side">
-        <div className="chips">
-          <Chip icon={<VideocamIcon/>}
-              label="Any IP camera with RTSP"
-              
-              />
-            <Chip icon={<VideocamIcon/>}
-              label="Real Time"
-              
-              />
-          </div> 
+          <div className="chips-list">
+            <div className="chips-list-item"> 
+              <div className="chips"> <Chip icon={<VideocamIcon/>} label="Live Streaming"/></div>
+            </div>
+            <div className="chips-list-item"> 
+              <div className="chips"> <Chip icon={<AccessAlarmsIcon/>} label="Real Time Notifications"/></div>
+            </div>
+           
+            <div className="chips-list-item"> 
+              <div className="chips"> <Chip icon={<VerifiedUserIcon/>} label="Secure and Private"/></div>
+            </div>
+            <div className="chips-list-item"> 
+              <div className="chips"> <Chip icon={<FilterDramaIcon/>} label="100% Coud Service"/></div>
+            </div>
+            
+            
+          </div>
+          <Alert severity="warning">Juan has been detected in the Frontdoor at 01/01/21 , 07:30 pm!</Alert>
+          <div className="acordion">
+              <Card >
+                <ControlledAccordions/>
+              </Card>
+            </div>
         </div>
+
+          
+
+
+
+
+          
+          
+          
+          
         <div className="main">
           <div className="title">
             
@@ -40,11 +67,7 @@ function App() {
             */}
         
           </div>
-            <div className="acordion">
-              <Card >
-                <ControlledAccordions/>
-              </Card>
-            </div>
+           
             <div className="warning">
               <MuiAlert elevation={6} variant="filled" severity="warning">Get real time notifications when someone is detected</MuiAlert>
             </div>

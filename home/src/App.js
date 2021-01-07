@@ -11,6 +11,13 @@ import FilterDramaIcon from '@material-ui/icons/FilterDrama';
 import Chip from '@material-ui/core/Chip';
 import Paper from "@material-ui/core/Paper";
 import Alert from '@material-ui/lab/Alert';
+import Alerts from './components/alerts';
+
+
+const setOpen = ""
+const handleClick = () => {
+  setOpen(true);
+};
 
 function App() {
   return (
@@ -36,12 +43,19 @@ function App() {
             
             
           </div>
-          <Alert severity="warning">Juan has been detected in the Frontdoor at 01/01/21 , 07:30 pm!</Alert>
+          <div className="warning2">
+          <Alerts/>
+          </div>
           <div className="acordion">
               <Card >
                 <ControlledAccordions/>
               </Card>
             </div>
+            {/* <div className="warning">
+              <Card>
+              <MuiAlert elevation={6} variant="filled" severity="success">Get real time notifications when someone is detected</MuiAlert>
+              </Card>
+            </div> */}
         </div>
 
           
@@ -68,9 +82,7 @@ function App() {
         
           </div>
            
-            <div className="warning">
-              <MuiAlert elevation={6} variant="filled" severity="warning">Get real time notifications when someone is detected</MuiAlert>
-            </div>
+            
             {/* <div className="info">
               <MuiAlert elevation={6} variant="filled" severity="info"> Start/ Stop the camera streaming anytime</MuiAlert>
             </div>

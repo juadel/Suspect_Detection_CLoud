@@ -37,13 +37,12 @@ export default function ControlledAccordions() {
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
-          <Typography className={classes.heading}>General settings</Typography>
-          <Typography className={classes.secondaryHeading}>I am an accordion</Typography>
+          <Typography className={classes.heading}>Register</Typography>
+          <Typography className={classes.secondaryHeading}>Create an account</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-            maximus est, id dignissim quam.
+            When register, provide a phone number in which you would like to recieved the notification.  
           </Typography>
         </AccordionDetails>
       </Accordion>

@@ -91,14 +91,30 @@
   background-color : rgb(247, 239, 239);
   color: rgb(255, 255, 255);
   font-weight: bold;
-  border: 10px solid rgb(151, 148, 148);
+ 
   border-radius: 25px;
   position: absolute;
-  top: 30%;
-  left: 55%;
+  top: 40%;
+  left: 45%;
   
   /* z-index: 2; */
   width: 30%;
+  padding: 15px;
+  text-align: center;
+}
+
+.introcard {
+  background-color : rgb(247, 239, 239);
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  
+  border-radius: 25px;
+  position: absolute;
+  top: 10%;
+  left: 43%;
+  
+  /* z-index: 2; */
+  /* width: 30%; */
   padding: 15px;
   text-align: center;
 }
@@ -162,8 +178,34 @@
   padding: 20px;
   text-align: center;
   font-size: calc(10px + 2vmin);
-
 }
+
+.title-side {
+  font-weight: bold;
+  color: rgb(10, 10, 10);
+  
+  position: absolute;
+  top: 8%;
+  left: 45%;
+  
+  /* width: 40%; */
+  padding: 20px;
+  text-align: center;
+  font-size: calc(10px + 1.5vmin);
+}
+.subtitle{
+  font-weight: bold;
+  color: rgb(247, 239, 239);
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  width: 40%;
+  padding: 20px;
+  text-align: center;
+  font-size: calc(2px + 1.5vmin);
+}
+
+
 
 .chips-list-item{
   margin: 0px 7px 0px 0px ;
@@ -194,8 +236,10 @@
 .chips-list{
   display: flex ;
 	/* list-style-type: none ; */
-	margin: 0px 0px 0px 100px ;
-  padding: 20px 10px;
+	margin: 0px 0px 0px 150px ;
+  padding: 20px 20px;
   width: 40px;
   
+  
 }
+

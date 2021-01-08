@@ -18,14 +18,14 @@ class Alerts extends Component {
 
     }
     intervalId = 0;
-    namesList = ["Juan", "Caro", "Jaco", "Tomy", "Jhon Doe", "David Bowie", "Axel Rose", "Tino", "Andres"]
-    locationList = ["Front Door", "Store 011", "Garage", "Cash Office", "Safe", "Back Door", "Staff Room", "Main Door"]
+    namesList = ["Juan", "Caro", "Jaco", "Tomy", "Jhon Doe", "David Bowie", "Axel Rose", "Tino", "Andres", "Donald", "Ken", "Darin", "Claudia", "Joshua", "Olivia", "Emi"]
+    locationList = ["Front Door", "Store 011", "Garage", "Cash Office", "Safe", "Back Door", "Staff Room", "Main Door", "Backyard", "Driveway", "Office 101"]
     componentDidMount= () =>{
         let SuspectName = this.namesList[Math.floor(Math.random()*this.namesList.length)];
         let locationName = this.locationList[Math.floor(Math.random()*this.locationList.length)];
         let localDate = new Date();
         this.setState({suspect: SuspectName, location:locationName, date:localDate.toLocaleDateString(), time:localDate.toLocaleTimeString()})
-        this.intervalId = setInterval(() => {this.handleReload()}, 6000);
+        this.intervalId = setInterval(() => {this.handleReload()}, 10000);
           
     }
     componentWillUnmount(){
@@ -47,7 +47,7 @@ class Alerts extends Component {
     render(){
 
         return(
-            <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open={this.state.open} autoHideDuration={3000} onClose={this.handleClose}>
+            <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open={this.state.open} autoHideDuration={5000} onClose={this.handleClose}>
             <Alert onClose={this.handleClose} severity="warning" >{this.state.suspect} has been detected in {this.state.location} at {this.state.date}, {this.state.time}!</Alert>
             </Snackbar>
         )

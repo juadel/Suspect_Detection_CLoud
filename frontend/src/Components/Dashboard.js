@@ -195,22 +195,26 @@ class Dashboard extends Component {
   }
 
   handleEncodings =() =>{
-    let count = 0
-    if (this.state.list_cameras!=null)
-      {
-        const arrayCams = this.state.list_cameras
-        let onCameras = arrayCams.filter(function(camOn){
-          return camOn.server_Status == "1";
-        })
-        count = Object.keys(onCameras).length
-      }
-    if (count > 0 ){
-      alert("Please Stop all streaming before generating new encodings")
+    if (this.state.serviceStatus=="Offline"){
+      alert("The System is Offline, please contact: juadel@hotmail.com")
     }
     else{
-      this.genEncodings();
-    }
-      
+      let count = 0
+      if (this.state.list_cameras!=null)
+        {
+          const arrayCams = this.state.list_cameras
+          let onCameras = arrayCams.filter(function(camOn){
+            return camOn.server_Status == "1";
+          })
+          count = Object.keys(onCameras).length
+        }
+      if (count > 0 ){
+        alert("Please Stop all streaming before generating new encodings")
+      }
+      else{
+        this.genEncodings();
+      }
+    }  
   }
 
   async genEncodings(){
@@ -243,19 +247,21 @@ class Dashboard extends Component {
   }
 
   handleStartStreaming = () =>{
-    if (this.state.selectedIds.length === 0){
-      alert("Please select a Camera")
+    if (this.state.serviceStatus=="Offline"){
+      alert("The System is Offline, please contact: juadel@hotmail.com")
     }
     else{
-      console.log(this.state.selectedIds);
-      let cams = this.state.selectedIds;
-      cams.map((id) =>{
-         this.startStreaming(id)
-      })
-      
-      
+      if (this.state.selectedIds.length === 0){
+        alert("Please select a Camera")
+      }
+      else{
+        console.log(this.state.selectedIds);
+        let cams = this.state.selectedIds;
+        cams.map((id) =>{
+          this.startStreaming(id)
+        })
+      }
     }
-   
 
   }
 
@@ -273,17 +279,22 @@ class Dashboard extends Component {
       
 }
 handleStopStreaming = () =>{
-  if (this.state.selectedIds.length === 0){
-    alert("Please select a Camera")
+  if (this.state.serviceStatus=="Offline"){
+    alert("The System is Offline, please contact: juadel@hotmail.com")
   }
   else{
-    console.log(this.state.selectedIds);
-    let cams = this.state.selectedIds;
-    cams.map((id) =>{
-      this.stopStreaming(id)
-   })
+    if (this.state.selectedIds.length === 0){
+      alert("Please select a Camera")
+    }
+    else{
+      console.log(this.state.selectedIds);
+      let cams = this.state.selectedIds;
+      cams.map((id) =>{
+        this.stopStreaming(id)
+    })
+    }
   }
- 
+  
 
 }
 

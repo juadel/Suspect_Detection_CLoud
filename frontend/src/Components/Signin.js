@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link, RouteComponentProps, withRouter} from 'react-router-dom';
 import Amplify, { Auth } from 'aws-amplify';
+import { AmplifyAuthenticator, AmplifySignUp, AmplifySignOut } from '@aws-amplify/ui-react';
 import Grid from '@material-ui/core/Grid';
-import Cognito from "../config/Cognito"
+import Cognito from "../Config/Cognito"
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
@@ -15,8 +16,8 @@ const AUTH_USER_TOKEN_KEY = 'ReactAmplify.TokenKey';
 const User = styled.div`
     text-align: center;
     position: absolute;
-    top: 89%;
-    left: 42%;
+    top: 1%;
+    left: 30%;
     width: 7%;
     height: 5%;
     padding: 10px;
@@ -30,8 +31,8 @@ const Pass = styled.div`
     
     text-align: center;
     position: absolute;
-    top: 89%;
-    left: 51%;
+    top: 1%;
+    left: 39%;
     width: 7%;
     height: 5%;
     padding: 10px;
@@ -43,11 +44,32 @@ const Pass = styled.div`
 const ButtonStyled = styled.div`
     text-align: center;
     position: absolute;
-    top: 93%;
-    left: 60%;
-    
-
+    top: 3%;
+    left: 50%;
 `;
+
+const Register = styled.div`
+    text-align: center;
+    justify-content: center;
+    position: absolute;
+    align-items: center;
+    top: 8%;
+    left: 48%;
+    height: 100vh;
+    
+    
+    
+`;
+
+// amplify-authenticator {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     flex: 1;
+//     height: 100vh;
+//   }
+
+Amplify.configure(Cognito);
 
 
 class Signin extends Component {
@@ -84,18 +106,13 @@ async  signIn() {
             const location = this.props.location;
             const { from } = location.state || {
                 from: {
-                    pathname:'https://api.juadel.com'
+                    pathname:'/api'
                 }
             };
             localStorage.setItem(AUTH_USER_TOKEN_KEY, user.signInUserSession.accessToken.jwtToken);
             console.log(user)
-            // notification.success({message: 'Succesfully logged in!',
-            // description: 'Logged in successfully, Redirecting you in a few!',
-            // placement: 'topRight',
-            // duration: 1.5
-            // });
-            history.push(from)
-            //window.location.href = "https://api.juadel.com/"+user.signInUserSession.accessToken.jwtToken
+            
+            window.location.pathname = "/api";
 
         })
         .catch(error => {
@@ -122,9 +139,14 @@ render(){
             <ButtonStyled>
                 <Button variant="contained"  onClick={this.handleSignIn} >Log In</Button>
             </ButtonStyled>
-            
+            <Register>
+            <Button size="small" >
+                    Create an Account
+            </Button>
+           
+            </Register>
         
-        </div>
+         </div>
         
     )
 }

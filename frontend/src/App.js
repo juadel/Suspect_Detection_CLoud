@@ -1,82 +1,47 @@
+
 import './App.css';
-import React, { Component } from "react";
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
-import Sidebar from './Sidebar';
-import Cameras from './Components/Cameras'
-import Suspects from './Components/Suspects'
-import Dashboard from './Components/Dashboard'
-import Account from './Components/Account'
-import Menubar from './Components/MenuBar'
-import Amplify from 'aws-amplify';
-import Cognito from './Config/Cognito';
-import { withAuthenticator } from 'aws-amplify-react';
-import '@aws-amplify/ui/dist/style.css';
+import Typography from "@material-ui/core/Typography";
+import ControlledAccordions from "./Components/Acordion";
+import Card from "@material-ui/core/Card"
+import MuiAlert from "@material-ui/lab/Alert"
+import VideocamIcon from '@material-ui/icons/Videocam';
+import AccessAlarmsIcon from '@material-ui/icons/AccessAlarms';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import FilterDramaIcon from '@material-ui/icons/FilterDrama';
+import Chip from '@material-ui/core/Chip';
+import Paper from "@material-ui/core/Paper";
+import Alert from '@material-ui/lab/Alert';
+import Alerts from './Components/Alerts';
+import Signin from './Components/Signin';
+import Api from './Components/Api';
+import Home from './Home';
+import Cameras from './Components/Cameras';
+import Suspects from './Components/Suspects';
+import Dashboard from './Components/Dashboard';
+import Account from './Components/Account';
+import { CardHeader } from '@material-ui/core';
+import BuildIcon from '@material-ui/icons/Build';
 
 
 
 
-
-Amplify.configure(Cognito);
-
-const signUpConfig =
-{header: 'Welcome to SDC',
-hideAllDefaults: false,
-defaultCountryCode: '1',
-signUpFields: [
-  {
-    label: 'Name',
-    key: 'name',
-    required: true,
-    displayOrder: 1,
-    type: 'string'
-  },
-  
-  
-
-  // and other custom attributes
-]
-};
-
-class App extends Component {
-  
-  render(){
+function App() {
   return (
-    
     <BrowserRouter>
-    {/* <Redirect path="/dashboard"/> */}
-    
-    <div className="App">
-      <div class="container">
-        <Sidebar class="grid-sidebar"/>
-      
-        <div class="header">  
-        <Menubar/>
-        
-        </div>
-        <div class="content">
-        <Switch>
-            
-            
-            <Route exact path="/suspects" component={Suspects}/>
+    <Switch>        
+             <Route exact path="/home" component={Home}/>
+             <Route exact path="/" component={Home} />
+             <Route exact path="/api" component={Api} />
+             <Route exact path="/suspects" component={Suspects}/>
             <Route exact path="/dashboard" component={Dashboard}/>
             <Route exact path="/cameras" component={Cameras}/>
             <Route exact path="/account" component={Account}/>
-            <Route exact path="/" component={Dashboard} />
-
-            
-            
-            
           </Switch>
-         
-        </div>
-      </div>
-    </div>   
-   
     </BrowserRouter>
+    
+  
   );
- }
 }
 
-
-
-export default withAuthenticator(App, {signUpConfig, includeGreetings: false});
+export default App;

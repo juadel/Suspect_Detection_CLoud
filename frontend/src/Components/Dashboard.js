@@ -221,7 +221,7 @@ class Dashboard extends Component {
             'Authorization': `Bearer ${this.state.token}`}
          }).then(res => {console.log(res.data); alert("Encodings process has started")})
          .catch(e => {console.log(e); alert(e)})
-    window.location.reload();
+    window.location.pathname = "/api";
   }
 
   
@@ -269,7 +269,7 @@ class Dashboard extends Component {
       }).then(res =>{this.setState({reload: true});alert("Streaming requested")})
       .catch(e => {alert(e); console.log(e)});
       
-    window.location.reload();
+      window.location.pathname = "/api";
       
 }
 handleStopStreaming = () =>{
@@ -295,7 +295,7 @@ handleStopStreaming = () =>{
           'Authorization': `Bearer ${this.state.token}`}
       }).then(res =>{this.setState({reload: true});alert("Streaming stop requested")})
       .catch(e => {alert(e); console.log(e)});
-    window.location.reload();
+      window.location.pathname = "/api";
   }
 
   handleReload =() => {
@@ -466,16 +466,16 @@ handleStopStreaming = () =>{
           </Grid>
           
           <Grid item xs={12} sm={3}>
-            <Button variant="contained" color="primary" align="justify" onClick={this.handleStartStreaming} >Start Streaming</Button>
+            <Button variant="contained"  align="justify" onClick={this.handleStartStreaming} >Start Streaming</Button>
           </Grid>
           <Grid item xs={12} sm={3}>
-            <Button variant="contained" color="primary" align="justify" onClick={this.handleStopStreaming} >Stop Streaming</Button>
+            <Button variant="contained"  align="justify" onClick={this.handleStopStreaming} >Stop Streaming</Button>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Button variant="contained" color="primary" align="justify" onClick={this.handleEncodings} >Generate Encodings</Button>
+            <Button variant="contained"  align="justify" onClick={this.handleEncodings} >Generate Encodings</Button>
           </Grid>
           <Grid item xs={12} sm={2}>
-            <Button variant="contained" color="primary" align="justify" onClick={this.handleReload} >Refresh</Button>
+            <Button variant="contained"  align="justify" onClick={this.handleReload} >Refresh</Button>
           </Grid>
           
         </Grid>

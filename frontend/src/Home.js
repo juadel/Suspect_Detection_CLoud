@@ -1,0 +1,114 @@
+
+import './App.css';
+import {BrowserRouter, Switch, Route, withRouter} from 'react-router-dom';
+import Typography from "@material-ui/core/Typography";
+import ControlledAccordions from "./Components/Acordion";
+import Card from "@material-ui/core/Card"
+import MuiAlert from "@material-ui/lab/Alert"
+import VideocamIcon from '@material-ui/icons/Videocam';
+import AccessAlarmsIcon from '@material-ui/icons/AccessAlarms';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import FilterDramaIcon from '@material-ui/icons/FilterDrama';
+import Chip from '@material-ui/core/Chip';
+import Paper from "@material-ui/core/Paper";
+import Alert from '@material-ui/lab/Alert';
+import Alerts from './Components/Alerts';
+import Signin from './Components/Signin';
+import Api from './Components/Api';
+import { CardHeader } from '@material-ui/core';
+import BuildIcon from '@material-ui/icons/Build';
+import getToken from './Config/getToken';
+
+
+
+
+
+
+async function handleAuth(){
+  let token = new getToken();
+  await token.token();
+  console.log(token.state.attributes)
+  if (token.state.attributes!=null){
+    
+      window.location.pathname = "/api";
+      
+    }
+  }
+
+function Home() {
+  let rerout = handleAuth();
+  return (
+    <BrowserRouter>
+    <rerout/>
+    <div className="container2">
+      <div className="side">
+        <div className="title-side">
+            <Typography  variant="body" component="h2"   gutterBottom>
+             Detect known persons using conventional IP Cameras
+            </Typography>
+        </div>
+
+        <div className="subtitle">
+            <Typography  variant="body" component="h2"   >
+            This application will detect people's faces and notify you when someone on your profile is seen.
+            </Typography>
+        </div>
+        <div className="chips-list">
+          <div className="chips-list-item"> 
+            <div className="chips"> <Chip icon={<VideocamIcon/>} label="Live Streaming"/></div>
+          </div>
+          <div className="chips-list-item"> 
+            <div className="chips"> <Chip icon={<AccessAlarmsIcon/>} label="Real Time Notifications"/></div>
+          </div>
+          <div className="chips-list-item"> 
+            <div className="chips"> <Chip icon={<VerifiedUserIcon/>} label="Secure and Private"/></div>
+          </div>
+          <div className="chips-list-item"> 
+            <div className="chips"> <Chip icon={<FilterDramaIcon/>} label="100% Coud Service"/></div>
+          </div>
+        </div>
+        
+        <div className="warning2">
+          <Alerts/>
+        </div>
+        <div >
+          <div className="acordion">
+            <Card >
+              <CardHeader avatar={<BuildIcon/>}  title="Instructions" />
+              <ControlledAccordions/>
+            </Card>
+          </div>
+        </div>
+      </div>  
+      <div className="main">
+        <div className="title">
+          <Typography  variant="body" component="h2"   gutterBottom>
+           Use any IP camera for face recognition
+          </Typography>
+        </div>
+        <div>
+          <Signin/>  
+        </div>
+        <div>
+          <Typography  variant="body2" component="h2"   gutterBottom>
+            juadel.com - 2021 
+          </Typography>
+        </div>
+      </div>
+    
+      <Switch>
+              <Route exact path="/api" component={Api}/>
+              {/* <Route exact path="/suspects" component={Suspects}/>
+              <Route exact path="/dashboard" component={Dashboard}/>
+              <Route exact path="/cameras" component={Cameras}/>
+              <Route exact path="/account" component={Account}/> */}
+              {/* <Route exact path="/" component={Dashboard} /> */}
+      </Switch>
+    </div>
+    </BrowserRouter>
+    
+  
+  );
+}
+
+export default withRouter(Home);

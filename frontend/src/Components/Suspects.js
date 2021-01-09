@@ -301,9 +301,9 @@ class Suspects extends Component {
                    </Table>
                </TableContainer>
                <ButtonAdd>
-               <Button variant="contained" size="small" color="primary" onClick={this.handleNewSusp}> Add </Button>
+               <Button variant="contained" size="small"  onClick={this.handleNewSusp}> Add </Button>
                <ButtonRefresh>
-               <Button variant="contained" color="primary" align="justify" onClick={this.handleReload} >Refresh</Button>
+               <Button variant="contained"  align="justify" onClick={this.handleReload} >Refresh</Button>
                </ButtonRefresh>
                </ButtonAdd>
                
@@ -321,8 +321,8 @@ class Suspects extends Component {
                     </CardContent>                   
                   <CardActions>
                                      
-                  <Button variant="contained" color="primary" onClick={this.handleEditSubmit} >Submit</Button>
-                  <Button size="small" color="primary" onClick={this.handleClose}>Cancel</Button>  
+                  <Button variant="contained"  onClick={this.handleEditSubmit} >Submit</Button>
+                  <Button size="small"  onClick={this.handleClose}>Cancel</Button>  
                   </CardActions>  
                   </Card>            
                 </Container>
@@ -352,8 +352,8 @@ class Suspects extends Component {
 
                   </CardContent>
                   <CardActions>  
-                  <Button variant="contained" color="primary" onClick={this.handleSubmitFile} >Submit</Button>
-                  <Button size="small" color="primary" onClick={this.handleClose}>Cancel</Button>  
+                  <Button variant="contained"  onClick={this.handleSubmitFile} >Submit</Button>
+                  <Button size="small"  onClick={this.handleClose}>Cancel</Button>  
                   
                   </CardActions>  
                   
@@ -377,7 +377,7 @@ class Suspects extends Component {
                 </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button variant="contained" size="small" color="primary" onClick={this.handleSubmit}>
+                    <Button variant="contained" size="small"  onClick={this.handleSubmit}>
                     add
                     </Button>    
                 </CardActions>

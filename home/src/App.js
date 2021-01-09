@@ -15,6 +15,7 @@ import Alerts from './components/alerts';
 import Signin from './components/signin';
 import { CardHeader } from '@material-ui/core';
 import BuildIcon from '@material-ui/icons/Build';
+import {BrowserRouter} from 'react-router-dom';
 
 
 
@@ -25,6 +26,7 @@ const handleClick = () => {
 
 function App() {
   return (
+    <BrowserRouter>
     
     <div className="container">
     
@@ -149,6 +151,7 @@ function App() {
         </div>
         
     </div>
+    </BrowserRouter>
     
   
   );

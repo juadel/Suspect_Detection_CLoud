@@ -95,7 +95,7 @@ class Account extends Component {
                     
                 </Paper>
                 <ButtonLocation>
-                    <Button variant="contained" color="primary" align="justify" onClick={this.handleSubmitChangePass}>change</Button>
+                    <Button variant="contained"  align="justify" onClick={this.handleSubmitChangePass}>change</Button>
                 </ButtonLocation>
                 </Grid>
                 {/* <Paper>

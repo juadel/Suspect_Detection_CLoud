@@ -6,10 +6,10 @@
 
 
 
-.container2 {
+.container {
   display: grid;
 
-  grid-template-columns: 18% 0.5fr;
+  grid-template-columns: 20% 0.3fr;
   grid-template-rows: 80px 1fr;
 
   grid-template-areas:
@@ -31,13 +31,12 @@
   border-radius: 25px;
   height: 100vh;
   
-  
 }
 
 .main {
   grid-area: main;
   background-color : rgb(255, 255, 255);
-  background-image: url(./Images/human-computer-3d-opaque.png);
+  background-image: url(./human-computer-3d-opaque.png);
   background-repeat: no-repeat;
   /* opacity: 0.8; */
   background-size: cover;
@@ -95,8 +94,8 @@
  
   border-radius: 25px;
   position: absolute;
-  top: 30%;
-  left: 64%;
+  top: 40%;
+  left: 45%;
   
   /* z-index: 2; */
   width: 30%;
@@ -169,16 +168,16 @@
 
 .title {
   font-weight: bold;
-  color: rgba(255, 102, 0, 0.904);
+  color: rgb(255, 102, 0);
   
   position: absolute;
-  top: 20%;
-  left: 8%;
+  top: 5%;
+  left: 1%;
   
   width: 40%;
   padding: 20px;
   text-align: center;
-  font-size: calc(15px + 3vmin);
+  font-size: calc(10px + 2vmin);
 }
 
 .title-side {
@@ -187,7 +186,7 @@
   
   position: absolute;
   top: 8%;
-  left: 58%;
+  left: 45%;
   
   /* width: 40%; */
   padding: 20px;
@@ -198,9 +197,9 @@
   font-weight: bold;
   color: rgb(247, 239, 239);
   position: absolute;
-  top: 82%;
-  left: 58%;
-  /* width: 35%; */
+  top: 15%;
+  left: 50%;
+  width: 40%;
   padding: 20px;
   text-align: center;
   font-size: calc(2px + 1.5vmin);
@@ -237,7 +236,7 @@
 .chips-list{
   display: flex ;
 	/* list-style-type: none ; */
-	margin: 0px 0px 0px 0px ;
+	margin: 0px 0px 0px 150px ;
   padding: 20px 20px;
   width: 40px;
   

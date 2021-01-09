@@ -132,7 +132,7 @@ class Cameras extends Component {
             'Authorization': `Bearer ${this.state.token}`}
         }).then(res =>{this.setState({reload: true})
         }).catch(e => {alert("The Camera was not deleted", e); console.log(e)});
-        window.location.reload();
+        window.location.pathname = "/api";
      }
 
         
@@ -144,7 +144,7 @@ class Cameras extends Component {
             'Authorization': `Bearer ${this.state.token}`}
         }).then(res =>{this.setState({reload: true})
         }).catch(e => {alert("The request was not completed; Make sure to include all the required data", e); console.log(e)});
-        window.location.reload();
+        window.location.pathname = "/api";
     }
 
     async updateCamera(cameraId, editedCam){
@@ -155,7 +155,7 @@ class Cameras extends Component {
             'Authorization': `Bearer ${this.state.token}`}
         }).then(res =>{this.setState({reload: true})
         }).catch(e => {alert("The request was not completed; Make sure to include all the required data", e); console.log(e)});
-        window.location.reload();
+        window.location.pathname = "/api";
         
         
     }
@@ -239,8 +239,8 @@ class Cameras extends Component {
                         
                   
                   <CardActions>
-                  <Button variant="contained" color="primary" onClick={this.handleEditSubmit} >Submit</Button>
-                  <Button size="small" color="primary" onClick={this.handleClose}>Cancel</Button>  
+                  <Button variant="contained"  onClick={this.handleEditSubmit} >Submit</Button>
+                  <Button size="small"  onClick={this.handleClose}>Cancel</Button>  
                   </CardActions>  
                   </Card>            
                 </Container>
@@ -285,10 +285,10 @@ class Cameras extends Component {
               
                 
                 <CardActions>
-                    <Button variant="contained" size="small" color="primary" onClick={this.handleSubmit}>
+                    <Button variant="contained" size="small"  onClick={this.handleSubmit}>
                     add
                     </Button>
-                    <Button size="small" color="primary">
+                    <Button size="small" >
                     Learn More
                     </Button>
                 </CardActions>

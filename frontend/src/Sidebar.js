@@ -13,7 +13,7 @@ const SidebarContainer = styled.div`
       
     
     
-    background-color: #2E3FD0;
+    background-color: rgba(255, 102, 0);
     color: #fff;
     font-family: 'Open Sans', sans-serif;
     @media (max-width: 375px) {
@@ -103,6 +103,7 @@ class Sidebar extends Component {
     async signOut(){
         try {
             await Auth.signOut();
+            window.location.pathname = "/home";
         } catch (error) {
             console.log('error signing out: ', error);
         }

@@ -23,7 +23,7 @@ const MenuName = styled.p`
     line-height: 1.5;
     font-weight: 800;
     text-align: left;
-    color: #3D55B8;
+    color: rgba(255, 102, 0);
     margin-left: 50px;
     position: absolute;  
 `;
@@ -35,7 +35,7 @@ const MenuUser = styled.p`
     line-height: 1.5;
     font-weight: 500;
     
-    color: #3D55B8;
+    color: rgba(255, 102, 0);
     right: 120px;
     position: absolute;  
 `;
@@ -83,6 +83,9 @@ class Menubar extends Component {
     async signOut(){
         try {
             await Auth.signOut();
+            window.location.pathname = "/home";
+
+
         } catch (error) {
             console.log('error signing out: ', error);
         }

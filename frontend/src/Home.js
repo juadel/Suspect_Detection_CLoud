@@ -25,27 +25,29 @@ import getToken from './Config/getToken';
 
 
 
-async function handleAuth(){
-  let token = new getToken();
-  await token.token();
-  console.log(token.state.attributes)
-  if (token.state.attributes!=null){
-    
-      // window.location.pathname = "/api";
-      
-    }
-  }
+
 
 class Home extends Component {
  
+  async handleAuth(){
+    let token = new getToken();
+    await token.token();
+    console.log(token.state.attributes)
+    if (token.state.attributes!=null){
+      
+        window.location.pathname = "/api";
+        
+      }
+    }
  
-  // let rerout = handleAuth();
+  
  render() {
+  let rerout = this.handleAuth();
   return (
     
     // <BrowserRouter>
       <div className="container2">
-      {/* <rerout/> */}
+      <rerout/>
       
         <div className="side">
           <div className="title-side">

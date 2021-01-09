@@ -11,6 +11,7 @@ import Amplify from 'aws-amplify';
 import Cognito from '../Config/Cognito';
 import { withAuthenticator } from 'aws-amplify-react';
 import '@aws-amplify/ui/dist/style.css';
+import getToken from '../Config/getToken'
 
 
 
@@ -39,47 +40,76 @@ signUpFields: [
 
 class Api extends Component {
   
-  render(){
-  return (
-    <BrowserRouter>
-    
-    <Redirect path="/dashboard"/>
-    
-    <div className="App">
-      <div class="container">
-        <Sidebar class="grid-sidebar"/>
-      
-        <div class="header">  
-        <Menubar/>
-        
-        </div>
-        <div class="content">
-        
-        <Switch>
-            
-            
-            <Route exact path="/suspects" component={Suspects}/>
-            <Route exact path="/dashboard" component={Dashboard}/>
-            <Route exact path="/cameras" component={Cameras}/>
-            <Route exact path="/account" component={Account}/>
-            <Route exact path="/" component={Dashboard} />
+  constructor(){
+    super();
+    this.state={
+      authorized:true
+    }
+    this.handleAuth()
+  }
 
-            
-            
-            
-         </Switch>
-         
-        </div>
-      </div>
-    </div>  
-     
-    </BrowserRouter>
+  async handleAuth(){
+    let token = new getToken();
+    await token.token();
+    console.log(token.state.attributes)
+    if (token.state.attributes===null){
+        alert("Please Log in or sign Up")
+        window.location.pathname = "/home";
+        this.setState({authorized:false})
+      }
+    }
+
+
+  render(){
+      let check =()=> {
+        alert("Unauthorized");
+        window.location.pathname = "/home";}
     
+      if (this.state.authorized===false){
+        return check
+      }
+      else {
+        return (
     
-  );
- }
+            <BrowserRouter>
+            <check/>
+            <Redirect path="/dashboard"/>
+            
+            <div className="App">
+              <div class="container">
+                <Sidebar class="grid-sidebar"/>
+              
+                <div class="header">  
+                <Menubar/>
+                
+                </div>
+                <div class="content">
+                
+                <Switch>
+                    
+                    
+                    <Route exact path="/suspects" component={Suspects}/>
+                    <Route exact path="/dashboard" component={Dashboard}/>
+                    <Route exact path="/cameras" component={Cameras}/>
+                    <Route exact path="/account" component={Account}/>
+                    <Route exact path="/" component={Dashboard} />
+
+                    
+                    
+                    
+                </Switch>
+                
+                </div>
+              </div>
+            </div>  
+            
+            </BrowserRouter>
+            
+        
+        );
+      }}
 }
 
 
 
-export default withAuthenticator(Api);
+export default Api;

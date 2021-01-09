@@ -10,7 +10,7 @@
   display: grid;
 
   grid-template-columns: 18% 0.5fr;
-  grid-template-rows: 80px 1fr;
+  grid-template-rows: 80px 0.5fr;
 
   grid-template-areas:
 
@@ -44,17 +44,6 @@
   min-height: 100vh;
   background-position: center;
   
-  
-  
-
-  
-  
-  
-}
-.foot {
-  grid-area: foot;
-  background-color : rgb(255, 255, 255);
- 
 }
 
 

@@ -5,7 +5,6 @@ import Sidebar from '../Sidebar';
 import Cameras from './Cameras';
 import Suspects from './Suspects';
 import Dashboard from './Dashboard';
-// import Home from './home';
 import Account from './Account';
 import Menubar from './MenuBar';
 import Amplify from 'aws-amplify';
@@ -42,8 +41,8 @@ class Api extends Component {
   
   render(){
   return (
-    
     <BrowserRouter>
+    
     <Redirect path="/dashboard"/>
     
     <div className="App">
@@ -55,6 +54,7 @@ class Api extends Component {
         
         </div>
         <div class="content">
+        
         <Switch>
             
             
@@ -67,17 +67,19 @@ class Api extends Component {
             
             
             
-          </Switch>
+         </Switch>
          
         </div>
       </div>
-    </div>   
-   
+    </div>  
+     
     </BrowserRouter>
+    
+    
   );
  }
 }
 
 
 
-export default withRouter(withAuthenticator(Api));
+export default withAuthenticator(Api);

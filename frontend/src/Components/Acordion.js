@@ -42,7 +42,7 @@ export default function ControlledAccordions() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            When register, provide a phone number in which you would like to recieved the notification.  
+            When register, provide a phone number in which you would like to recieve the notification.  
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -52,15 +52,15 @@ export default function ControlledAccordions() {
           aria-controls="panel2bh-content"
           id="panel2bh-header"
         >
-          <Typography className={classes.heading}>Users</Typography>
+          <Typography className={classes.heading}>Cameras</Typography>
           <Typography className={classes.secondaryHeading}>
-            You are currently not an owner
+            Create the Camera streaming
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus, varius pulvinar
-            diam eros in elit. Pellentesque convallis laoreet laoreet.
+            You can use multiple cameras, just make sure to have the <a href="https://www.getscw.com/decoding/rtsp">RTSP URL</a> and <a href="https://www.purevpn.com/blog/how-to-forward-ports-on-your-router/">
+            forward </a> the ports on your internet Router.
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -70,15 +70,14 @@ export default function ControlledAccordions() {
           aria-controls="panel3bh-content"
           id="panel3bh-header"
         >
-          <Typography className={classes.heading}>Advanced settings</Typography>
+          <Typography className={classes.heading}>Profiles</Typography>
           <Typography className={classes.secondaryHeading}>
-            Filtering has been entirely disabled for whole web server
+            Create the profiles to detect 
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas eros,
-            vitae egestas augue. Duis vel est augue.
+            You can create multiple profiles; you just need to provide a name and picture of the person. An ID type photo works the best.
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -88,12 +87,15 @@ export default function ControlledAccordions() {
           aria-controls="panel4bh-content"
           id="panel4bh-header"
         >
-          <Typography className={classes.heading}>Personal data</Typography>
+          <Typography className={classes.heading}>Dashboard</Typography>
+          <Typography className={classes.secondaryHeading}>
+            Full Control 
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas eros,
-            vitae egestas augue. Duis vel est augue.
+            Start or Stop the camera streaming any time, the Dashboard allows you to control when and which cameras use and generate 
+            face encodings when adding new profiles.
           </Typography>
         </AccordionDetails>
       </Accordion>

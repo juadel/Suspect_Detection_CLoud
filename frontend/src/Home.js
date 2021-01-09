@@ -97,9 +97,9 @@ class Home extends Component {
           <div>
             <Signin/>  
           </div>
-          <div>
-            <Typography  variant="body2" component="h2"   gutterBottom>
-              juadel.com - 2021 
+          <div className="footer">
+            <Typography  variant="body" component="h2"   gutterBottom>
+              <a href="https://www.juadel.com"> juadel.com - 2021 </a> 
             </Typography>
           </div>
         </div>

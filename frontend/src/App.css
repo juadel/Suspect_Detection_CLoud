@@ -190,7 +190,7 @@
   top: 82%;
   left: 58%;
   /* width: 35%; */
-  padding: 20px;
+  padding: 10px;
   text-align: center;
   font-size: calc(2px + 1.5vmin);
 }
@@ -233,3 +233,14 @@
   
 }
 
+.footer{
+  font-weight: bold;
+  color: rgb(49, 47, 47);
+  position: absolute;
+  top: 93%;
+  left: 48%;
+  /* width: 35%; */
+  padding: 20px;
+  text-align: center;
+  font-size: calc(2px + 0.8vmin);
+}

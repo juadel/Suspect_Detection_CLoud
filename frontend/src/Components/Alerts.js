@@ -18,8 +18,12 @@ class Alerts extends Component {
 
     }
     intervalId = 0;
-    namesList = ["Juan", "Caro", "Jaco", "Tomy", "Jhon Doe", "David Bowie", "Axel Rose", "Tino", "Andres", "Donald", "Ken", "Darin", "Claudia", "Joshua", "Olivia", "Emi"]
-    locationList = ["Front Door", "Store 011", "Garage", "Cash Office", "Safe", "Back Door", "Staff Room", "Main Door", "Backyard", "Driveway", "Office 101"]
+    namesList = ["Juan", "Caro", "Jaco", "Tomy", "Jhon Doe", "David Bowie", "Axel Rose", "Tino", "Andres", "Donald", "Ken", "Darin", "Claudia", "Joshua", "Olivia", "Emi",
+                  "Keli", "Adriana", "Jose", "Hector", "Marcela", "Nico", "Angie", "Laura"  
+                ]
+    locationList = ["Front Door", "Store 011", "Garage", "Cash Office", "Safe", "Back Door", "Staff Room", "Main Door", "Backyard", "Driveway", "Office 101",
+                    "Hallway", "Side Door", "Kitchen", "Security office", "POS" 
+                ]
     componentDidMount= () =>{
         let SuspectName = this.namesList[Math.floor(Math.random()*this.namesList.length)];
         let locationName = this.locationList[Math.floor(Math.random()*this.locationList.length)];

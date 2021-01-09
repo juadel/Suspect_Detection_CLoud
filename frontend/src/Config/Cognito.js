@@ -11,8 +11,8 @@ const Cognito = {
       oauth: {
         domain: 'https://sdc.auth.ca-central-1.amazoncognito.com',
         scope: ['phone', 'email', 'profile', 'openid', 'aws.cognito.signin.user.admin'],
-        redirectSignIn: 'https://localhost:3000/api',
-        redirectSignOut: 'http://localhost:3000/',
+        redirectSignIn: 'https://api.juadel.com/api',
+        redirectSignOut: 'http://api.juadel.com/home',
         responseType: 'token' // or 'token', note that REFRESH token will only be generated when the responseType is code
       }
     }

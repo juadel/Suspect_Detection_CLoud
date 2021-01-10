@@ -195,7 +195,7 @@ class Suspects extends Component {
          
         }).then(res => { 
             alert("File has been uploaded");
-            window.location.reload();
+            window.location.pathname = "/api";
         }).catch(e => alert(e));
 
     }

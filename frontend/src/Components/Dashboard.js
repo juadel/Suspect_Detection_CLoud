@@ -53,7 +53,7 @@ class Dashboard extends Component {
         super();
         this.state={
            list_cameras: null, list_suspects: null, token:"" , checkbox: "", selectedIds: [], reload :false, user:"", serviceStatus :"Online", 
-           activeCams : 0
+           activeCams : 0 , noImages: false
           };
     }
   intervalId = 0;
@@ -153,6 +153,11 @@ class Dashboard extends Component {
         })
         
         count = Object.keys(no_image).length
+        if (count>0){
+          this.setState({
+            noImages: true
+          })
+        }
       }
     return (
       <Avatar > {count} </Avatar>
@@ -251,16 +256,22 @@ class Dashboard extends Component {
       alert("The System is Offline, please contact: juadel@hotmail.com")
     }
     else{
-      if (this.state.selectedIds.length === 0){
-        alert("Please select a Camera")
+      if(this.setState.noImages){
+        alert("Please create a suspects profile and include an images.")
       }
       else{
-        console.log(this.state.selectedIds);
-        let cams = this.state.selectedIds;
-        cams.map((id) =>{
-          this.startStreaming(id)
-        })
-      }
+        
+          if (this.state.selectedIds.length === 0){
+            alert("Please select a Camera")
+          }
+          else{
+            console.log(this.state.selectedIds);
+            let cams = this.state.selectedIds;
+            cams.map((id) =>{
+              this.startStreaming(id)
+            })
+          }
+        }
     }
 
   }

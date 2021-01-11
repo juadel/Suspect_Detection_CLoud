@@ -132,7 +132,8 @@ class Cameras extends Component {
             'Authorization': `Bearer ${this.state.token}`}
         }).then(res =>{this.setState({reload: true})
         }).catch(e => {alert("The Camera was not deleted", e); console.log(e)});
-        window.location.pathname = "/api";
+        //window.location.pathname = "/api";
+        this.getCameras();
      }
 
         
@@ -144,7 +145,9 @@ class Cameras extends Component {
             'Authorization': `Bearer ${this.state.token}`}
         }).then(res =>{this.setState({reload: true})
         }).catch(e => {alert("The request was not completed; Make sure to include all the required data", e); console.log(e)});
-        window.location.pathname = "/api";
+        //window.location.pathname = "/api";
+        this.getCameras();
+        this.handleClose();
     }
 
     async updateCamera(cameraId, editedCam){
@@ -155,8 +158,9 @@ class Cameras extends Component {
             'Authorization': `Bearer ${this.state.token}`}
         }).then(res =>{this.setState({reload: true})
         }).catch(e => {alert("The request was not completed; Make sure to include all the required data", e); console.log(e)});
-        window.location.pathname = "/api";
-        
+        //window.location.pathname = "/api";
+        this.getCameras();
+        this.handleClose();
         
     }
 

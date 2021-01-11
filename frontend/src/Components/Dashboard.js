@@ -75,6 +75,7 @@ class Dashboard extends Component {
       
       console.log("reloading")
       await this.getCameras();
+      await this.getSuspects();
   }
 
   async getServiceStatus(){

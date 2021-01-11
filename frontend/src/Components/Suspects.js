@@ -95,6 +95,7 @@ class Suspects extends Component {
             suspectName: this.state.suspectName,
         }
         this.createNewSuspect(newSuspect);
+        this.handleClose();
 
     }
 
@@ -195,7 +196,9 @@ class Suspects extends Component {
          
         }).then(res => { 
             alert("File has been uploaded");
-            window.location.pathname = "/api";
+            //window.location.pathname = "/api";
+            this.getSuspects();
+            this.handleClose();
         }).catch(e => alert(e));
 
     }
@@ -209,7 +212,8 @@ class Suspects extends Component {
             'Authorization': `Bearer ${this.state.token}`}
         }).then(res =>{this.setState({reload: true})
         }).catch(e => {alert("The Suspect was not deleted", e); console.log(e)});
-        window.location.reload();
+        //window.location.pathname = "/api";
+        this.getSuspects();
      }
 
         
@@ -221,7 +225,8 @@ class Suspects extends Component {
             'Authorization': `Bearer ${this.state.token}`}
         }).then(res =>{this.setState({reload: true})
         }).catch(e => {alert("The request was not completed; Make sure to include all the required data", e); console.log(e)});
-        window.location.reload();
+        //window.location.pathname = "/api";
+        this.getSuspects();
     }
 
     getfindingsDate(item){

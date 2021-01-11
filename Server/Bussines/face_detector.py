@@ -1,5 +1,6 @@
 import face_recognition
 import cv2
+import time
 import numpy as np
 import os
 from pickle import load
@@ -111,59 +112,66 @@ class FaceDetectorProcess:
 
                     # Grab a single frame of video
                     ret, frame = video_capture.read()
-                    if ret == True:
+                    if not(ret):
+                        logging.warning("No Video capture")
+                        st = time.time()
+                        video_capture = cv2.VideoCapture(f"rtsp://{username}:{password}@{ip}:{port}/{URL}")
+                        ret, frame = video_capture.read()
+                        continue
+
+                    #if ret == True:
 
                         
                         # Resize frame of video to 1/4 size for faster face recognition processing
-                        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+                    small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
                         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-                        rgb_small_frame = small_frame[:, :, ::-1]
+                    rgb_small_frame = small_frame[:, :, ::-1]
 
                         # Only process every other frame of video to save time
-                        if process_this_frame:
+                    if process_this_frame:
                             # Find all the faces and face encodings in the current frame of video
-                            face_locations = face_recognition.face_locations(rgb_small_frame)
-                            face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+                        face_locations = face_recognition.face_locations(rgb_small_frame)
+                        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 
-                            face_names = []
+                        face_names = []
                             
-                            for face_encoding in face_encodings:
+                        for face_encoding in face_encodings:
                                 # See if the face is a match for the known face(s)
-                                matches = face_recognition.compare_faces(self.encodings, face_encoding)
-                                name = "Unknown"
+                            matches = face_recognition.compare_faces(self.encodings, face_encoding)
+                            name = "Unknown"
 
-                                face_distances = face_recognition.face_distance(self.encodings, face_encoding)
-                                best_match_index = np.argmin(face_distances)
-                                if matches[best_match_index]:
-                                    name = self.names[best_match_index]
-                                    now = datetime.now()
+                            face_distances = face_recognition.face_distance(self.encodings, face_encoding)
+                            best_match_index = np.argmin(face_distances)
+                            if matches[best_match_index]:
+                                name = self.names[best_match_index]
+                                now = datetime.now()
 
-                                    if log.get(name) != None :
-                                        if abs(now - log[name])< timedelta(minutes=10):
-                                            log[name] = now
-                                            logging.warning("Suspect seen no more than 10 min ago")
-                                        else:
-                                            logging.warning("Suspect Return to site")
-                                            log[name]=now
-                                            date = now.strftime("%m/%d/%y, %H:%M")
-                                            self.reportFinding(name, date)
-                                    else:
-                                        #logger(name, self.settings["phone"])
-                                        logging.warning("Suspect seen")
+                                if log.get(name) != None :
+                                    if abs(now - log[name])< timedelta(minutes=10):
                                         log[name] = now
-                                        print(name)
+                                        logging.warning("Suspect seen no more than 10 min ago")
+                                    else:
+                                        logging.warning("Suspect Return to site")
+                                        log[name]=now
                                         date = now.strftime("%m/%d/%y, %H:%M")
                                         self.reportFinding(name, date)
+                                else:
+                                        #logger(name, self.settings["phone"])
+                                    logging.warning("Suspect seen")
+                                    log[name] = now
+                                    print(name)
+                                    date = now.strftime("%m/%d/%y, %H:%M")
+                                    self.reportFinding(name, date)
                                     
 
 
-                                face_names.append(name)
+                            face_names.append(name)
                                 
                                 # if cv2.waitKey(1) & 0xFF == ord('q'):
                                 #     break
-                                if self.stop_running:
-                                    break
+                            if self.stop_running:
+                                break
                                 
                             
                             

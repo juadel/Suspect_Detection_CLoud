@@ -1,4 +1,4 @@
-from flask import Flask, Response, request
+from flask import Flask, Response, request, render_template
 import logging
 from Bussines.face_detector import FaceDetectorProcess
 import os
@@ -22,6 +22,7 @@ def detectorServer(userId, cameraId):
     # creating detection process for specific user and camera    
     detection_process = FaceDetectorProcess(userId, cameraId)
     detection_process.start()
+    return detection_process.streaming
 
 def createEncodings(userId):
     if not path.exists('./tmp'):
@@ -34,18 +35,23 @@ def createEncodings(userId):
     detection_process = FaceDetectorProcess(userId, cameraId="001")
     detection_process.createEncodings()
 
-
+@app.route('/')
+def index():
+    return render_template('index.html')
          
-@app.route('/start/', methods=['GET'])
+@app.route('/start', methods=['GET'])
 def start():
     # Start server mode
     userId = request.args.get('userId')
     cameraId = request.args.get('cameraId')
     
-    thread = Thread(target=detectorServer, kwargs={'userId':userId,'cameraId':cameraId})
-    thread.start()
+    # thread = Thread(target=detectorServer, kwargs={'userId':userId,'cameraId':cameraId})
+    # thread.start()
     
-    return (f"Streaming for camera {cameraId} has been requested")
+    # return (f"Streaming for camera {cameraId} has been requested" )
+    return Response(detectorServer(userId, cameraId), mimetype='multipart/x-mixed-replace; boundary=frame')
+        
+
 
 @app.route('/encodings/', methods=['GET'])
 def encodings():
@@ -62,5 +68,5 @@ def check():
     
     
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
     #app.run()

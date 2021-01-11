@@ -21,6 +21,7 @@ class FaceDetectorProcess:
         self.suspectData =  suspectData(userId,cameraId)
         self.settings = self.suspectData.getSettings()
         self.encodings, self.names =self.suspectData.readEncodings()
+        self.streaming = None
         
     
     def start(self):
@@ -32,8 +33,8 @@ class FaceDetectorProcess:
         self.process.terminate()
         self.stop_running = True
         return
-
     
+        
     def checkStatus(self):
         # reads from DynamoDB table attribute req_Status to check if user requested stoping the server
         
@@ -150,15 +151,15 @@ class FaceDetectorProcess:
                                 if log.get(name) != None :
                                     if abs(now - log[name])< timedelta(minutes=10):
                                         log[name] = now
-                                        logging.warning("Suspect seen no more than 10 min ago")
+                                        logging.warning(f'{name} seen no more than 10 min ago')
                                     else:
-                                        logging.warning("Suspect Return to site")
+                                        logging.warning(f'{name} Return to site')
                                         log[name]=now
                                         date = now.strftime("%m/%d/%y, %H:%M")
                                         self.reportFinding(name, date)
                                 else:
                                         #logger(name, self.settings["phone"])
-                                    logging.warning("Suspect seen")
+                                    logging.warning(f'{name} seen')
                                     log[name] = now
                                     print(name)
                                     date = now.strftime("%m/%d/%y, %H:%M")
@@ -195,7 +196,11 @@ class FaceDetectorProcess:
                             cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
                         # Display the resulting image
-                        cv2.imshow('Video', frame)
+                        #cv2.imshow('Video', frame)
+                        ret2, buffer = cv2.imencode('.jpg',frame)
+                        frame = buffer.tobytes()
+                        self.streaming = (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
 
                         # Hit 'q' on the keyboard to quit!
                         if cv2.waitKey(1) & 0xFF == ord('q'):

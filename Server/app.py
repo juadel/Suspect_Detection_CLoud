@@ -22,7 +22,9 @@ def detectorServer(userId, cameraId):
     # creating detection process for specific user and camera    
     detection_process = FaceDetectorProcess(userId, cameraId)
     detection_process.start()
-    return detection_process.streaming
+    logging.warning(detection_process.streaming)
+    return 
+        Response(detection_process.streaming, mimetype='multipart/x-mixed-replace; boundary=frame')
 
 def createEncodings(userId):
     if not path.exists('./tmp'):
@@ -45,11 +47,13 @@ def start():
     userId = request.args.get('userId')
     cameraId = request.args.get('cameraId')
     
-    # thread = Thread(target=detectorServer, kwargs={'userId':userId,'cameraId':cameraId})
-    # thread.start()
+    thread = Thread(target=detectorServer, kwargs={'userId':userId,'cameraId':cameraId})
+    thread.start()
     
-    # return (f"Streaming for camera {cameraId} has been requested" )
-    return Response(detectorServer(userId, cameraId), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return (f"Streaming for camera {cameraId} has been requested" )
+    
+    # return Response(detectorServer(userId, cameraId), mimetype='multipart/x-mixed-replace; boundary=frame')
+    
         
 
 

@@ -14,6 +14,7 @@ class FaceDetectorProcess:
 
     def __init__(self, userId, cameraId):
         self.process = Process(target=self.run, args=())
+        self.process2 = Process(target=self.gen_streaming, args=())
         self.process.daemon = True
         self.showVideoVariable = False
         self.live = self.process.is_alive()
@@ -29,12 +30,39 @@ class FaceDetectorProcess:
         self.process.join()
         self.live= self.process.is_alive()
     
+    def start2(self):
+        self.process2.start()
+        self.process2.join()
+
     def stop(self):
         self.process.terminate()
         self.stop_running = True
         return
     
-        
+    def gen_streaming(self):
+        logging.warning("Trying to generate streaming")
+        if self.checkData():
+            username = self.settings[0]['username']
+            password = self.settings[0]['password']
+            ip = self.settings[0]["ip"]
+            port = self.settings[0]["port"]
+            URL = self.settings[0]["url_path"]
+        else:
+            logging.warning("User doesn't exists or Camera is not configured")  
+        try: 
+            video_capture = cv2.VideoCapture(f"rtsp://{username}:{password}@{ip}:{port}/{URL}")
+            while True:
+                success, frame = video_capture.read()  # read the camera frame
+                if not success:
+                    break
+                else:
+                    ret, buffer = cv2.imencode('.jpg', frame)
+                    frame = buffer.tobytes()
+                    yield (b'--frame\r\n'
+                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        except cv2.error as e:
+            logging.warning("No Stream available", e)
+
     def checkStatus(self):
         # reads from DynamoDB table attribute req_Status to check if user requested stoping the server
         
@@ -199,8 +227,9 @@ class FaceDetectorProcess:
                         #cv2.imshow('Video', frame)
                         ret2, buffer = cv2.imencode('.jpg',frame)
                         frame = buffer.tobytes()
+                        
                         self.streaming = (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
+                        
 
                         # Hit 'q' on the keyboard to quit!
                         if cv2.waitKey(1) & 0xFF == ord('q'):

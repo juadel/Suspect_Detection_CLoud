@@ -150,15 +150,15 @@ class FaceDetectorProcess:
                                 if log.get(name) != None :
                                     if abs(now - log[name])< timedelta(minutes=10):
                                         log[name] = now
-                                        logging.warning("Suspect seen no more than 10 min ago")
+                                        logging.warning(f'{name} seen no more than 10 min ago')
                                     else:
-                                        logging.warning("Suspect Return to site")
+                                        logging.warning(f'{name} Return to site')
                                         log[name]=now
                                         date = now.strftime("%m/%d/%y, %H:%M")
                                         self.reportFinding(name, date)
                                 else:
                                         #logger(name, self.settings["phone"])
-                                    logging.warning("Suspect seen")
+                                    logging.warning(f'{name} seen')
                                     log[name] = now
                                     print(name)
                                     date = now.strftime("%m/%d/%y, %H:%M")

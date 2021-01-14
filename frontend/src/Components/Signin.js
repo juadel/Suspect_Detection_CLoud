@@ -22,36 +22,55 @@ const AUTH_USER_TOKEN_KEY = 'ReactAmplify.TokenKey';
 const User = styled.div`
     text-align: center;
     position: absolute;
+    display: flex;
     top: 1%;
-    left: 30%;
+    left: 10%;
     width: 7%;
     height: 5%;
     padding: 10px;
     border: 5px solid rgb(151, 148, 148);
     background-color : rgb(247, 239, 239);
     border-radius: 20px;
+    margin: auto;
+    @media (max-width: 960px) {
+        top: 1%;
+        
+        width: 15%;
+     }
     
 `;
 
 const Pass = styled.div`
-    
+    display: flex;
     text-align: center;
     position: absolute;
     top: 1%;
-    left: 39%;
+    left: 20%;
     width: 7%;
     height: 5%;
     padding: 10px;
     border: 5px solid rgb(151, 148, 148);
     background-color : rgb(247, 239, 239);
     border-radius: 20px;
+    margin: auto;
+    @media (max-width: 960px) {
+        left: 35%;
+        width: 15%;
+     }
 `;
 
 const ButtonStyled = styled.div`
     text-align: center;
     position: absolute;
     top: 3%;
-    left: 50%;
+    left: 30%;
+    display: flex;
+    margin: auto;
+    @media (max-width: 960px) {
+        left: 60%;
+       
+     }
+
 `;
 
 const Register = styled.div`
@@ -60,8 +79,18 @@ const Register = styled.div`
     position: absolute;
     align-items: center;
     top: 8%;
-    left: 48%;
+    left: 28%;
     height: 100vh;
+    margin: auto;
+    @media (max-width: 880px) {
+        left: 55%;
+        top: 9%;
+        
+       
+     }
+    
+
+    
     
     
     

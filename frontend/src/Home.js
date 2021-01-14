@@ -94,7 +94,7 @@ class Home extends Component {
             Use any IP camera for face recognition
             </Typography>
           </div>
-          <div>
+          <div >
             <Signin/>  
           </div>
           <div className="footer">

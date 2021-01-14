@@ -9,6 +9,7 @@ from multiprocessing import Process
 from apscheduler.schedulers.background import BackgroundScheduler
 import logging
 from datetime import datetime, timedelta
+import queue
 
 class FaceDetectorProcess:
 
@@ -16,13 +17,13 @@ class FaceDetectorProcess:
         self.process = Process(target=self.run, args=())
         self.process2 = Process(target=self.gen_streaming, args=())
         self.process.daemon = True
-        self.showVideoVariable = False
+        self.showVideoVariable = True
         self.live = self.process.is_alive()
         self.stop_running = False
         self.suspectData =  suspectData(userId,cameraId)
         self.settings = self.suspectData.getSettings()
         self.encodings, self.names =self.suspectData.readEncodings()
-        self.streaming = None
+        self.streaming = queue.Queue()
         
     
     def start(self):
@@ -30,9 +31,9 @@ class FaceDetectorProcess:
         self.process.join()
         self.live= self.process.is_alive()
     
-    def start2(self):
-        self.process2.start()
-        self.process2.join()
+    def join(self):
+        self.process.join()
+        return self.streaming
 
     def stop(self):
         self.process.terminate()
@@ -56,10 +57,9 @@ class FaceDetectorProcess:
                 if not success:
                     break
                 else:
-                    ret, buffer = cv2.imencode('.jpg', frame)
+                    (ret, buffer) = cv2.imencode('.jpg', frame)
                     frame = buffer.tobytes()
-                    yield (b'--frame\r\n'
-                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                    yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
         except cv2.error as e:
             logging.warning("No Stream available", e)
 
@@ -228,7 +228,7 @@ class FaceDetectorProcess:
                         ret2, buffer = cv2.imencode('.jpg',frame)
                         frame = buffer.tobytes()
                         
-                        self.streaming = (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                        self.streaming.put(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
                         
 
                         # Hit 'q' on the keyboard to quit!

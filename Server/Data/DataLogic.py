@@ -25,7 +25,7 @@ class suspectData():
 
     def queryDataFromDynamoDB(self):
         
-        logging.info(f"Initialing read to DB for {self.user}")
+        logging.warning(f"Initialing read to DB for {self.user}")
         table = self.dynamodb.Table(self.suspectTable)
         response = table.query(
             KeyConditionExpression=Key("userId").eq(self.user)

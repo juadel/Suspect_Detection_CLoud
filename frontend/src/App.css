@@ -270,9 +270,9 @@
 .footer{
   font-weight: bold;
   color: rgb(49, 47, 47);
-  position: absolute;
+  position: fixed;
   top: 93%;
-  left: 48%;
+  left: 1%;
   /* width: 35%; */
   padding: 20px;
   text-align: center;

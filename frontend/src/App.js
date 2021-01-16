@@ -20,10 +20,10 @@ function App() {
             <Route exact path="/home" component={Home}/>
             <Route exact path="/" component={Home} />
             <Route exact path="/api" component={Api} />
-            {/* <Route exact path="/suspects" component={Suspects}/>
-            <Route exact path="/dashboard" component={Dashboard}/>
-            <Route exact path="/cameras" component={Cameras}/>
-            <Route exact path="/account" component={Account}/> */}
+            <Route exact path="/suspects" component={Api}/>
+            <Route exact path="/dashboard" component={Api}/>
+            <Route exact path="/cameras" component={Api}/>
+            <Route exact path="/account" component={Api}/>
     </Switch>
     </BrowserRouter>
     

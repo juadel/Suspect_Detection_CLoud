@@ -272,7 +272,8 @@ class Suspects extends Component {
                         <td >{item.suspectName}</td>
                         <td>{item.encoding_status}</td>
                         <td>{this.getfindingsDate(item)}</td>
-                        <td>{this.getfindingsLocation(item)}</td>                        
+                        <td>{this.getfindingsLocation(item)}</td>
+                        <td></td>                        
                         <td> <IconButton onClick={() =>{this.handleModalFile(item)} } aria-label="Add a Photo" type="file" ><AddAPhotoIcon/></IconButton></td>
                         <td> <IconButton onClick={() =>{this.handleDel(item.suspectName)} } aria-label="delete"><DeleteIcon/></IconButton></td>
                         
@@ -296,6 +297,7 @@ class Suspects extends Component {
                                 <TableCell align="center"> Image Status</TableCell>
                                 <TableCell align="center"> Last Seen</TableCell>
                                 <TableCell align="center"> Seen At</TableCell>
+                                <TableCell align="center">Latest SnapShot</TableCell>
                                 <TableCell align="center"> Add Image</TableCell>
                                 <TableCell align="center"> Delete</TableCell>
                             </TableRow>

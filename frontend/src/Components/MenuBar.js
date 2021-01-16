@@ -26,6 +26,9 @@ const MenuName = styled.p`
     color: rgba(255, 102, 0);
     margin-left: 50px;
     position: absolute;  
+    @media (max-width: 880px) {
+        display: none !important;
+     }
 `;
 
 const MenuUser = styled.p`

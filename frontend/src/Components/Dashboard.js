@@ -1,3 +1,4 @@
+import './App.css';
 import React, { Component } from "react";
 import styled from "styled-components";
 import Button from '@material-ui/core/Button';
@@ -15,13 +16,21 @@ import { DataGrid } from '@material-ui/data-grid';
 const ContainerSuspects = styled.table`
     display: flex;
     height: 40vh;
-    
+    @media (max-width: 1480px) {
+      display: none !important;}
+       
     
 `;
 
 const ContainerSummary = styled.div`
-    padding-left: 150px;
-    padding-top: 20px;
+    justify-content: center ;
+    left: 50%;
+    text-align: center;
+    align-items: center;
+    display: fixed;
+    @media (max-width: 880px) {
+      font-size: 10px;
+   }
     
     
 `;
@@ -29,12 +38,18 @@ const ContainerSummary = styled.div`
 const SummaryPaper = styled.div`
     height: 10vh;
     weidth: 20vh;
+    @media (max-width: 1480px) {
+      font-size: 15px;
+      
+   }
+    
 `;
 
 const CamerasStyled = styled.table`
     display: flex;
     height: 40vh;
-    
+    @media (max-width: 1480px) {
+      display: none !important;}
 `;
 
 const StyledAvatar = styled(Avatar)`
@@ -42,6 +57,7 @@ const StyledAvatar = styled(Avatar)`
     backgroundColor: #5469d4;
     width: 120px;
     height: 120px;
+    position: fixed;
     
 
 
@@ -53,17 +69,18 @@ class Dashboard extends Component {
         super();
         this.state={
            list_cameras: null, list_suspects: null, token:"" , checkbox: "", selectedIds: [], reload :false, user:"", serviceStatus :"Online", 
-           activeCams : 0 , noImages: false
+           activeCams : 0 , noImages: 0
           };
     }
   intervalId = 0;
   async componentDidMount(){
       await this.handleAuth();
       await this.getServiceStatus();
-      await this.getCameras();
       await this.getSuspects();
+      await this.getCameras();
       
-      this.intervalId = setInterval(() => {this.reload()}, 60000);
+      
+     this.intervalId = setInterval(() => {this.reload()}, 60000);
         
   }
 
@@ -73,9 +90,10 @@ class Dashboard extends Component {
 
   async reload(){
       
-      console.log("reloading")
-      await this.getCameras();
+      console.log("reloading");
       await this.getSuspects();
+      await this.getCameras();
+      
   }
 
   async getServiceStatus(){
@@ -99,7 +117,7 @@ class Dashboard extends Component {
 }
 
   async getCameras(){
-
+    
     await axios.get(apiEndpoint+'/getcameras', 
         {headers: 
             { 'Content-Type': 'application/json',
@@ -109,12 +127,14 @@ class Dashboard extends Component {
       .catch(e => console.log(e))
   }
 
-  async getSuspects(){   
+  async getSuspects(){  
+    
     await axios.get(apiEndpoint+'/getsuspects', 
         {headers: 
             { 'Content-Type': 'application/json',
             'Authorization': `Bearer ${this.state.token}`}
-         }).then(res => {this.setState({list_suspects: res.data.item});
+         }).then(res => { this.setState({list_suspects: res.data.item});
+                          this.getLackofImages();
            })
       .catch(e => console.log(e))
     
@@ -154,15 +174,9 @@ class Dashboard extends Component {
         })
         
         count = Object.keys(no_image).length
-        if (count>0){
-          this.setState({
-            noImages: true
-          })
-        }
+        this.setState({noImages: count})
+        
       }
-    return (
-      <Avatar > {count} </Avatar>
-    )
    
   }
 
@@ -236,7 +250,7 @@ class Dashboard extends Component {
 
   
   handleRowSelect = (row) =>{
-    console.log(this.state.selectedIds);
+    
     let selection = row.rowIds;
     
     let tempArrayofCamIds = []
@@ -245,11 +259,11 @@ class Dashboard extends Component {
       tempArrayofCamIds.push(this.state.list_cameras[id].cameraId);
       })
     
-    console.log(tempArrayofCamIds);
+    
     this.setState({
       selectedIds : tempArrayofCamIds
     })
-    console.log(this.state.selectedIds);
+    
   }
 
   handleStartStreaming = () =>{
@@ -257,8 +271,8 @@ class Dashboard extends Component {
       alert("The System is Offline, please contact: juadel@hotmail.com")
     }
     else{
-      if(this.setState.noImages){
-        alert("Please create a suspects profile and include an images.")
+      if(this.state.noImages){
+        alert("Please create a suspects profile and include the images.")
       }
       else{
         
@@ -266,7 +280,7 @@ class Dashboard extends Component {
             alert("Please select a Camera")
           }
           else{
-            console.log(this.state.selectedIds);
+            
             let cams = this.state.selectedIds;
             cams.map((id) =>{
               this.startStreaming(id)
@@ -323,8 +337,8 @@ handleStopStreaming = () =>{
 
   handleReload =() => {
     //window.location.reload();
-    this.getCameras();
-    this.getSuspects();
+    this.reload();
+    
 
   }
 
@@ -346,7 +360,8 @@ handleStopStreaming = () =>{
       
       let cameraList = [];
       let suspectList = [];
-      
+      let no_encoded = null;
+      let no_images = null;
       
               
 
@@ -358,6 +373,8 @@ handleStopStreaming = () =>{
               id = id+1})
           
           suspectList = temp;
+        no_encoded = this.getLackofEncodings();
+        no_images = <Avatar>{this.state.noImages}</Avatar>
          
       
         }
@@ -402,10 +419,12 @@ handleStopStreaming = () =>{
 
           
         }
+        
         let failedCameras = this.getCamerasError();
         let onCameras = this.getCamerasOn();
-        let no_encoded = this.getLackofEncodings();
-        let no_images = this.getLackofImages();
+        
+        
+        
         
           
       
@@ -445,7 +464,7 @@ handleStopStreaming = () =>{
                 <Grid item xs={12} sm={3}>
                   <Paper>
                   <SummaryPaper>
-                  <Typography variant="h8" component="h3"  gutterBottom>Failed or No streaming </Typography>
+                  <Typography variant="h8" component="h3"  gutterBottom>Failed/No streaming </Typography>
                   <ContainerSummary>{failedCameras} </ContainerSummary>
                   </SummaryPaper>
                   </Paper>
@@ -488,18 +507,19 @@ handleStopStreaming = () =>{
               </Paper>
           </Grid>
           
-          <Grid item xs={12} sm={3}>
+          <Grid className="reduce" item xs={12} sm={3}>
             <Button variant="contained"  align="justify" onClick={this.handleStartStreaming} >Start Streaming</Button>
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid className="reduce" item xs={12} sm={3}>
             <Button variant="contained"  align="justify" onClick={this.handleStopStreaming} >Stop Streaming</Button>
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid className="reduce" item xs={12} sm={4}>
             <Button variant="contained"  align="justify" onClick={this.handleEncodings} >Generate Encodings</Button>
           </Grid>
-          <Grid item xs={12} sm={2}>
+          <Grid className="reduce" item xs={12} sm={2}>
             <Button variant="contained"  align="justify" onClick={this.handleReload} >Refresh</Button>
           </Grid>
+          
           
         </Grid>
         

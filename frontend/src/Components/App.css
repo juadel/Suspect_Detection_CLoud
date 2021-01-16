@@ -26,13 +26,13 @@
   
   
 }
-@media screen and (max-width: 375px) {
+@media only screen and (max-width: 880px) {
   .container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 72px 1fr;
+    grid-template-columns: 40%;
+    grid-template-rows: 10%;
     grid-template-areas:
-    "head"
-    "main"
+    "sidebar""main"
+    "sidebar""main"
     
   }
 }
@@ -46,6 +46,11 @@
   background-color : rgba(240, 235, 232, 0.856);
   
 }
+@media only screen and (max-width: 880px) {
+  .header{
+  font-size: calc(1px + 3vmin);
+  }
+}
 .content {
   grid-area: main;
   background-color : rgb(248, 245, 244);
@@ -56,5 +61,11 @@
   
   padding-left: 80px;
 }
-
-
+.reduce{
+  text-align: center;
+}
+@media only screen and (max-width: 880px) {
+  .reduce{
+    display: none !important;
+  }
+}

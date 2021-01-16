@@ -21,6 +21,7 @@ class FaceDetectorProcess:
         self.suspectData =  suspectData(userId,cameraId)
         self.settings = self.suspectData.getSettings()
         self.encodings, self.names =self.suspectData.readEncodings()
+        self.userId = userId
         
     
     def start(self):
@@ -63,7 +64,25 @@ class FaceDetectorProcess:
         self.suspectData.createEncodings()
         return
 
-    
+    def snapShot(self, face_locations,frame, name ):
+        for top, right, bottom, left in face_locations:
+              # Scale back up face locations since the frame we detected in was scaled to 1/4 size
+            logging.warning("Snaphot")
+            top *= 4
+            right *= 4
+            bottom *= 4
+            left *= 4
+
+            # Draw a box around the face
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+            # Draw a label with a name below the face
+            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            font = cv2.FONT_HERSHEY_DUPLEX
+            frame = cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+            date = datetime.now()
+        cv2.imwrite(f'./tmp/{self.userId}/{name}-detected at{date}.png',frame)
+        self.suspectData.uploadSnapShot(name, f'{name}-detected at{date}.png')
+
    
     def run(self):
         logging.warning("Starting streamming")
@@ -134,7 +153,7 @@ class FaceDetectorProcess:
                         face_locations = face_recognition.face_locations(rgb_small_frame)
                         face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 
-                        face_names = []
+                        #face_names = []
                             
                         for face_encoding in face_encodings:
                                 # See if the face is a match for the known face(s)
@@ -162,11 +181,12 @@ class FaceDetectorProcess:
                                     log[name] = now
                                     print(name)
                                     date = now.strftime("%m/%d/%y, %H:%M")
+                                    self.snapShot(face_locations, frame, name)
                                     self.reportFinding(name, date)
                                     
 
 
-                            face_names.append(name)
+                            #face_names.append(name)
                                 
                                 # if cv2.waitKey(1) & 0xFF == ord('q'):
                                 #     break

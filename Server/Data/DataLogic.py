@@ -185,7 +185,28 @@ class suspectData():
         
         return txt
 
-
+    def uploadSnapShot(self,name,filename):
+        try:
+            self.s3.Bucket(self.bucketName).upload_file(f"./tmp/{self.user}/{filename}",f"{self.user}/{filename}")
+            os.remove(f'./tmp/{self.user}/{filename}')
+        except botocore.exceptions.ClientError  as e:
+            logging.error(e)
+            return False
+        snapShot = f'{self.user}/{filename}'
+        table = self.dynamodb.Table(self.suspectTable)
+        response = table.update_item(
+            Key = {
+                "userId": self.user,
+                "suspectName": name
+                    },
+            UpdateExpression=" set last_snapshot= :e",
+            ExpressionAttributeValues={
+                ":e": snapShot  
+            },
+            ReturnValues = "UPDATED_NEW"
+            
+        )
+        return response
 
 
     # def getDataFileFromS3(self):

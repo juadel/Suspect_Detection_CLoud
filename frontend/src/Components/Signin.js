@@ -215,7 +215,10 @@ async signUp(){
         }
 
     }).then(user =>{
+        console.log(user.userConfirmed);
+        console.log(this.state.newUsername)
         this.setState({
+            
             userConfirmed: user.userConfirmed,
             setOpenConfirmModal: true 
         })
@@ -226,8 +229,8 @@ async signUp(){
 }
 
 async validate(){
-    console.log(this.state.username)
-    await Auth.confirmSignUp(this.state.username, this.state.code)
+    console.log(this.state.newUsername)
+    await Auth.confirmSignUp(this.state.newUsername, this.state.code)
     .then(user => {
         this.setState({
             userConfirmed: user.userConfirmed,

@@ -193,7 +193,7 @@
   align-items: center ;
   position: fixed;
   top: 8%;
-  left: 58%;
+  left: 54%;
   
   /* width: 40%; */
   padding: 20px;
@@ -209,7 +209,7 @@
   font-weight: bold;
   color: rgb(247, 239, 239);
   position: absolute;
-  top: 82%;
+  top: 75%;
   left: 58%;
   /* width: 35%; */
   padding: 10px;

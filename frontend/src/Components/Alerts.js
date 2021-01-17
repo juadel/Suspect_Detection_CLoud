@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
-import Alert from '@material-ui/lab/Alert';
+import {Alert, AlertTitle} from '@material-ui/lab';
 
 
 
@@ -52,7 +52,7 @@ class Alerts extends Component {
 
         return(
             <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open={this.state.open} autoHideDuration={5000} onClose={this.handleClose}>
-            <Alert onClose={this.handleClose} severity="warning" >{this.state.suspect} has been detected in {this.state.location} at {this.state.date}, {this.state.time}!</Alert>
+            <Alert onClose={this.handleClose} severity="warning"><AlertTitle>Example Notification</AlertTitle>{this.state.suspect} has been detected in {this.state.location} at {this.state.date}, {this.state.time}!</Alert>
             </Snackbar>
         )
     }

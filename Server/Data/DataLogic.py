@@ -20,6 +20,7 @@ class suspectData():
         self.user = userId
         self.cameraId = cameraId
         self.backend = os.environ["BACKEND"]
+        self.bucketUrl = "https://sdc-bucket-dev.s3.ca-central-1.amazonaws.com/"
             
 
 
@@ -192,7 +193,8 @@ class suspectData():
         except botocore.exceptions.ClientError  as e:
             logging.error(e)
             return False
-        snapShot = f'{self.user}/{filename}'
+            
+        snapShot = f'{self.bucketUrl}{self.user}/{filename}'
         table = self.dynamodb.Table(self.suspectTable)
         response = table.update_item(
             Key = {

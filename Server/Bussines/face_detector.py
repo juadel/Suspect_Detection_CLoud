@@ -1,5 +1,6 @@
 import face_recognition
 import cv2
+import uuid
 import time
 import numpy as np
 import os
@@ -79,9 +80,9 @@ class FaceDetectorProcess:
             cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
             frame = cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-            date = datetime.now()
-        cv2.imwrite(f'./tmp/{self.userId}/{name}-detected at{date}.png',frame)
-        self.suspectData.uploadSnapShot(name, f'{name}-detected at{date}.png')
+            snapshotId = uuid.uuid4()
+        cv2.imwrite(f'./tmp/{self.userId}/{snapshotId}.png',frame)
+        self.suspectData.uploadSnapShot(name, f'{snapshotId}.png')
 
    
     def run(self):
@@ -174,7 +175,9 @@ class FaceDetectorProcess:
                                         logging.warning(f'{name} Return to site')
                                         log[name]=now
                                         date = now.strftime("%m/%d/%y, %H:%M")
+                                        self.snapShot(face_locations, frame, name)
                                         self.reportFinding(name, date)
+
                                 else:
                                         #logger(name, self.settings["phone"])
                                     logging.warning(f'{name} seen')

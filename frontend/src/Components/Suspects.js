@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import 'fontsource-roboto';
+import {Image} from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
@@ -57,7 +58,7 @@ class Suspects extends Component {
         this.state={
             suspectName:"", findings: null, encoding:"", encoding_status:"", objectKey:"", 
             token: "", suspectsList: null, setOpen: false, reload: null, file: "", filename:"", userId: "",
-            modal_File: false, presignedURL:"", setOpenAddModal: false, uploadProgress: null
+            modal_File: false, presignedURL:"", setOpenAddModal: false, uploadProgress: null, showFullShot: false, urlToShow:null
         };
          
         
@@ -79,7 +80,8 @@ class Suspects extends Component {
         this.setState({
             setOpen:false,
             modal_File:false,
-            setOpenAddModal :false
+            setOpenAddModal :false,
+            showFullShot: false
         })
     }
     
@@ -253,12 +255,36 @@ class Suspects extends Component {
         }
                                     
     }
+
+    handleSnap(url){
+        console.log(url)
+        this.setState({
+            showFullShot: true,
+            urlToShow: url
+        })
+        console.log(this.state.urlToShow)
+    }
+
+
+    handleSnapShots = (item) =>{
+        if (item.last_snapshot!=null){
+            return(
+                <Image src={item.last_snapshot} onClick={()=>this.handleSnap(item.last_snapshot)} width="50" height="50"></Image>
+            )
+        }
+        else {
+            return "N/A"
+        }
+    }
+   
+
     handleReload =() =>{
         this.getSuspects();
     }
     
 
     render() {
+    
     let progressBar = this.updateProgressBarValue(this.state.uploadProgress)       
     let suspectLst = []
     if (this.state.suspectsList){
@@ -273,7 +299,7 @@ class Suspects extends Component {
                         <td>{item.encoding_status}</td>
                         <td>{this.getfindingsDate(item)}</td>
                         <td>{this.getfindingsLocation(item)}</td>
-                        <td></td>                        
+                        <td>{this.handleSnapShots(item)}</td>                        
                         <td> <IconButton onClick={() =>{this.handleModalFile(item)} } aria-label="Add a Photo" type="file" ><AddAPhotoIcon/></IconButton></td>
                         <td> <IconButton onClick={() =>{this.handleDel(item.suspectName)} } aria-label="delete"><DeleteIcon/></IconButton></td>
                         
@@ -313,7 +339,7 @@ class Suspects extends Component {
                <Button variant="contained"  align="justify" onClick={this.handleReload} >Refresh</Button>
                </ButtonRefresh>
                </ButtonAdd>
-               
+             
 
               
                 {/*--------------------------------- MODAL FOR EDIT SUSPECT ---NOT IN USE-------------------------------------*/} 
@@ -390,6 +416,12 @@ class Suspects extends Component {
                 </CardActions>
                 </Card>
                 </Container>
+                </Modal>
+                {/*--------------------------------- Full Snap Shot ----------------------------------------*/} 
+                <Modal open={this.state.showFullShot} onClose={this.handleClose} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+                    <Container maxWidth="xs" disableGutters="true">
+                    <Image src={this.state.urlToShow} width="800" height="600"/>
+                    </Container>
                 </Modal>
             </Container>
             

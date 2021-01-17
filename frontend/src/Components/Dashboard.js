@@ -16,7 +16,7 @@ import { DataGrid } from '@material-ui/data-grid';
 const ContainerSuspects = styled.table`
     display: flex;
     height: 40vh;
-    @media (max-width: 1480px) {
+    @media (max-width: 1100px) {
       display: none !important;}
        
     
@@ -28,7 +28,7 @@ const ContainerSummary = styled.div`
     text-align: center;
     align-items: center;
     display: fixed;
-    @media (max-width: 880px) {
+    @media (max-width: 1100px) {
       font-size: 10px;
    }
     
@@ -38,7 +38,7 @@ const ContainerSummary = styled.div`
 const SummaryPaper = styled.div`
     height: 10vh;
     weidth: 20vh;
-    @media (max-width: 1480px) {
+    @media (max-width: 1100px) {
       font-size: 15px;
       
    }
@@ -48,7 +48,7 @@ const SummaryPaper = styled.div`
 const CamerasStyled = styled.table`
     display: flex;
     height: 40vh;
-    @media (max-width: 1480px) {
+    @media (max-width: 1100px) {
       display: none !important;}
 `;
 

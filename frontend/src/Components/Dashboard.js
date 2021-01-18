@@ -80,7 +80,7 @@ class Dashboard extends Component {
       await this.getCameras();
       
       
-     this.intervalId = setInterval(() => {this.reload()}, 60000);
+     this.intervalId = setInterval(() => {this.reload()}, 50000);
         
   }
 

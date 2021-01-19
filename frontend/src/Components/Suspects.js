@@ -150,7 +150,7 @@ class Suspects extends Component {
             {headers: 
                 { 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.state.token}`}
-             }).then(res => {this.setState({suspectsList: res.data.item});
+             }).then(res => {console.log(res); this.setState({suspectsList: res.data.item});
                })
           .catch(e => console.log(e))
         
@@ -196,9 +196,10 @@ class Suspects extends Component {
                     }
               } 
          
-        }).then(res => { 
+        }).then(async res => { 
             alert("File has been uploaded");
             //window.location.pathname = "/api";
+            await this.genEncodings();
             this.getSuspects();
             this.handleClose();
         }).catch(e => alert(e));
@@ -212,12 +213,24 @@ class Suspects extends Component {
             headers:
             { 'Content-Type': 'application/json',
             'Authorization': `Bearer ${this.state.token}`}
-        }).then(res =>{this.setState({reload: true})
+        }).then(async res =>{
+                await this.genEncodings();
+                this.setState({reload: true})
         }).catch(e => {alert("The Suspect was not deleted", e); console.log(e)});
         //window.location.pathname = "/api";
         this.getSuspects();
      }
 
+    async genEncodings(){
+    
+        await axios.get(apiEndpoint+'/encodings', 
+            {headers: 
+                { 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.state.token}`}
+             }).then(res => {console.log(res.data); alert("Please restart camera streaming for better service.")})
+             .catch(e => {console.log(e); alert(e)})
+        
+    } 
         
     async createNewSuspect(newSuspect){
         await axios.post(apiEndpoint+'/suspect', newSuspect,
@@ -225,7 +238,8 @@ class Suspects extends Component {
             headers:
             { 'Content-Type': 'application/json',
             'Authorization': `Bearer ${this.state.token}`}
-        }).then(res =>{this.setState({reload: true})
+        }).then(async res =>{
+                this.setState({reload: true})
         }).catch(e => {alert("The request was not completed; Make sure to include all the required data", e); console.log(e)});
         //window.location.pathname = "/api";
         this.getSuspects();

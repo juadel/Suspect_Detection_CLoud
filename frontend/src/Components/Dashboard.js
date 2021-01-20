@@ -272,7 +272,7 @@ class Dashboard extends Component {
     }
     else{
       if(this.state.noImages){
-        alert("Please create a suspects profile and include the images.")
+        alert("Streaming can not start without a suspect profile including the face image.")
       }
       else{
         
@@ -298,7 +298,7 @@ class Dashboard extends Component {
           headers:
           { 'Content-Type': 'application/json',
           'Authorization': `Bearer ${this.state.token}`}
-      }).then(res =>{this.setState({reload: true});alert("Streaming requested")})
+      }).then(res =>{this.setState({reload: true});alert("Streaming requested, Please refresh data to confirm")})
       .catch(e => {alert(e); console.log(e)});
       
       window.location.pathname = "/api";
@@ -385,12 +385,12 @@ handleStopStreaming = () =>{
             {
             headerName: "Name",
             field: "suspectName",
-            width: 180
+            width: 160
             },
             {
             headerName: "Encoding Status",
             field: "encoding_status",
-            width: 200
+            width: 160
             }]
           
       if (this.state.list_cameras){
@@ -430,8 +430,8 @@ handleStopStreaming = () =>{
       
       let camColumns = [
         {field: "cam_Location", headerName : "Location" , width:120},
-        {field: "server_info", headerName : "Camera Status" , width:400},
-        {field: "server", headerName : "Server Status" , width:200}
+        {field: "server_info", headerName : "Camera Status" , width:180},
+        {field: "server", headerName : "Server Status" , width:180}
       ]
       
       

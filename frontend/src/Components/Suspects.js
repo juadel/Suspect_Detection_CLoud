@@ -58,7 +58,8 @@ class Suspects extends Component {
         this.state={
             suspectName:"", findings: null, encoding:"", encoding_status:"", objectKey:"", 
             token: "", suspectsList: null, setOpen: false, reload: null, file: "", filename:"", userId: "",
-            modal_File: false, presignedURL:"", setOpenAddModal: false, uploadProgress: null, showFullShot: false, urlToShow:null
+            modal_File: false, presignedURL:"", setOpenAddModal: false, uploadProgress: null, showFullShot: false, urlToShow:null,
+            camsOn: null, list_cameras: null
         };
          
         
@@ -131,6 +132,7 @@ class Suspects extends Component {
     async componentDidMount(){
         await this.handleAuth();
         this.getSuspects();
+        this.getCameras();
      
     }
 
@@ -183,7 +185,7 @@ class Suspects extends Component {
                 { 'Content-Type': 'application/json',
                   'Authorization': `Bearer ${this.state.token}`}
             }).then(res =>{this.setState({presignedURL: res.data.uploadUrl})
-            }).catch(e => {alert("Erro while procesing request", e); console.log(e)});
+            }).catch(e => {alert("Error while procesing request", e); console.log(e)});
         console.log(this.state.presignedURL)
 
         await axios.put(this.state.presignedURL, this.state.file,{
@@ -199,7 +201,7 @@ class Suspects extends Component {
         }).then(async res => { 
             alert("File has been uploaded");
             //window.location.pathname = "/api";
-            await this.genEncodings();
+            //await this.genEncodings();
             this.getSuspects();
             this.handleClose();
         }).catch(e => alert(e));
@@ -208,27 +210,35 @@ class Suspects extends Component {
 
     async handleDel(suspectName){
         console.log(suspectName)
-        await axios.delete(apiEndpoint+'/delsuspect/'+suspectName,
-        {
-            headers:
-            { 'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.state.token}`}
-        }).then(async res =>{
-                await this.genEncodings();
-                this.setState({reload: true})
-        }).catch(e => {alert("The Suspect was not deleted", e); console.log(e)});
-        //window.location.pathname = "/api";
-        this.getSuspects();
+        if (this.state.camsOn==0){
+            await axios.delete(apiEndpoint+'/delsuspect/'+suspectName,
+            {
+                headers:
+                { 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.state.token}`}
+            }).then(async res =>{
+                    await this.genEncodings();
+                    this.setState({reload: true})
+            }).catch(e => {alert("The Suspect was not deleted", e); console.log(e)});
+            //window.location.pathname = "/api";
+            this.getSuspects();
+        }else{
+            alert("Please Stop all camera streamings before deleting a profile")
+        }
      }
 
     async genEncodings(){
-    
-        await axios.get(apiEndpoint+'/encodings', 
-            {headers: 
-                { 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${this.state.token}`}
-             }).then(res => {console.log(res.data); alert("Please restart camera streaming for better service.")})
-             .catch(e => {console.log(e); alert(e)})
+        if (this.state.camsOn==0){
+            await axios.get(apiEndpoint+'/encodings', 
+                {headers: 
+                    { 'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.state.token}`}
+                }).then(res => {console.log(res.data); alert("Encodings generated")})
+                .catch(e => {console.log(e); alert(e)})
+            }
+        else{
+            alert("Please Stop all camera streamings before creating encodings")
+        }
         
     } 
         
@@ -296,6 +306,33 @@ class Suspects extends Component {
         this.getSuspects();
     }
     
+    async getCameras(){
+    
+        await axios.get(apiEndpoint+'/getcameras', 
+            {headers: 
+                { 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.state.token}`}
+             }).then(res => {
+                 this.setState({list_cameras: res.data.item});
+                 this.getCamerasOn();
+               
+            })
+          .catch(e => console.log(e))
+
+      }
+      getCamerasOn = () =>{
+        let count = 0
+        if (this.state.list_cameras!=null){
+          const arrayCams = this.state.list_cameras
+          let onCameras = arrayCams.filter(function(camOn){
+            return camOn.server_Status == "1";
+          })
+          count = Object.keys(onCameras).length;
+                
+        this.setState({camsOn : count})  
+          
+        }
+    }
 
     render() {
     

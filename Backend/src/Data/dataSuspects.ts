@@ -7,6 +7,7 @@ const XAWS = AWSXRay.captureAWS(AWS);
 import { SuspectItem } from "../Models/suspectModel";
 import { findingModel } from "../Models/findingsModel";
 
+
 //import { suspectRequestModel } from "../models/suspectRequestModel";
 
 export class Suspect 
@@ -95,17 +96,28 @@ async getFindings(userId : string, name:string) :Promise<findingModel[]>{
     return items as SuspectItem[];
  }
 
- async delSuspect(userId: string, name: string){
+ async delSuspect(userId: string, name: string, objectKey: string){
   const suspectName =decodeURI(name)
-  const deleteCamera = await this.docClient.delete({
+  await this.deleteObject(objectKey)
+  const deleteSuspect = await this.docClient.delete({
     TableName: this.suspectTable,
     Key: {userId, suspectName}
   })
   .promise();
-  return {Deleted: deleteCamera}
+  
+  
+  
+  return {Deleted: deleteSuspect}
+  } 
+
+  async deleteObject(objectKey: string){
+    const params={Bucket: this.bucket, Key: objectKey}
+    await this.S3.deleteObject(params).promise();
+  
+  }
+  
 } 
 
-} 
 
 
 

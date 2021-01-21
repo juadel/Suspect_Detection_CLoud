@@ -38,7 +38,8 @@ provider:
     SDC_BUCKET: sdc-bucket-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     USER_POOL: arn:aws:cognito-idp:ca-central-1:140936048568:userpool/ca-central-1_XnEjC2aNQ
-    SERVER_ENDPOINT: sdcloadbalancer-1560937750.ca-central-1.elb.amazonaws.com:5000
+    SERVER_ENDPOINT: ec2-99-79-56-158.ca-central-1.compute.amazonaws.com:5000
+    #SERVER_ENDPOINT: sdcloadbalancer-1560937750.ca-central-1.elb.amazonaws.com:5000
 
   
   iamRoleStatements:
@@ -257,6 +258,7 @@ functions:
         Action: 
           - dynamodb:Query
         Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SUSPECTS_TABLE}
+      
   
   delSuspect:
     handler: src/Lambda/http/deleteSuspect.handler
@@ -274,7 +276,11 @@ functions:
       - Effect: Allow
         Action: 
           - dynamodb:DeleteItem
-        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SUSPECTS_TABLE}        
+        Resource:  arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SUSPECTS_TABLE}       
+      - Effect: Allow
+        Action:
+          - s3:DeleteObject
+        Resource: arn:aws:s3:::${self:provider.environment.SDC_BUCKET}/* 
   
   genEncodings:
     handler: src/Lambda/http/generateEncodings.handler

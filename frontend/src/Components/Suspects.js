@@ -208,10 +208,10 @@ class Suspects extends Component {
 
     }
 
-    async handleDel(suspectName){
+    async handleDel(suspectName, objectKey){
         console.log(suspectName)
         if (this.state.camsOn==0){
-            await axios.delete(apiEndpoint+'/delsuspect/'+suspectName,
+            await axios.delete(apiEndpoint+'/delsuspect/'+suspectName+'?objectKey='+objectKey,
             {
                 headers:
                 { 'Content-Type': 'application/json',
@@ -233,7 +233,7 @@ class Suspects extends Component {
                 {headers: 
                     { 'Content-Type': 'application/json',
                     'Authorization': `Bearer ${this.state.token}`}
-                }).then(res => {console.log(res.data); alert("Encodings generated")})
+                }).then(res => {console.log(res.data); alert("Profile deleted")})
                 .catch(e => {console.log(e); alert(e)})
             }
         else{
@@ -352,7 +352,7 @@ class Suspects extends Component {
                         <td>{this.getfindingsLocation(item)}</td>
                         <td>{this.handleSnapShots(item)}</td>                        
                         <td> <IconButton onClick={() =>{this.handleModalFile(item)} } aria-label="Add a Photo" type="file" ><AddAPhotoIcon/></IconButton></td>
-                        <td> <IconButton onClick={() =>{this.handleDel(item.suspectName)} } aria-label="delete"><DeleteIcon/></IconButton></td>
+                        <td> <IconButton onClick={() =>{this.handleDel(item.suspectName, item.objectKey)} } aria-label="delete"><DeleteIcon/></IconButton></td>
                         
                     
                     </tr>

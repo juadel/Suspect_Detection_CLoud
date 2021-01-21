@@ -86,6 +86,9 @@ export async function getSuspects(event: APIGatewayProxyEvent) : Promise<Suspect
 export async function delSuspect (event:APIGatewayProxyEvent) {
   const userId = getUserId(event);
   const name = event.pathParameters.name;
-  const deleteCamera = await suspect.delSuspect(userId, name)
-  return deleteCamera
+  
+  const objectKey = event.queryStringParameters.objectKey;
+  console.log(objectKey)
+  const deleteSuspect = await suspect.delSuspect(userId, name, objectKey)
+  return deleteSuspect
 }

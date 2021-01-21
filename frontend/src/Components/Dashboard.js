@@ -80,7 +80,7 @@ class Dashboard extends Component {
       await this.getCameras();
       
       
-     this.intervalId = setInterval(() => {this.reload()}, 50000);
+     this.intervalId = setInterval(() => {this.reload()}, 60000);
         
   }
 
@@ -91,6 +91,7 @@ class Dashboard extends Component {
   async reload(){
       
       console.log("reloading");
+      await this.getServiceStatus();
       await this.getSuspects();
       await this.getCameras();
       

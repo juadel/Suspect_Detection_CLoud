@@ -1,0 +1,40 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "createcam",
+    "type": "object",
+    "properties": {
+        "cam_Location": {
+            "type": "string",
+            "minLength": 3
+        },
+        "ip": {
+            "type": "string",
+            "minLength": 3
+        },
+        "port": {
+            "type": "string",
+            "minLength": 3
+        },
+        "url_path": {
+            "type": "string",
+            "minLength": 3
+        },
+        "username": {
+            "type": "string",
+            "minLength": 3
+        },
+        "password": {
+            "type": "string",
+            "minLength": 3
+        }
+    },
+    "required": [
+        "ip",
+        "port",
+        "cam_Location",
+        "username",
+        "password",
+        "url_path"
+    ],
+    "additionalProperties": false
+  }

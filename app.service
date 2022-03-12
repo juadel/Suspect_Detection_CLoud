@@ -1,0 +1,12 @@
+[Unit]
+Description=Gunicorn instance to serve Suspect App
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/app
+Environment="PATH=/home/ubuntu/app/env/bin"
+ExecStart=/home/ubuntu/app/env/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 -m 007 wsgi:app
+
+[Install]
+WantedBy=multi-user.target
